@@ -3,5 +3,5 @@
 # Except the files we choose to list
 !.gitignore
 !__init__.py
-!db_create_migrate.py
-!db_init_data.py
+!../db_create_migrate.py
+!../db_init_data.py

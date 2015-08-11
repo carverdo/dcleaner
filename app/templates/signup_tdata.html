@@ -1,0 +1,6 @@
+{% import 'macros.html' as macros %}
+{{ macros.row_pres("fa fa-user fa-border btn-info", form.firstname, "Your first name") }}
+{{ macros.row_pres("fa fa-user fa-border btn-info", form.surname, "Your surname") }}
+{{ macros.row_pres("fa fa-envelope-o fa-border btn-info", form.email, "Your email") }}
+{{ macros.row_pres("fa fa-lock fa-border btn-warning", form.password, "Password") }}
+<button type="submit" class="btn btn-primary btn-block">SignUp</button>

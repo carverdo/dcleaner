@@ -47,7 +47,24 @@ APP
 Contains static and templates...
 
 ==============
-MAIN FILES: CONFIG.PY, APP/INIT, RUN
+MAIN FILES: CONFIG.PY, RUN.PY, MANAGER.PY APP/INIT
 ==============
 Don't forget to manually input the local database names!
-Config for DB setting; __init__ for app and db creation (auto) when called by run.
+config for DB setting;
+ __init__ for app and db creation; and
+ these are auto-run when called by run.py
+
+manager.py sets up commands for you to use cmd directly.
+
+
+==============
+GETTING STARTED
+==============
+0. create your own venv directory (won't be in github) and import any package requirements;
+1. Adjust app.db_models to the model you want to work with;
+2. Name the database in config.py;
+3. Physically create database in pgadmin;
+4. Move (db_create_migrate.py OR manager.py and) db_init_data.py underneath src root;
+5. run these via cmd window to establish database model in pgadmin;
+6. tailor views.py as you need to.
+7. run run.py.

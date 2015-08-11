@@ -5,31 +5,32 @@ THEN, before running anything remember to physically create database using pgAdm
 Shortly after we will apply db initialisation, modelling and data population.
 See db_create_migrate for more.
 """
-__author__ = 'donal'
-__project__ = 'Skeletion_Flask_v11'
-import os
-# os.chdir(os.path.abspath(os.path.dirname(__file__)))
 
-# ====================
-# POPULATE BLANKS AS REQUIRED
-# ====================
-PK = os.environ.get('POSTGRES_KEYS', 'BLANK BLANK').split()
-DBNAME = 'BLANK'
+
+__author__ = 'donal'
+__project__ = 'Skeleton_Flask_v11'
+import os
+from config_templates import *
+from config_vars import PK, DBNAME
 
 
 # ====================
 # CONFIG CLASSES
 # ====================
-class Config(object):
+class Config(TemplateParameters):
     """
     Sets Encryption, and your database addresses.
     """
     CSRF_ENABLED = True
-    SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
+    SECRET_KEY = os.environ.get('SECRET_KEY_PROJECT', os.urandom(24))
     DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
         format(PK[0], PK[1], DBNAME)
     PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
         format(PK[0], PK[1], DBNAME)
+
+    @staticmethod
+    def init_app(app):
+        pass
 
 
 class DevelConfig(Config):

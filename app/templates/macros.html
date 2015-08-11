@@ -1,0 +1,28 @@
+{% macro form_pres(fn, form, patex, tadata) %}
+    <form action="{{ url_for(fn, **kwargs) }}" method=post>
+        {{ form.hidden_tag() }}
+    <div class="col-xs-12 col-md-4">
+        {{ create_masterpanel(form, patex, tadata) }}
+    </div>
+    </form>
+{% endmacro %}
+
+{% macro create_masterpanel(form, patex, tadata) %}
+<div class="panel">
+    <div class="panel-heading btn-success"><h2 style="font-size:18px"> {{ patex }} </h2></div>
+    <div class="panel-body" align="center">
+        {% set template = tadata %}
+        {% include template %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro row_pres(i_class, fn, placeholder) %}
+<div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="{{i_class}}"></i></span>
+        <input class="form-control" {{ fn(placeholder=placeholder) }}
+    </div>
+</div>
+{% endmacro %}
+

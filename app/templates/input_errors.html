@@ -1,0 +1,5 @@
+{% for etype in form.errors %}
+    {% for message in form[etype].errors %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+{% endfor %}

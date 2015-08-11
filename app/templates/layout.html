@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Project Title</title>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Latest minified CCS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional Theme -->
+    <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link href="/static/css/rangeslider.css" rel="stylesheet"> -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600|Oswald:700' rel='stylesheet' type='text/css'>
+    <link href="/static/css/main_new.css" rel="stylesheet">
+    <link rel="shortcut icon" href="http://faviconist.com/icons/135fe75b1f4053c28c33602a6050b70f/favicon.ico">
+    <link href="static/css/jasny-bootstrap.min.css" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid"> <!-- keeps collapse working -->
+        <div class="navbar navbar-box navbar-fixed-top" role="navigation">
+            <div class="container"><!-- keeps presentation neat -->
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">  <!--# "bs-example-navbar-collapse-1">-->
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#" title="gScore">
+                        <h1><font color="white">splash<br><small><font color="linen">Page.</font></small></font></h1>
+                        <!--<img id="logo" src="/static/image/logo.png">-->
+                    </a>
+                </div><!--navbar-header-->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#"><h4></h4></a></li>
+                        <li><a href="{{ url_for('home') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">home</span></h3></a></li>
+                        {% if current_user.is_authenticated() %}
+                            <li><a href="{{ url_for('signout') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">signOut</span></h3></a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('signup') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">signUp</span></h3></a></li>
+                            <li><a href="{{ url_for('signin') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">signIn</span></h3></a></li>
+                        {% endif %}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /container -->
+        </div>
+    </div><!-- /.container-fluid -->
+    </nav>
+    <br><br><br>
+
+    <div class="container">
+        <div class="col-xs-12">
+            {% block flashes %}
+                {% for msg in get_flashed_messages() %}
+                    <div class="alert alert-warning">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      {{ msg }}
+                    </div>
+                {% endfor %}
+            {% endblock %}
+
+            <span class="redder">
+                {% block redder %}
+                {% endblock %}
+            </span>
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Latest javascript -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <!--<script src="/static/js/moment.min.js"></script>-->
+    {% if pageType == 'graph' %}
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="/static/js/graph.js"></script>
+    {% endif %}
+    <script src="static/js/jasny-bootstrap.min.js"></script>
+    <!-- <script src="/static/js/rangeslider.min.js"></script> -->
+</body>
+</html>
