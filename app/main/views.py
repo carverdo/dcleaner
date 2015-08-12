@@ -31,7 +31,6 @@ def home():
 def signup():
     form = SignupForm()
     if current_user.is_authenticated():
-        current_user.ping()
         flash(f1)
         return redirect(url_for('home'))
     if form.validate_on_submit():
@@ -53,14 +52,12 @@ def signup():
 def signin():
     form = SigninForm()
     if current_user.is_authenticated():
-        current_user.ping()
         flash(f1)
         return redirect(url_for('home'))
     if form.validate_on_submit():
         member = db.session.query(Member).filter_by(email=form.email.data).first()
         if member is not None:
             login_user(member, remember=form.remember.data)
-            # member.ping()
             current_user.ping()
             flash(f3)
             return redirect(url_for('home'))  # profile for graph

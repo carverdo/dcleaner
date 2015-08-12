@@ -39,8 +39,6 @@ def create_app(config_name):
 # =================
 app, db, lg = create_app('development')
 from app.main import views, view_errors
-
-
 # =================
 # BUILD MANAGER (for cmd handling)
 # here we only add the database commands
