@@ -54,57 +54,58 @@ Just edit the pre-populated one supplied to suit.
 
 
 ## Non-directory Files
-*config.py and variants*  
-primarily for DB setting;  
-don't forget to input the local database via the environment vars; 
-look to `config_vars`
+*config.py and variants* primarily for DB setting;  
+don't forget to input the local database via the environment vars;
+ look to `config_vars`
 
 *app/init* and *run.py*  
 ` __init__` for app and db creation; and
  these are auto-run when called by `run.py`
 
 *manager.py*
-  `manager.py` sets up commands for you to use cmd directly.
+ sets up commands for you to use cmd directly.
 
 *requirements.txt*
-  see *venv*
+ see *venv*
 
 *procfile*
-  see *heroku*
+ see *heroku*
 
 
-## Templates and static/css
-  `layout` is the template for all other templates.
-  calls in all sorts of external fonts, bootstrap, highcharts etc.
-  look to static/css.
-  also calls `main_new.css` - our modifications to those imported themes.
-  each (sub-)template extends layout and then calls its main blocks - 
+## Templates and static/css  
+`layout` is the template for all other templates.  
+calls in all sorts of external fonts, bootstrap, highcharts etc.  
+look to static/css.  
+also calls `main_new.css` - our modifications to those imported themes.  
+each (sub-)template extends layout and then calls its main blocks -
 - redder (calls input_errors); and
 - content.
 
-`macros` knows how to: 
+`macros` knows how to:
 - present forms (around which panels are drawn); 
 - present panels; and 
 - present rows (within panels).
 
-the `tdata.htmls` supply the data to those rows'
+the `tdata.htmls` supply the data to those rows;  
 panel header info supplied via `views.py / patex`
 
 
-# PYCHARM 
+# Pycharm 
 ## Local Set Up
-Run / Edit Config / Defaults / Python / Command Line - so we can play with scripts after running.
-File / Settings / Project Structure / Source - set up as source directory.
+`Run / Edit Config / Defaults / Python / Command Line` -
+ so we can play with scripts after running.  
+`File / Settings / Project Structure / Source` - set up as source directory.
 
 
 # HEROKU
-Place procfile beneath src root - specific instructions to heroku. Edit the pre-populated file supplied.
+Place procfile beneath src root - specific instructions to heroku.  
+Edit the pre-populated file supplied.
 
 
 # GIT 
 ## GITIGNORES
 Create gitignore directly beneath src root.
-Use the intellij default and then tailor to, among other things, ignore the venv.
-This will keep the github sync as small as possible.
-(Place other gitignores under subdirectories as required.)
+ Use the intellij default and then tailor to, among other things, ignore the venv.
+ This will keep the github sync as small as possible.
+ (Place other gitignores under subdirectories as required.)
 
