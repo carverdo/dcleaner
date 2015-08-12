@@ -54,9 +54,11 @@ Just edit the pre-populated one supplied to suit.
 
 
 ## Non-directory Files
- *config.py and variants* primarily For DB setting;
-don't forget to input the local database via the environment vars;
-look to `config_vars`
+ *config.py and variants*
+  primarily for DB setting;
+  
+  don't forget to input the local database via the environment vars;
+  look to `config_vars`
 
 *app/init* and *run.py*
 ` __init__` for app and db creation; and
