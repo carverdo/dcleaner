@@ -69,8 +69,8 @@ also calls `main_new.css` - our modifications to those imported themes.
 - present panels; and 
 - present rows (within panels).
 
-the `tdata.htmls` supply the data to those rows;  
-panel header info supplied via `views.py / patex`
+the `tdata.htmls` supply the data to those rows;
+ panel header info supplied via `views.py / patex`
 
 
 # Pycharm 
@@ -81,8 +81,8 @@ panel header info supplied via `views.py / patex`
 
 
 # HEROKU
-Place procfile beneath src root - specific instructions to heroku.  
-Edit the pre-populated file supplied.
+Place procfile beneath src root - specific instructions to heroku.
+ Edit the pre-populated file supplied.
 
 
 # GIT 
@@ -91,35 +91,3 @@ Create gitignore directly beneath src root.
  Use the intellij default and then tailor to, among other things, ignore the venv.
  This will keep the github sync as small as possible.
  (Place other gitignores under subdirectories as required.)
-
-
-
-
-# Skeleton_Flask_v11
-
-## Heading
-# Big heading
-
-*Italics*
-**Bold**
-**Some _bold and italic**
-> Block quotes
-
-- List
-- List
-- List
-
-1. Item 1
-2. Item 2
-
-And I can indicate 'code sections' here.
-Check out this neat program I wrote:
-
-```
-x = 0
-x = 2 + 2
-what is x
-```
-
-Hyperlinks with label -
-[Visit GitHub!](https://www.github.com)
