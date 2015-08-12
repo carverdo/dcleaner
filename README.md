@@ -80,13 +80,13 @@ the `tdata.htmls` supply the data to those rows;
 `File / Settings / Project Structure / Source` - set up as source directory.
 
 
-# HEROKU
+# Heroku
 Place procfile beneath src root - specific instructions to heroku.
  Edit the pre-populated file supplied.
 
 
-# GIT 
-## GITIGNORES
+# Git
+## Gitignores
 Create gitignore directly beneath src root.
  Use the intellij default and then tailor to, among other things, ignore the venv.
  This will keep the github sync as small as possible.
