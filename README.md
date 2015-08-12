@@ -56,29 +56,29 @@ Just edit the pre-populated one supplied to suit.
 ## Non-directory Files
 *config.py and variants*  
 primarily for DB setting;  
-don't forget to input the local database via the environment vars;  
+don't forget to input the local database via the environment vars; 
 look to `config_vars`
 
-*app/init* and *run.py*
+*app/init* and *run.py*  
 ` __init__` for app and db creation; and
  these are auto-run when called by `run.py`
 
 *manager.py*
-`manager.py` sets up commands for you to use cmd directly.
+  `manager.py` sets up commands for you to use cmd directly.
 
 *requirements.txt*
-see *venv*
+  see *venv*
 
 *procfile*
-see *heroku*
+  see *heroku*
 
 
 ## Templates and static/css
-`layout` is the template for all other templates.
-calls in all sorts of external fonts, bootstrap, highcharts etc.
-look to static/css.
-also calls `main_new.css` - our modifications to those imported themes.
-each (sub-)template extends layout and then calls its main blocks - 
+  `layout` is the template for all other templates.
+  calls in all sorts of external fonts, bootstrap, highcharts etc.
+  look to static/css.
+  also calls `main_new.css` - our modifications to those imported themes.
+  each (sub-)template extends layout and then calls its main blocks - 
 - redder (calls input_errors); and
 - content.
 
