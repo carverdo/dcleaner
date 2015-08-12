@@ -40,7 +40,7 @@ class DevelConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DEV_DATABASE_URL', Config.DEVEL_DATABASE_NAME)
-
+    LOGOUT = 'Devel_logs.log'
 
 class ProdConfig(Config):
     """
@@ -50,7 +50,8 @@ class ProdConfig(Config):
     PRODUCT = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL', Config.PROD_DATABASE_NAME)
-
+    # LG = GenLogger('ProdDevel_logs.log')
+    LOGOUT = 'Prod_logs.log'
 
 config = {
     'development': DevelConfig,

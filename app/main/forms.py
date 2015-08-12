@@ -3,11 +3,11 @@
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-from flask.ext.wtf import Form  # Seems odd (this line not next) but wtf Form is slightly different
-from wtforms import TextField, StringField, PasswordField, SubmitField, validators
+from flask.ext.wtf import Form  # Seems odd (this line not next) but correct: wtf Form is slightly different
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators
 from app.db_models import db, Member
-from flask import flash
 from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
+from datetime import datetime
 
 # ==========================
 # LOGINS
@@ -22,7 +22,10 @@ class SignupForm(Form):
                          validators.length(max=MAX_COL_WIDTHS, message='email too long.')
                        ])
     password = PasswordField('Password',
-                             [validators.length(min=MIN_PASS_LEN, message='4 characters needed in password.')])
+                             [validators.length(min=MIN_PASS_LEN, message='4 characters needed in password.'),
+                              validators.EqualTo('password2', message='Your passwords must match')
+                              ])
+    password2 = PasswordField('Confirm Password', [validators.InputRequired()])
     submit = SubmitField("Submit")
 
     def __init__(self, *args, **kwargs):
@@ -40,6 +43,11 @@ class SignupForm(Form):
         else:
             return True
 
+    def create_newuser(self, form, adminr):
+        return Member(firstname=form.firstname.data, surname=form.surname.data,
+                      email=form.email.data, password=form.password.data,
+                      adminr=adminr)
+
 
 class SigninForm(Form):
     email = StringField("Email",
@@ -48,6 +56,7 @@ class SigninForm(Form):
                        ])
     password = PasswordField('Password',
                              [validators.length(min=MIN_PASS_LEN, message='4 characters needed in password.')])
+    remember = BooleanField('Remember me?')
     submit = SubmitField("Sign In")
 
     def __init__(self, *args, **kwargs):
@@ -60,6 +69,6 @@ class SigninForm(Form):
         if member and member.check_password(self.password.data):
             return True
         else:
-            self.email.errors.append("Ops. Either you need to signUp "
-                                     "or that's an invalid e-mail password combo -")
+            self.email.errors.append("Oops. Either you need to signUp "
+                                     "or that's an invalid e-mail password combo.")
             return False

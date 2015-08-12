@@ -79,12 +79,14 @@
     <!-- Latest javascript -->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-    <!--<script src="/static/js/moment.min.js"></script>-->
+    <script src="/static/js/moment.min.js"></script>
+    {{ moment.include_moment() }}
     {% if pageType == 'graph' %}
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="/static/js/graph.js"></script>
     {% endif %}
     <script src="static/js/jasny-bootstrap.min.js"></script>
     <!-- <script src="/static/js/rangeslider.min.js"></script> -->
+
 </body>
 </html>

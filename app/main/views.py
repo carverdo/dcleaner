@@ -5,10 +5,11 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask import render_template, redirect, url_for, flash
 from forms import SignupForm, SigninForm
-from app import app, db
+from app import app, db, lg
 from app.templates.flash_msg import *
 from app.db_models import Member
-from flask.ext.login import login_user, logout_user, login_required, current_user
+from flask.ext.login import login_user, logout_user, login_required, current_user, login_fresh
+from datetime import datetime
 
 
 # ========================
@@ -17,7 +18,7 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', ct=datetime.now())
 
 
 # ========================
@@ -30,14 +31,12 @@ def home():
 def signup():
     form = SignupForm()
     if current_user.is_authenticated():
+        current_user.ping()
         flash(f1)
         return redirect(url_for('home'))
     if form.validate_on_submit():
         # Database operations [ENTER YOUR OWN]
-        newuser = Member(firstname=form.firstname.data, surname=form.surname.data,
-             email=form.email.data, password=form.password.data,
-             adminr=app.config['ADMIN_USER']
-             )
+        newuser = form.create_newuser(form, app.config['ADMIN_USER'])
         db.session.add(newuser)
         db.session.commit()
         login_user(newuser)
@@ -54,13 +53,15 @@ def signup():
 def signin():
     form = SigninForm()
     if current_user.is_authenticated():
+        current_user.ping()
         flash(f1)
         return redirect(url_for('home'))
     if form.validate_on_submit():
-        ## flash(form.datashell())  # xx
-        member = Member.query.filter_by(email=form.email.data).first()
+        member = db.session.query(Member).filter_by(email=form.email.data).first()
         if member is not None:
-            login_user(member)
+            login_user(member, remember=form.remember.data)
+            # member.ping()
+            current_user.ping()
             flash(f3)
             return redirect(url_for('home'))  # profile for graph
     return render_template(

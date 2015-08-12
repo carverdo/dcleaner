@@ -33,28 +33,7 @@ Use the intellij default and then tailor to, among other things, ignore the venv
 This will keep the github sync as small as possible.
 (Place other gitignores under subdirectories as required.)
 
-==============
-INCLUDED DIRECTORIES
-==============
-ONE_OFFS
-Create a one_offs directory (for stuff used in set up only say).
-db_create_migrate and _init_data fit well here.
 
-DEL_AREA
-Temporary trash can. This will have its own gitignore to ignore_all in that subdirectory.
-
-APP
-Contains static and templates...
-
-==============
-MAIN FILES: CONFIG.PY, RUN.PY, MANAGER.PY APP/INIT
-==============
-Don't forget to manually input the local database names!
-config for DB setting;
- __init__ for app and db creation; and
- these are auto-run when called by run.py
-
-manager.py sets up commands for you to use cmd directly.
 
 
 ==============

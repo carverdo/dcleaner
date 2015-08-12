@@ -7,8 +7,15 @@ We already created manager (in the init) so that it can init/up/downgrade the db
 Now we add other objects so we can access via cmd line;
 e.g. app, db, Member etc.
 
-Activate your venv (venv\scripts\activate)!
-I could only get to run by killing __name__ == ... (since cmd doesn't recognise)
+0. Hash out references to debug in the __init__; seems like the ext vs - thing annoys it
+1.Activate your venv (venv\scripts\activate).
+2. Then (just like with db_create_migrate):
+<venv> > python manager.py shell
+
+
+I could only get to run by killing the usual
+if __name__ == ...
+(since cmd doesn't recognise)
 
 Get rid of manager.run() and you can play around in the gui.
 """
