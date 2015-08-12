@@ -1,31 +1,13 @@
-# Skeleton_Flask_v11
-
-## Heading
-# Big heading
-
-*Italics*
-**Bold**
-**Some _bold and italic**
-> Block quotes
-
-- List
-- List
-- List
-
-1. Item 1
-2. Item 2
-
-And I can indicate 'code sections' here.
-Check out this neat program I wrote:
-
-```
-x = 0
-x = 2 + 2
-what is x
-```
-
-Hyperlinks with label -
-[Visit GitHub!](https://www.github.com)
+## Getting Started / Overall instructions
+0. Create local version of project by taking from github.
+1. create your own venv directory (won't be in github) and import any package requirements;
+2. Adjust app.db_models to the model you want to work with;
+3. Name the database in config.py / via environment vars;
+4. Physically create database in pgadmin;
+5. Move (db_create_migrate.py OR manager.py and) db_init_data.py underneath src root;
+6. run these via cmd window to establish database model in pgadmin;
+7. tailor views.py as you need to.
+8. run run.py.
 
 
 ## Included (non-standard) Directories
@@ -35,9 +17,6 @@ Hyperlinks with label -
 *del_area* Temporary trash can. This will have its own gitignore to ignore_all in that subdirectory.
 
 *logs, migrations, tests* fairly self-explanatory.
-
-`app`
-Contains static and templates...
 
 *venv*
 `File / Settings / Project Interpreter / Create VirtualEnv` - put venv subdirectory immediately beneath src root.
@@ -53,13 +32,13 @@ Just edit the pre-populated one supplied to suit.
 (This file works with heroku also.)
 
 
-## Non-directory Files
+## Non-directory / Immediate Files  
 *config.py and variants* primarily for DB setting;  
 don't forget to input the local database via the environment vars;
  look to `config_vars`
 
-*app/init* and *run.py*  
-` __init__` for app and db creation; and
+*app/init* and *run.py*
+ ` __init__` for app and db creation; and
  these are auto-run when called by `run.py`
 
 *manager.py*
@@ -72,12 +51,16 @@ don't forget to input the local database via the environment vars;
  see *heroku*
 
 
+## app  
+Contains static and templates (see below)... more to follow.
+
+
 ## Templates and static/css  
-`layout` is the template for all other templates.  
-calls in all sorts of external fonts, bootstrap, highcharts etc.  
-look to static/css.  
-also calls `main_new.css` - our modifications to those imported themes.  
-each (sub-)template extends layout and then calls its main blocks -
+`layout` is the template for all other templates.
+ calls in all sorts of external fonts, bootstrap, highcharts etc.
+ look to static/css.  
+also calls `main_new.css` - our modifications to those imported themes.
+ each (sub-)template extends layout and then calls its main blocks -
 - redder (calls input_errors); and
 - content.
 
@@ -109,3 +92,34 @@ Create gitignore directly beneath src root.
  This will keep the github sync as small as possible.
  (Place other gitignores under subdirectories as required.)
 
+
+
+
+# Skeleton_Flask_v11
+
+## Heading
+# Big heading
+
+*Italics*
+**Bold**
+**Some _bold and italic**
+> Block quotes
+
+- List
+- List
+- List
+
+1. Item 1
+2. Item 2
+
+And I can indicate 'code sections' here.
+Check out this neat program I wrote:
+
+```
+x = 0
+x = 2 + 2
+what is x
+```
+
+Hyperlinks with label -
+[Visit GitHub!](https://www.github.com)
