@@ -1,38 +1,5 @@
 Create local project.
 
-==============
-PYCHARM SET UP
-==============
-Run / Edit Config / Defaults / Python / Command Line - so we can play with scripts after running.
-File / Settings / Project Structure / Source - set up as source directory.
-
-==============
-VENV
-==============
-File / Settings / Project Interpreter / Create VirtualEnv - put venv subdirectory immediately beneath src root.
-Managing the venv is now a lot easier - we can import any package: File / Settings / Project Interpreter / Plus Sign
-
-Note that psycopg2 (for some reason) still has problems with importing (we saw it earlier pre-pycharm and same here);
-Just copy across from Python27/lib/site-packages to venv/lib/site-packages.
-
-Place requirements.txt beneath src root - tells the current interpreter (our venv) that it should contain
-these packages making their update simple (just open a .py and look at banner top).
-Just edit the pre-populated one supplied to suit.
-(This file works with heroku also.)
-
-==============
-HEROKU
-==============
-Place procfile beneath src root - specific instructions to heroku. Edit the pre-populated file supplied.
-
-==============
-STRUCTURE
-==============
-Create gitignore directly beneath src root.
-Use the intellij default and then tailor to, among other things, ignore the venv.
-This will keep the github sync as small as possible.
-(Place other gitignores under subdirectories as required.)
-
 
 
 
