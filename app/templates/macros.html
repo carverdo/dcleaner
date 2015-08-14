@@ -1,6 +1,6 @@
 <!-- STRUCTURE OF FORM -->
 {% macro form_pres(fn, form, patex, tadata) %}
-    <form action="{{ url_for(fn, **kwargs) }}" method=post>
+    <form action="{{ url_for(fn, **kwargs) }}" method="POST">
         {{ form.hidden_tag() }}
         <div class="col-xs-12 col-md-4">
             {{ create_masterpanel(form, patex, tadata) }}

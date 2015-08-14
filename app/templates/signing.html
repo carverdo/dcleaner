@@ -1,5 +1,5 @@
 {% import 'macros.html' as macros %}
-{% extends "layout.html" %}
+{% extends "base.html" %}
 
 {% block redder %}
     {% include 'input_errors.html' %}
@@ -8,3 +8,4 @@
 {% block content %}
   {{ macros.form_pres(fn, form, patex, tadata) }}
 {% endblock %}
+

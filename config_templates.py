@@ -15,5 +15,3 @@ class TemplateParameters(object):
         signin = 'signin_tdata.html'
         )
     PANEL = dict(PAHDS=PAHDS, TADATA=TADATA)
-
-    ADMIN_USER = False

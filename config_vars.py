@@ -12,3 +12,8 @@ DBNAME = 'skeleton_1'
 # links db_models.py and forms.py
 MAX_COL_WIDTHS = 30
 MIN_PASS_LEN = 4
+
+ADMIN_USER = False
+INITIALLY_ACTIVE = True
+
+LOGOUT = 'Devel_logs.log'

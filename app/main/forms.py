@@ -5,9 +5,8 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask.ext.wtf import Form  # Seems odd (this line not next) but correct: wtf Form is slightly different
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators
-from app.db_models import db, Member
 from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
-from datetime import datetime
+from ..db_models import Member
 
 # ==========================
 # LOGINS
@@ -34,19 +33,18 @@ class SignupForm(Form):
     def validate(self):
         if not Form.validate(self):
             return False
-        if db.session.query(Member).filter_by(surname=self.surname.data).first():
+        if Member.query.filter_by(surname=self.surname.data).first():
             self.surname.errors.append("That surname is already taken")
             return False
-        if db.session.query(Member).filter_by(email=self.email.data).first():
+        if Member.query.filter_by(email=self.email.data).first():
             self.email.errors.append("That email is already taken")
             return False
         else:
             return True
 
-    def create_newuser(self, form, adminr):
+    def create_newuser(self, form):
         return Member(firstname=form.firstname.data, surname=form.surname.data,
-                      email=form.email.data, password=form.password.data,
-                      adminr=adminr)
+                      email=form.email.data, password=form.password.data)
 
 
 class SigninForm(Form):
@@ -65,7 +63,7 @@ class SigninForm(Form):
     def validate(self):
         if not Form.validate(self):
             return False
-        member = db.session.query(Member).filter_by(email=self.email.data).first()
+        member = Member.query.filter_by(email=self.email.data).first()
         if member and member.check_password(self.password.data):
             return True
         else:

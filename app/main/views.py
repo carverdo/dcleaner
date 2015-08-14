@@ -3,22 +3,70 @@ This module is a template and explains as it goes down the page.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, current_app
 from forms import SignupForm, SigninForm
-from app import app, db, lg
-from app.templates.flash_msg import *
-from app.db_models import Member
-from flask.ext.login import login_user, logout_user, login_required, current_user, login_fresh
+from flask.ext.login import login_user, logout_user, login_required, current_user
 from datetime import datetime
+from . import main
+from ..templates.flash_msg import *
+from .. import db
+from ..db_models import Member
+from .. import cache
+from .. import lg
+
+
+# ========================
+# HELPER FUNCTIONS
+# ========================
+# @cache.cached(timeout=20)  # NO GOOD FOR THE FLASHES!
+def set_template(template, form, fn, patex, tadata):
+    return render_template(template, form=form, fn=fn,
+                           patex=patex, tadata=tadata)
+
+
+def redirect_already_authenticateds(current_user):
+    if current_user.is_authenticated():
+        flash(f1)
+        return 'home'
+    else: return None
+
+
+def process_forms_and_redir(form):
+    """
+    Only if form validates will it do anything,
+    signing up new members or signing in old ones,
+    and returning the redirect endpoint.
+    """
+    if form.validate_on_submit():
+        member = Member.query.filter_by(email=form.email.data).first()
+        # existing (/active) members
+        if member is not None:
+            if login_user(member, remember=form.remember.data):
+                current_user.ping()
+                flash(f3)
+            else: flash(f4)
+            return '.home'  # profile for graph
+        # new members signing up
+        elif 'password2' in form.__dict__.keys():
+            newuser = form.create_newuser(form)
+            db.session.add(newuser)
+            db.session.commit()
+            login_user(newuser)
+            flash(f2)
+            return '.home'
+    else: return None
 
 
 # ========================
 # Simple Home Page
 # ========================
-@app.route('/')
-@app.route('/home')
+@main.route('/')
+@main.route('/home')
+@cache.cached(timeout=20)
 def home():
-    return render_template('home.html', ct=datetime.now())
+    # current_app.logger.info('On screen words 1')
+    # lg.logger.info('Text words 1')
+    return render_template('home.html', ct=datetime.utcnow())
 
 
 # ========================
@@ -27,49 +75,38 @@ def home():
 # We have master_panels which are fed headers via patex
 # and whose contents are fed by templates via tadata
 # ========================
-@app.route('/signup', methods=['GET', 'POST'])
+@main.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
-    if current_user.is_authenticated():
-        flash(f1)
-        return redirect(url_for('home'))
-    if form.validate_on_submit():
-        # Database operations [ENTER YOUR OWN]
-        newuser = form.create_newuser(form, app.config['ADMIN_USER'])
-        db.session.add(newuser)
-        db.session.commit()
-        login_user(newuser)
-        flash(f2)
-        return redirect(url_for('home'))
-    return render_template(
-        'signing.html', form=form, fn='signup',
-        patex=app.config['PAHDS']['signup'],
-        tadata=app.config['TADATA']['signup']
-    )
+    redir = redirect_already_authenticateds(current_user)
+    if redir: return redirect(url_for(redir))
+    redir = process_forms_and_redir(form)
+    if redir:
+        return redirect(url_for(redir))
+    else:
+        return set_template('signing.html', form, '.signup',
+                            current_app.config['PAHDS']['signup'],
+                            current_app.config['TADATA']['signup']
+                            )
 
 
-@app.route('/signin', methods=['GET', 'POST'])
+@main.route('/signin', methods=['GET', 'POST'])
 def signin():
     form = SigninForm()
-    if current_user.is_authenticated():
-        flash(f1)
-        return redirect(url_for('home'))
-    if form.validate_on_submit():
-        member = db.session.query(Member).filter_by(email=form.email.data).first()
-        if member is not None:
-            login_user(member, remember=form.remember.data)
-            current_user.ping()
-            flash(f3)
-            return redirect(url_for('home'))  # profile for graph
-    return render_template(
-        'signing.html', form=form, fn='signin',
-        patex=app.config['PAHDS']['signin'],
-        tadata=app.config['TADATA']['signin']
-    )
+    redir = redirect_already_authenticateds(current_user)
+    if redir: return redirect(url_for(redir))
+    redir = process_forms_and_redir(form)
+    if redir:
+        return redirect(url_for(redir))
+    else:
+        return set_template('signing.html', form, '.signin',
+                            current_app.config['PAHDS']['signin'],
+                            current_app.config['TADATA']['signin']
+                            )
 
 
-@app.route('/signout')
+@main.route('/signout')
 @login_required
 def signout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('.home'))

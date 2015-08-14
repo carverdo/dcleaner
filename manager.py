@@ -12,24 +12,33 @@ e.g. app, db, Member etc.
 2. Then (just like with db_create_migrate):
 <venv> > python manager.py shell
 
-
 I could only get to run by killing the usual
 if __name__ == ...
 (since cmd doesn't recognise)
+
+NB Sometimes it doesn't like the flask.ext.package; just comment out.
 
 Get rid of manager.run() and you can play around in the gui.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-from app import app, db, manager
-from app.db_models import Member
+from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Shell
+from run import app
+from app import db
+from app.db_models import Member
 
-
+# =================
+# BUILD MANAGER (for cmd handling)
+# =================
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+migrate = Migrate(app, db)
 # ADD SHELL COMMANDS
 def _make_context():
     return dict(app=app, db=db, Member=Member, use_ipython=False)
 manager.add_command('shell', Shell(make_context=_make_context))
 
-# IMPORTANT! (updates manager)
+# IMPORTANT! (updates manager, locks the commands in)
 manager.run()

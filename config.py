@@ -5,8 +5,6 @@ THEN, before running anything remember to physically create database using pgAdm
 Shortly after we will apply db initialisation, modelling and data population.
 See db_create_migrate for more.
 """
-
-
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 import os
@@ -40,7 +38,7 @@ class DevelConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DEV_DATABASE_URL', Config.DEVEL_DATABASE_NAME)
-    LOGOUT = 'Devel_logs.log'
+    # LOGOUT = 'Devel_logs.log'
 
 class ProdConfig(Config):
     """
@@ -51,7 +49,7 @@ class ProdConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL', Config.PROD_DATABASE_NAME)
     # LG = GenLogger('ProdDevel_logs.log')
-    LOGOUT = 'Prod_logs.log'
+    # LOGOUT = 'Prod_logs.log'
 
 config = {
     'development': DevelConfig,
