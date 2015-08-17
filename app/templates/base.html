@@ -6,7 +6,7 @@
     <!-- Browser rendering at width of screen -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- FONT AWESOME -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- GOOGLE FONTS -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600|Oswald:700' rel='stylesheet' type='text/css'>
     <!-- BOOTSTRAP: Latest compiled and minified CCS -->
@@ -37,7 +37,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#" title="gScore">
+                    <a class="navbar-brand" href="#" title="splashPageProject">
                         <h1><font color="white">splash<br><small><font color="linen">Page.</font></small></font></h1>
                         <!--<img id="logo" src="/static/image/logo.png">-->
                     </a>
@@ -47,13 +47,14 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="#"><h4></h4></a></li>
-                        <li><a href="{{ url_for('main.home') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">home</span></h3></a></li>
+                        <li><a href="{{ url_for('main.home') }}"><h3><span class="label">home</span></h3></a></li>
                         {% if current_user.is_authenticated() %}
-                            <li><a href="{{ url_for('main.signout') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">signOut</span></h3></a></li>
+                            <li><a href="{{ url_for('main.signout') }}"><h3><span class="label">signOut</span></h3></a></li>
                         {% else %}
-                            <li><a href="{{ url_for('main.signup') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">signUp</span></h3></a></li>
-                        <li><a href="{{ url_for('main.signin') }}"><h3><span class="label" style="background-color:#646464; font-family:Oswald">signIn</span></h3></a></li>
+                            <li><a href="{{ url_for('main.signup') }}"><h3><span class="label">signUp</span></h3></a></li>
+                        <li><a href="{{ url_for('main.signin') }}"><h3><span class="label">signIn</span></h3></a></li>
                         {% endif %}
+                        <li><a href="{{ url_for('main.contactus') }}"><h3><span class="label">contactUs</span></h3></a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /container -->

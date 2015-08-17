@@ -57,6 +57,10 @@ h1, h2 {
     padding-left: 42px;
 }
 
+.navbar-nav .label{
+    background-color:#646464;
+    font-family:Oswald;
+}
 
 /* for mesages */
 .redder{

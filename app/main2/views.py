@@ -6,8 +6,9 @@ Use this area to build out the particular project.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-from flask import render_template
 from . import main2
+from flask import render_template
+
 
 # ========================
 # Simple Page

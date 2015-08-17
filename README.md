@@ -13,17 +13,17 @@
 
 
 ## Directories outside of app
-*del_area* Temporary trash can. This will have its own gitignore to ignore_all
+`del_area` Temporary trash can. This will have its own gitignore to ignore_all
  in that subdirectory.
 
-*logs, migrations, tests* fairly self-explanatory.
+`logs, migrations, tests` fairly self-explanatory.
 
-*one_offs* Create a one_offs directory (for stuff used in set up only say).
+`one_offs` Create a one_offs directory (for stuff used in set up only say).
 `db_create_migrate` and `_init_data` fit well here.
 
-*tests* empty.
+`tests` empty.
 
-*venv*
+`venv`
 `File / Settings / Project Interpreter / Create VirtualEnv` - put venv subdirectory
  immediately beneath src root. Managing the venv is now a lot easier - we can import
  any package: `File / Settings / Project Interpreter / Plus Sign`
@@ -38,20 +38,20 @@ look at banner top). Just edit the pre-populated one supplied to suit.
 (This file works with heroku also.)
 
 ## Files outside of app  
-*config.py and variants* primarily for DB setting;  
+`config.py and variants` primarily for DB setting;  
 don't forget to input the local database via the environment vars;
 look to `config_vars`
 
-*manager.py*
+`manager.py`
 sets up commands for you to use cmd directly. run from cmd.
 
-*procfile*
-see *heroku*
+`procfile`
+see `heroku`
 
-*requirements.txt*
-see *venv*
+`requirements.txt`
+see `venv`
 
-*run.py*
+`run.py`
 creates the app (heavily calling on `app\__init__`)
 
 ## app
@@ -88,13 +88,13 @@ the `tdata.htmls` supply the data to those rows; panel header info supplied via
 `File / Settings / Project Structure / Source` - set up as source directory.
 
 
-# Heroku
-Place procfile beneath src root - specific instructions to heroku.
-Edit the pre-populated file supplied.
-
-
 # Git
 ## Gitignores
 Create gitignore directly beneath src root. Use the intellij default and then tailor to,
 among other things, ignore the venv. This will keep the github sync as small as possible. 
 (Place other gitignores under subdirectories as required.)
+
+
+# Heroku
+Place procfile beneath src root - specific instructions to heroku.
+Edit the pre-populated file supplied.

@@ -12,7 +12,7 @@ from ..templates.flash_msg import *
 from .. import db
 from ..db_models import Member
 from .. import cache
-from .. import lg
+from .. import lg  # don't auto-delete: see below
 
 
 # ========================
@@ -58,7 +58,7 @@ def process_forms_and_redir(form):
 
 
 # ========================
-# Simple Home Page & Contacts
+# Simple HomePage & Contacts
 # ========================
 @main.route('/')
 @main.route('/home')
@@ -68,10 +68,12 @@ def home():
     # lg.logger.info('Text words 1')
     return render_template('home.html', ct=datetime.utcnow())
 
+
 @main.route('/contactus')
 @cache.cached(timeout=20)
 def contactus():
     return render_template('contactus.html')
+
 
 # ========================
 # SIGNUP

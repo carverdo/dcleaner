@@ -1,7 +1,9 @@
-import os
-
+"""
+Kept separate as Imports into forms and db_models.
+"""
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
+import os
 
 # ====================
 # POPULATE POSTGRES_KEYS AND #1-3 BLANKS AS REQUIRED
