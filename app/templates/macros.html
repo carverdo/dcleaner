@@ -1,7 +1,8 @@
 <!-- STRUCTURE OF FORM -->
 {% macro form_pres(fn, form, patex, tadata) %}
     <form action="{{ url_for(fn, **kwargs) }}" method="POST">
-        {{ form.hidden_tag() }}
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="col-xs-12 col-md-4">
             {{ create_masterpanel(form, patex, tadata) }}
         </div>
