@@ -30,5 +30,5 @@ We can of course also run: > python db_create_migrate.py db downgrade
 # and run (as is, no changes)
 # manager.run() has the effect of freezing all changes in place
 # =================
-from app import manager
+import manager
 manager.run()

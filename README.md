@@ -97,4 +97,10 @@ among other things, ignore the venv. This will keep the github sync as small as 
 
 # Heroku
 Place procfile beneath src root - specific instructions to heroku.
-Edit the pre-populated file supplied.
+Login via website, create and name a new app.
+Go to Deploy and connect to GitHub... you're (halfway) done!
+
+## Databases
+...you still don't have a database.
+Provision a database:
+`Resources / Add-ons`: just type postgres in the box.

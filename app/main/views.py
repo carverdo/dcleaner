@@ -70,7 +70,7 @@ def home():
 
 
 @main.route('/contactus')
-@cache.cached(timeout=20)
+@cache.cached(timeout=200)
 def contactus():
     return render_template('contactus.html')
 
