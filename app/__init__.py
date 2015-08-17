@@ -26,6 +26,7 @@ from config_vars import LOGOUT
 # ================
 # KEEP OUTSIDE create_app - we import elsewhere
 # ================
+csrf = CsrfProtect()
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = '.home'
@@ -38,7 +39,7 @@ lg = GenLogger(LOGOUT)
 
 def create_app(config_name):
     app = Flask(__name__)
-    CsrfProtect(app)
+    csrf.init_app(app)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     db.init_app(app)  # db = SQLAlchemy(app)
