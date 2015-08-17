@@ -19,7 +19,7 @@ class Config(TemplateParameters):
     """
     Sets Encryption, and your database addresses.
     """
-    WTF_CSRF_ENABLED = False
+    WTF_CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET_KEY_PROJECT', os.urandom(24))
     DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
         format(PK[0], PK[1], DBNAME)
