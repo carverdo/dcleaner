@@ -58,7 +58,7 @@ def process_forms_and_redir(form):
 
 
 # ========================
-# Simple Home Page
+# Simple Home Page & Contacts
 # ========================
 @main.route('/')
 @main.route('/home')
@@ -68,6 +68,10 @@ def home():
     # lg.logger.info('Text words 1')
     return render_template('home.html', ct=datetime.utcnow())
 
+@main.route('/contactus')
+@cache.cached(timeout=20)
+def contactus():
+    return render_template('contactus.html')
 
 # ========================
 # SIGNUP
