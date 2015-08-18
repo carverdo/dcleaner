@@ -66,7 +66,7 @@ def process_forms_and_redir(form):
                 flash(session['user_id'])
                 flash(f3)
             else: flash(f4)
-            return '.home'  # profile for graph
+            return '.sin'  # profile for graph
         # new members signing up
         elif 'password2' in form.__dict__.keys():
             newuser = form.create_newuser(form)
@@ -80,7 +80,7 @@ def process_forms_and_redir(form):
             """
             flash(session['user_id'])
             flash(f2)
-            return '.home'
+            return '.sup'
     else:
         flash('didnt process')
         return None
@@ -156,6 +156,13 @@ def tester():
     return render_template('home.html')
 """
 @main.route('/deadend')
-# @cache.cached(timeout=20)
 def deadend():
+    return 'this is a deadend'
+
+@main.route('/sin')
+def sin():
+    return render_template('home.html', ct=datetime.utcnow())
+
+@main.route('/sup')
+def sup():
     return render_template('home.html', ct=datetime.utcnow())
