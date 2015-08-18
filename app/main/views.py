@@ -27,7 +27,7 @@ def set_template(template, form, fn, patex, tadata):
 def redirect_already_authenticateds(current_user):
     if current_user.is_authenticated():
         flash(f1)
-        return 'home'
+        return '.deadend'
     else: return None
 
 
@@ -81,7 +81,9 @@ def process_forms_and_redir(form):
             flash(session['user_id'])
             flash(f2)
             return '.home'
-    else: return None
+    else:
+        flash('didnt process')
+        return None
 
 
 # ========================
@@ -153,3 +155,7 @@ def tester():
     flash(member)
     return render_template('home.html')
 """
+@main.route('/deadend')
+# @cache.cached(timeout=20)
+def deadend():
+    return render_template('home.html', ct=datetime.utcnow())
