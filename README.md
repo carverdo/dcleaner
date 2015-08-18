@@ -104,12 +104,14 @@ Website will show up but it's a dummy: you won't be able to log-in.
 ## Databases
 ...you still don't have a database.
 ### Provision a database
-`Resources / Add-ons`: just type postgres in the box and click/select.
+`Resources / Add-ons`: just type postgres in the box and click/select 
+`Heroku Postgres Hobby-Dev Free` Provision.
 ### Promote
 In git bash if we haven't already, `heroku login`.
-`heroku pg:promote HEROKU_POSTGRESQL_DATABASE_URL` (which means take ...DATABASE and make sure
-it attaches to the URL); not strictly necessary with only one db, but it will re-title the db
-with an easier-to-remember colour-scheme name.
+`heroku addons` will show us that database.
+`heroku pg:promote DATABASE` (which means rewire DATABASE; look to connection
+setting `Psql` on the heroku dashboard. Not strictly necessary with only one db, but 
+it will re-title the db with an easier-to-remember colour-scheme name.
 ### Copy across a DB
 In pgAdmin right-click and `backup` to somewhere in dropbox. Copy the link which will look
 like this:
@@ -121,3 +123,4 @@ And trick the system into using this back-up to 'restore' our database -
 marks; rid squares, use real link, real database name)
 Will get a destruction warning...
 Quick-check: heroku dashboard should now show correct number of tables. 
+Finito! Test it.

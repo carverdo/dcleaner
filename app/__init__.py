@@ -13,9 +13,10 @@ That linkage is registered/happens below.
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask import Flask
+
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
-## from flask_debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 # from flask.ext.moment import Moment
 ## from flask.ext.wtf.csrf import CsrfProtect
 from flask.ext.cache import Cache
@@ -30,8 +31,8 @@ from config_vars import LOGOUT
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = '.home'
-## login_manager.session_protection = 'strong'
-## toolbar = DebugToolbarExtension()  # toolbar extension
+login_manager.session_protection = 'strong'
+toolbar = DebugToolbarExtension()  # toolbar extension
 # Moment = Moment()  # local/client time (suspect this is slow)
 cache = Cache()
 lg = GenLogger(LOGOUT)
@@ -44,7 +45,8 @@ def create_app(config_name):
     config[config_name].init_app(app)
     db.init_app(app)  # db = SQLAlchemy(app)
     login_manager.init_app(app)
-    ## toolbar.init_app(app)
+    if app.config['DEBUG']== True:
+        toolbar.init_app(app)
     # moment = Moment.init_app(app)
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 

@@ -51,6 +51,7 @@ def process_forms_and_redir(form):
     # flash(form.validate_on_submit())
     # flash(session.secret_key)
     """
+    flash(form.errors)
     if form.validate_on_submit():
         member = Member.query.filter_by(email=form.email.data).first()
         # existing (/active) members
