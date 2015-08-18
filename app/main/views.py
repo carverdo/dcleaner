@@ -129,3 +129,10 @@ def signin():
 def signout():
     logout_user()
     return redirect(url_for('.home'))
+
+
+@main.route('/dbtest')
+def tester():
+    member = Member.query.filter_by().all()
+    flash(member)
+    return render_template('home.html')
