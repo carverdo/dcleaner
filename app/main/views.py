@@ -63,6 +63,7 @@ def process_forms_and_redir(form):
                 flash(current_user.is_authenticated())
                 flash('bash')
                 """
+                flash(session['user_id'])
                 flash(f3)
             else: flash(f4)
             return '.home'  # profile for graph
@@ -77,6 +78,7 @@ def process_forms_and_redir(form):
             flash(current_user.is_authenticated())
             flash('bosh')
             """
+            flash(session['user_id'])
             flash(f2)
             return '.home'
     else: return None
