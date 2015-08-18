@@ -71,11 +71,11 @@ def process_forms_and_redir(form):
             db.session.add(newuser)
             db.session.commit()
             login_user(newuser)
-            """
+
             flash('bosh')
             flash(current_user.is_authenticated())
             flash('bosh')
-            """
+            
             flash(f2)
             return '.home'
     else: return None
