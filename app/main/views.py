@@ -31,12 +31,24 @@ def redirect_already_authenticateds(current_user):
     else: return None
 
 
+from flask import session, request, current_app
+
 def process_forms_and_redir(form):
     """
     Only if form validates will it do anything,
     signing up new members or signing in old ones,
     and returning the redirect endpoint.
     """
+    flash(session['csrf_token'])  #static
+    flash(request.form.get('csrf_token'))  #from the form itself
+    flash(form.csrf_token.current_token)  #generate
+
+    flash(form.csrf_enabled)
+    flash(current_app.config.get("WTF_CSRF_ENABLED"))
+    flash(form.SECRET_KEY)
+    # flash(current_app.config.get(str("SECRET_KEY")))
+    # flash(form.validate_on_submit())
+    # flash(session.secret_key)
     if form.validate_on_submit():
         member = Member.query.filter_by(email=form.email.data).first()
         # existing (/active) members
@@ -62,7 +74,7 @@ def process_forms_and_redir(form):
 # ========================
 @main.route('/')
 @main.route('/home')
-@cache.cached(timeout=20)
+# @cache.cached(timeout=20)
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
@@ -113,6 +125,7 @@ def signin():
 
 @main.route('/signout')
 @login_required
+@cache.cached(timeout=200)
 def signout():
     logout_user()
     return redirect(url_for('.home'))

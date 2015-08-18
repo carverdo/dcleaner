@@ -19,8 +19,11 @@ class Config(TemplateParameters):
     """
     Sets Encryption, and your database addresses.
     """
+    # Used to sign cookies
+    SECRET_KEY = r'\x9co6\xfc\xea\x86\xb9\xae*\xa8\xc8\x12\xcaV\x12\x8b\xbe\x990\x0b\xca\x19\x93\xc6' #os.environ.get('SECRET_KEY_PROJECT', os.urandom(24))
+    # For form protection
     WTF_CSRF_ENABLED = True
-    SECRET_KEY = os.environ.get('SECRET_KEY_PROJECT', os.urandom(24))
+    # WTF_CSRF_SECRET_KEY = SECRET_KEY
     DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
         format(PK[0], PK[1], DBNAME)
     PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
