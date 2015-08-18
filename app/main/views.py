@@ -166,3 +166,7 @@ def sin():
 @main.route('/sup')
 def sup():
     return render_template('home.html', ct=datetime.utcnow())
+
+@main.route('/nxt')
+def nxt():
+    return render_template('home.html', ct=datetime.utcnow())
