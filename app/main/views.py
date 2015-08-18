@@ -31,7 +31,7 @@ def redirect_already_authenticateds(current_user):
     else: return None
 
 
-from flask import session, request, current_app
+from flask import session, request
 
 def process_forms_and_redir(form):
     """
