@@ -17,7 +17,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
 # from flask.ext.moment import Moment
-from flask.ext.wtf.csrf import CsrfProtect
+## from flask.ext.wtf.csrf import CsrfProtect
 from flask.ext.cache import Cache
 from config import config
 from logs.LogGenerator import GenLogger
@@ -26,7 +26,7 @@ from config_vars import LOGOUT
 # ================
 # KEEP OUTSIDE create_app - we import elsewhere
 # ================
-csrf = CsrfProtect()
+## csrf = CsrfProtect()
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = '.home'
@@ -39,7 +39,7 @@ lg = GenLogger(LOGOUT)
 
 def create_app(config_name):
     app = Flask(__name__)
-    csrf.init_app(app)
+    ## csrf.init_app(app)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     db.init_app(app)  # db = SQLAlchemy(app)
