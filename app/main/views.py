@@ -55,6 +55,9 @@ def process_forms_and_redir(form):
         if member is not None:
             if login_user(member, remember=form.remember.data):
                 current_user.ping()
+                flash('bash')
+                flash(current_user.is_authenticated())
+                flash('bash')
                 flash(f3)
             else: flash(f4)
             return '.home'  # profile for graph
@@ -64,6 +67,9 @@ def process_forms_and_redir(form):
             db.session.add(newuser)
             db.session.commit()
             login_user(newuser)
+            flash('bosh')
+            flash(current_user.is_authenticated())
+            flash('bosh')
             flash(f2)
             return '.home'
     else: return None
@@ -126,7 +132,7 @@ def signin():
 
 @main.route('/signout')
 @login_required
-@cache.cached(timeout=200)
+# @cache.cached(timeout=200)
 def signout():
     logout_user()
     return redirect(url_for('.home'))
