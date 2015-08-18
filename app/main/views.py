@@ -39,6 +39,7 @@ def process_forms_and_redir(form):
     signing up new members or signing in old ones,
     and returning the redirect endpoint.
     """
+    """
     flash(session['csrf_token'])  #static
     flash(request.form.get('csrf_token'))  #from the form itself
     flash(form.csrf_token.current_token)  #generate
@@ -49,15 +50,18 @@ def process_forms_and_redir(form):
     # flash(current_app.config.get(str("SECRET_KEY")))
     # flash(form.validate_on_submit())
     # flash(session.secret_key)
+    """
     if form.validate_on_submit():
         member = Member.query.filter_by(email=form.email.data).first()
         # existing (/active) members
         if member is not None:
             if login_user(member, remember=form.remember.data):
                 current_user.ping()
+                """
                 flash('bash')
                 flash(current_user.is_authenticated())
                 flash('bash')
+                """
                 flash(f3)
             else: flash(f4)
             return '.home'  # profile for graph
@@ -67,9 +71,11 @@ def process_forms_and_redir(form):
             db.session.add(newuser)
             db.session.commit()
             login_user(newuser)
+            """
             flash('bosh')
             flash(current_user.is_authenticated())
             flash('bosh')
+            """
             flash(f2)
             return '.home'
     else: return None
@@ -84,7 +90,7 @@ def process_forms_and_redir(form):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
-    flash(current_user.is_authenticated())
+    ## flash(current_user.is_authenticated())
     return render_template('home.html', ct=datetime.utcnow())
 
 
@@ -137,9 +143,10 @@ def signout():
     logout_user()
     return redirect(url_for('.home'))
 
-
+"""
 @main.route('/dbtest')
 def tester():
     member = Member.query.filter_by().all()
     flash(member)
     return render_template('home.html')
+"""
