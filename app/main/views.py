@@ -78,6 +78,7 @@ def process_forms_and_redir(form):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
+    flash(current_user.is_authenticated())
     return render_template('home.html', ct=datetime.utcnow())
 
 
