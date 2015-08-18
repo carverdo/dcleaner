@@ -23,7 +23,7 @@ class Config(TemplateParameters):
     SECRET_KEY = os.environ.get('SECRET_KEY_PROJECT', os.urandom(24))
     # For form protection
     WTF_CSRF_ENABLED = True
-    # WTF_CSRF_SECRET_KEY = SECRET_KEY
+    ## WTF_CSRF_SECRET_KEY = SECRET_KEY
     DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
         format(PK[0], PK[1], DBNAME)
     PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\

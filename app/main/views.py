@@ -31,7 +31,7 @@ def redirect_already_authenticateds(current_user):
     else: return None
 
 
-from flask import session, request
+## from flask import session, request
 
 def process_forms_and_redir(form):
     """
@@ -138,7 +138,7 @@ def signin():
 
 @main.route('/signout')
 @login_required
-# @cache.cached(timeout=200)
+## @cache.cached(timeout=200)
 def signout():
     logout_user()
     return redirect(url_for('.home'))
