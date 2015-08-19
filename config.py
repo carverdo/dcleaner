@@ -19,9 +19,7 @@ class Config(TemplateParameters):
     """
     Sets Encryption, and your database addresses.
     """
-    # Used to sign cookies
-    # SECRET_KEY = r'\x9co6\xfc\xea\x86\xb9\xae*\xa8\xc8\x12\xcaV\x12\x8b\xbe\x990\x0b\xca\x19\x93\xc6'
-    # xxxx leave name as secret
+    # Used to sign cookies (careful if change the label in the envir for production)
     SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
     # For form protection
     WTF_CSRF_ENABLED = True

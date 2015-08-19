@@ -8,7 +8,7 @@ import os
 # ====================
 # POPULATE POSTGRES_KEYS AND #1-3 BLANKS AS REQUIRED
 # ====================
-PK = os.environ.get('POSTGRES_KEYS', 'BLANK 5432').split()
+PK = os.environ.get('POSTGRES_KEYS', 'BLANK BLANK').split()
 DBNAME = 'skeleton_1'
 
 # links db_models.py and forms.py

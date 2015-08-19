@@ -97,7 +97,7 @@ among other things, ignore the venv. This will keep the github sync as small as 
 
 # Heroku
 Place procfile beneath src root - specific instructions to heroku.
-Login via website, create and name a new app.
+Login via website, create and name a new app (make it snappy - it's public!)
 Go to Deploy and connect to GitHub... you're (halfway) done!
 Website will show up but it's a dummy: you won't be able to log-in. 
 
@@ -110,7 +110,7 @@ Website will show up but it's a dummy: you won't be able to log-in.
 In git bash if we haven't already, `heroku login`.
 `heroku addons` will show us that database.
 `heroku pg:promote DATABASE` (which means rewire DATABASE; look to connection
-setting `Psql` on the heroku dashboard. Not strictly necessary with only one db, but 
+setting `Psql` on the heroku dashboard). Not strictly necessary with only one db, but 
 it will re-title the db with an easier-to-remember colour-scheme name.
 ### Copy across a DB
 In pgAdmin right-click and `backup` to somewhere in dropbox. Copy the link which will look
@@ -122,5 +122,10 @@ And trick the system into using this back-up to 'restore' our database -
 `heroku pg:backups restore ‘[DROPBOX LINK]’ [DATABASE] --app [APP NAME]` (keep the quotation
 marks; rid squares, use real link, real database name)
 Will get a destruction warning...
-Quick-check: heroku dashboard should now show correct number of tables. 
-Finito! Test it.
+Quick-check: heroku dashboard should now show correct number of tables.
+
+## Config Vars (under Settings)
+Add a SECRET_KEY (otherwise you end up with lots of CSRF errors as heroku keeps regenerating);
+no need for quotation marks as you enter the number.
+
+Finito!
