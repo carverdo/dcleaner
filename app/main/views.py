@@ -12,7 +12,7 @@ from ..templates.flash_msg import *
 from .. import db
 from ..db_models import Member
 from .. import cache
-from .. import lg  # don't auto-delete: see below
+# from .. import lg  # don't auto-delete: see below
 
 
 # ========================

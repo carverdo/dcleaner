@@ -30,9 +30,9 @@ from config_vars import LOGOUT
 ## csrf = CsrfProtect()
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = '.home'
+login_manager.login_view = 'main.home'
 login_manager.session_protection = 'strong'
-toolbar = DebugToolbarExtension()  # toolbar extension
+toolbar = DebugToolbarExtension()
 # Moment = Moment()  # local/client time (suspect this is slow)
 cache = Cache()
 lg = GenLogger(LOGOUT)

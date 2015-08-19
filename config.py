@@ -19,7 +19,7 @@ class Config(TemplateParameters):
     """
     Sets Encryption, and your database addresses.
     """
-    # Used to sign cookies (careful if change the label in the envir for production)
+    # Used to sign cookies (careful if change the string/label when moving to production)
     SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
     # For form protection
     WTF_CSRF_ENABLED = True
@@ -40,7 +40,7 @@ class DevelConfig(Config):
     """
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DATABASE_URL', Config.DEVEL_DATABASE_NAME)  ##
+        'DATABASE_URL', Config.DEVEL_DATABASE_NAME)
 
 
 class ProdConfig(Config):

@@ -8,6 +8,7 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from . import main2
 from flask import render_template
+from flask.ext.login import login_required
 
 
 # ========================
@@ -15,5 +16,6 @@ from flask import render_template
 # ========================
 @main2.route('/')
 @main2.route('/home2')
+@login_required
 def home2():
     return render_template('dummy.html')

@@ -8,6 +8,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, valid
 from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
 from ..db_models import Member
 
+
 # ==========================
 # LOGINS
 # ==========================

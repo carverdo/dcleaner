@@ -1,16 +1,13 @@
 ## Getting Started / Overall instructions
 0. Create local version of project by taking from github.
-1. create your own venv directory (won't be in github) and import any package requirements;
-
-2. Adjust app.db_models to the model you want to work with;
+1. Create your own venv directory (won't be in github) and import any package requirements;
+2. Adjust app.db_models to build the db model you want to work with;
 3. Name the database in config.py / via environment vars;
 4. Physically create database in pgadmin;
-5. Move (db_create_migrate.py OR manager.py and) db_init_data.py underneath src root;
-6. run these via cmd window to establish database model in pgadmin;
-
-7. build out main2 so that you have project-specific `forms` and `views`.
-8. run run.py.
-
+5. (Move (`db_create_migrate.py` OR `manager.py` and) `db_init_data.py` underneath src root;)
+6. Run these via cmd window to establish database model in pgadmin;
+7. Run `run.py`.
+8. Now you're free to build out main2 for project-specific `forms` and `views`.
 
 ## Directories outside of app
 `del_area` Temporary trash can. This will have its own gitignore to ignore_all
@@ -42,17 +39,13 @@ look at banner top). Just edit the pre-populated one supplied to suit.
 don't forget to input the local database via the environment vars;
 look to `config_vars`
 
-`manager.py`
-sets up commands for you to use cmd directly. run from cmd.
+`manager.py` sets up commands for you to use cmd directly. run from cmd.
 
-`procfile`
-see `heroku`
+`procfile` see `heroku`.
 
-`requirements.txt`
-see `venv`
+`requirements.txt` see `venv`.
 
-`run.py`
-creates the app (heavily calling on `app\__init__`)
+`run.py` creates the app (heavily calling on `app\__init__`).
 
 ## app
 there are two main blueprint areas: `main` and `main2` each of which gets paired
@@ -64,7 +57,7 @@ templates (see below)... more to follow.
 
 `templates and static/css` -  
 `base.html` is the template for all other templates (dont change this name - jinja uses).
-calls in all sorts of external fonts, bootstrap, highcharts etc. look to static/css.
+calls in all sorts of external fonts, bootstrap, highcharts etc. look to `static/css`.
 also calls `main_new.css` - our modifications to those imported themes. each (sub-)template
 extends layout and then calls its main blocks -
 - redder (calls input_errors); and
@@ -85,19 +78,21 @@ the `tdata.htmls` supply the data to those rows; panel header info supplied via
 ## Local Set Up
 `Run / Edit Config / Defaults / Python / Command Line` -
  so we can play with scripts after running.  
-`File / Settings / Project Structure / Source` - set up as source directory.
+`File / Settings / Project Structure / Source` - set up as source directory.  
 
 
-# Git
+# Github (deploy part 1)
+Make sure your new pycharm project is git-enabled.
 ## Gitignores
 Create gitignore directly beneath src root. Use the intellij default and then tailor to,
 among other things, ignore the venv. This will keep the github sync as small as possible. 
 (Place other gitignores under subdirectories as required.)
 
 
-# Heroku
-Place procfile beneath src root - specific instructions to heroku.
-Login via website, create and name a new app (make it snappy - it's public!)
+# Heroku (deploy part 2)
+Make sure procfile is beneath src root - specific instructions to heroku.  
+Double-check `requirements.txt`.
+Login via website, create and name a new app (make it snappy - it's a public url!).
 Go to Deploy and connect to GitHub... you're (halfway) done!
 Website will show up but it's a dummy: you won't be able to log-in. 
 
