@@ -25,6 +25,9 @@ def set_template(template, form, fn, patex, tadata):
 
 
 def redirect_already_authenticateds(current_user):
+    flash(current_user.is_active())
+    flash(current_user.is_anonymous())
+    flash(current_user.is_authenticated())
     if current_user.is_authenticated():
         flash(f1)
         return '.deadend'
