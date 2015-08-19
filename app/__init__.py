@@ -43,7 +43,7 @@ def create_app(config_name):
     ## csrf.init_app(app)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
-    db.init_app(app)  # db = SQLAlchemy(app)
+    db.init_app(app)
     login_manager.init_app(app)
     if app.config['DEBUG']== True:
         toolbar.init_app(app)
