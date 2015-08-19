@@ -25,16 +25,11 @@ def set_template(template, form, fn, patex, tadata):
 
 
 def redirect_already_authenticateds(current_user):
-    flash(current_user.is_active())
-    flash(current_user.is_anonymous())
-    flash(current_user.is_authenticated())
     if current_user.is_authenticated():
         flash(f1)
-        return '.deadend'
+        return '.home'
     else: return None
 
-
-from flask import session, request, abort
 
 def process_forms_and_redir(form):
     """
@@ -42,51 +37,22 @@ def process_forms_and_redir(form):
     signing up new members or signing in old ones,
     and returning the redirect endpoint.
     """
-    """
-    flash(session['csrf_token'])  #static
-    flash(request.form.get('csrf_token'))  #from the form itself
-    flash(form.csrf_token.current_token)  #generate
-
-    flash(form.csrf_enabled)
-    flash(current_app.config.get("WTF_CSRF_ENABLED"))
-    flash(form.SECRET_KEY)
-    # flash(current_app.config.get(str("SECRET_KEY")))
-    # flash(form.validate_on_submit())
-    # flash(session.secret_key)
-    """
-    flash(form.errors)
     if form.validate_on_submit():
         member = Member.query.filter_by(email=form.email.data).first()
         # existing (/active) members
         if member is not None:
             if login_user(member, remember=form.remember.data):
                 current_user.ping()
-                """
-                flash('bash')
-                flash(current_user.is_authenticated())
-                flash('bash')
-                """
-                flash(session['user_id'])
                 flash(f3)
             else: flash(f4)
-            return '.sin'  # profile for graph
+            return 'main2.home2'
         # new members signing up
         elif 'password2' in form.__dict__.keys():
             newuser = form.create_newuser(form)
             db.session.add(newuser)
             db.session.commit()
             login_user(newuser)
-            """
-            flash('bosh')
-            flash(current_user.is_authenticated())
-            flash('bosh')
-            """
-            flash(session['user_id'])
-            flash(f2)
-            return '.sup'
-    else:
-        flash('didnt process')
-        return None
+            return 'main2.home2'
 
 
 # ========================
@@ -98,7 +64,6 @@ def process_forms_and_redir(form):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
-    ## flash(current_user.is_authenticated())
     return render_template('home.html', ct=datetime.utcnow())
 
 
@@ -150,26 +115,3 @@ def signin():
 def signout():
     logout_user()
     return redirect(url_for('.home'))
-
-"""
-@main.route('/dbtest')
-def tester():
-    member = Member.query.filter_by().all()
-    flash(member)
-    return render_template('home.html')
-"""
-@main.route('/deadend')
-def deadend():
-    return 'this is a deadend'
-
-@main.route('/sin')
-def sin():
-    return render_template('home.html', ct=datetime.utcnow())
-
-@main.route('/sup')
-def sup():
-    return render_template('home.html', ct=datetime.utcnow())
-
-@main.route('/nxt')
-def nxt():
-    return render_template('home.html', ct=datetime.utcnow())

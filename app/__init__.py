@@ -30,7 +30,7 @@ from config_vars import LOGOUT
 ## csrf = CsrfProtect()
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = '.nxt'
+login_manager.login_view = '.home'
 login_manager.session_protection = 'strong'
 toolbar = DebugToolbarExtension()  # toolbar extension
 # Moment = Moment()  # local/client time (suspect this is slow)

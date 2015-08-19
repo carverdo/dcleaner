@@ -126,6 +126,6 @@ Quick-check: heroku dashboard should now show correct number of tables.
 
 ## Config Vars (under Settings)
 Add a SECRET_KEY (otherwise you end up with lots of CSRF errors as heroku keeps regenerating);
-no need for quotation marks as you enter the number.
+no need for quotation marks as you enter the number. Only need to do once per project.
 
 Finito!
