@@ -19,3 +19,13 @@ ADMIN_USER = False
 INITIALLY_ACTIVE = True
 
 LOGOUT = 'Devel_logs.log'
+
+# MAILGUN VARIABLES
+MAILGUN_URL = 'https://api.mailgun.net/v3/{}/messages'
+SANDBOX = 'sandbox26a6aabbd3e946feba81293c4b4d9dcc.mailgun.org'
+MAILGUN_KEY = os.environ.get('MAILGUN_KEY', None)
+
+
+if __name__ == '__main__':
+    print PK
+    print MAILGUN_KEY

@@ -1,3 +1,8 @@
+<!-- HEADERS FOR NAVBAR -->
+{% macro navbar_titles(u_title, title) %}
+    <li><a href="{{ url_for(u_title) }}"><h3><span class="label">{{ title }}</span></h3></a></li>
+{% endmacro %}
+
 <!-- STRUCTURE OF FORM -->
 {% macro form_pres(fn, form, patex, tadata) %}
     <form action="{{ url_for(fn, **kwargs) }}" method="post">

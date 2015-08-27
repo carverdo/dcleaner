@@ -9,10 +9,11 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from datetime import datetime
 from . import main
 from ..templates.flash_msg import *
-from .. import db
-from ..db_models import Member
-from .. import cache
+from ..db_models import Member, Visit
+## from .. import cache
 # from .. import lg  # don't auto-delete: see below
+from geodata import get_geodata, _key_modifier
+from ..gunner import send_email
 
 
 # ========================
@@ -26,8 +27,8 @@ def set_template(template, form, fn, patex, tadata):
 
 def redirect_already_authenticateds(current_user):
     if current_user.is_authenticated():
-        flash(f1)
-        return '.home'
+        flash(f120)
+        return resolve_confirm_status(current_user)
     else: return None
 
 
@@ -39,24 +40,35 @@ def process_forms_and_redir(form):
     """
     if form.validate_on_submit():
         member = Member.query.filter_by(email=form.email.data).first()
-        # existing (/active) members
-        if member is not None:
-            if login_user(member, remember=form.remember.data):
-                current_user.ping()
-                flash(f3)
-            else: flash(f4)
-            return 'main2.home2'
-        # new members signing up
-        elif 'password2' in form.__dict__.keys():
-            newuser = form.create_newuser(form)
-            db.session.add(newuser)
-            db.session.commit()
+        # New members signing up
+        if member is None:
+            newuser = Member.create(**form.data)
             login_user(newuser)
-            return 'main2.home2'
+            token = newuser.generate_confirm_token()
+            send_email(newuser.email, 'Activate your Signin', 'confirm_body',
+                       newuser=newuser, token=token)
+            flash(f20 + ' ' + f21)
+            return '.home'
+        # Existing (/active) members
+        else:
+            login_user(member, remember=form.remember.data)
+            return resolve_confirm_status(current_user)
+
+
+def resolve_confirm_status(current_user, token=None):
+    if current_user.confirmed or current_user.confirm_token(token):
+        current_user.ping()
+        flash(f30)
+        # Visit.create(**get_geodata())
+        return 'main2.home2'
+    else:
+        if token: flash(f130 + ' ' + f131)
+        else: flash(f130)
+        return '.home'
 
 
 # ========================
-# Simple HomePage & Contacts
+# STATIC PAGES
 # ========================
 @main.route('/')
 @main.route('/home')
@@ -64,13 +76,22 @@ def process_forms_and_redir(form):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
+    Visit.create(**get_geodata(True, _key_modifier))
     return render_template('home.html', ct=datetime.utcnow())
 
 
 @main.route('/contactus')
-@cache.cached(timeout=200)
+## @cache.cached(timeout=200)
 def contactus():
     return render_template('contactus.html')
+
+
+@main.route('/signout')
+@login_required
+## @cache.cached(timeout=200)
+def signout():
+    logout_user()
+    return redirect(url_for('.home'))
 
 
 # ========================
@@ -108,10 +129,26 @@ def signin():
                             current_app.config['TADATA']['signin']
                             )
 
-
-@main.route('/signout')
+# ========================
+# ACTIVATION TOKEN HANDLING
+# ========================
+@main.route('/confirm/<token>')
 @login_required
-## @cache.cached(timeout=200)
-def signout():
-    logout_user()
+def confirm(token):
+    return redirect(url_for(
+        resolve_confirm_status(current_user, token=token)))
+
+
+@main.route('/confirm')
+@login_required
+def resend_token():
+    token = current_user.generate_confirm_token()
+    send_email(current_user.email, 'Activate your Signin', 'confirm_body',
+               newuser=current_user, token=token)
+    flash(f21)
     return redirect(url_for('.home'))
+
+
+@main.route('/test')
+def test():
+    return render_template('confirm_body.txt')

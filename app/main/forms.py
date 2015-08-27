@@ -34,18 +34,11 @@ class SignupForm(Form):
     def validate(self):
         if not Form.validate(self):
             return False
-        if Member.query.filter_by(surname=self.surname.data).first():
-            self.surname.errors.append("That surname is already taken")
-            return False
         if Member.query.filter_by(email=self.email.data).first():
             self.email.errors.append("That email is already taken")
             return False
         else:
             return True
-
-    def create_newuser(self, form):
-        return Member(firstname=form.firstname.data, surname=form.surname.data,
-                      email=form.email.data, password=form.password.data)
 
 
 class SigninForm(Form):

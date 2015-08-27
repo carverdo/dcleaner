@@ -1,3 +1,4 @@
+{% import 'macros.html' as macros %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -47,14 +48,17 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="#"><h4></h4></a></li>
-                        <li><a href="{{ url_for('main.home') }}"><h3><span class="label">home</span></h3></a></li>
+                        {{ macros.navbar_titles('main.home', 'home') }}
                         {% if current_user.is_authenticated() %}
-                            <li><a href="{{ url_for('main.signout') }}"><h3><span class="label">signOut</span></h3></a></li>
+                            {{ macros.navbar_titles('main.signout', 'signOut') }}
+                            {% if not current_user.confirmed %}
+                                {{ macros.navbar_titles('main.resend_token', 'resendToken') }}
+                            {% endif %}
                         {% else %}
-                            <li><a href="{{ url_for('main.signup') }}"><h3><span class="label">signUp</span></h3></a></li>
-                        <li><a href="{{ url_for('main.signin') }}"><h3><span class="label">signIn</span></h3></a></li>
+                            {{ macros.navbar_titles('main.signup', 'signUp') }}
+                            {{ macros.navbar_titles('main.signin', 'signIn') }}
                         {% endif %}
-                        <li><a href="{{ url_for('main.contactus') }}"><h3><span class="label">contactUs</span></h3></a></li>
+                        {{ macros.navbar_titles('main.contactus', 'contactUs') }}
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /container -->

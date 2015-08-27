@@ -19,7 +19,7 @@ from flask.ext.login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
 # from flask.ext.moment import Moment
 ## from flask.ext.wtf.csrf import CsrfProtect
-from flask.ext.cache import Cache
+## from flask.ext.cache import Cache
 from config import config
 from logs.LogGenerator import GenLogger
 from config_vars import LOGOUT
@@ -30,11 +30,11 @@ from config_vars import LOGOUT
 ## csrf = CsrfProtect()
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = 'main.home'
+login_manager.login_view = 'main.signin'
 login_manager.session_protection = 'strong'
 toolbar = DebugToolbarExtension()
 # Moment = Moment()  # local/client time (suspect this is slow)
-cache = Cache()
+## cache = Cache()
 lg = GenLogger(LOGOUT)
 
 
@@ -48,7 +48,7 @@ def create_app(config_name):
     if app.config['DEBUG']== True:
         toolbar.init_app(app)
     # moment = Moment.init_app(app)
-    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+    ## cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
