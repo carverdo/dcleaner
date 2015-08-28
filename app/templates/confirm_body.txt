@@ -6,7 +6,7 @@
         <h2 style="color: #545454">Welcome {{ newuser.firstname }}.</h2>
         <p style="font-weight:bold">
             To confirm your login please click
-            <a href="{{ url_for('main.confirm', token=token, _external=True) }}">here</a>
+            <a href="{{ url_for('log_auth.confirm', token=token, _external=True) }}">here</a>
         </p>
         &nbsp;
         <p style="color:DimGray; font-weight:bold">Please note: we do not monitor this email address.</p>

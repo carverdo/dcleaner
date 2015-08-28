@@ -22,7 +22,9 @@ class SignupForm(Form):
                          validators.length(max=MAX_COL_WIDTHS, message='email too long.')
                        ])
     password = PasswordField('Password',
-                             [validators.length(min=MIN_PASS_LEN, message='4 characters needed in password.'),
+                             [validators.length(min=MIN_PASS_LEN,
+                                                message='{} characters needed in password.'.format(MIN_PASS_LEN)
+                                                ),
                               validators.EqualTo('password2', message='Your passwords must match')
                               ])
     password2 = PasswordField('Confirm Password', [validators.InputRequired()])
@@ -47,7 +49,9 @@ class SigninForm(Form):
                          validators.length(max=MAX_COL_WIDTHS, message='email too long.')
                        ])
     password = PasswordField('Password',
-                             [validators.length(min=MIN_PASS_LEN, message='4 characters needed in password.')])
+                             [validators.length(min=MIN_PASS_LEN,
+                                                message='{} characters needed in password.'.format(MIN_PASS_LEN))
+                              ])
     remember = BooleanField('Remember me?')
     submit = SubmitField("Sign In")
 
@@ -60,6 +64,43 @@ class SigninForm(Form):
         member = Member.query.filter_by(email=self.email.data).first()
         if member and member.check_password(self.password.data):
             return True
+        else:
+            self.email.errors.append("Oops. Either you need to signUp "
+                                     "or that's an invalid e-mail password combo.")
+            return False
+
+
+class ChangePass(Form):
+    email = StringField("Email",
+                        [validators.Email("Please enter a valid email address."),
+                         validators.length(max=MAX_COL_WIDTHS, message='email too long.')
+                       ])
+    old_password = PasswordField('old_Password',
+                             [validators.length(min=MIN_PASS_LEN,
+                                                message='{} characters needed in password.'.format(MIN_PASS_LEN))
+                              ])
+    new_password = PasswordField('new_Password',
+                             [validators.length(min=MIN_PASS_LEN,
+                                                message='{} characters needed in password.'.format(MIN_PASS_LEN)
+                                                ),
+                              validators.EqualTo('new_password2', message='Your passwords must match')
+                              ])
+    new_password2 = PasswordField('Confirm new_Password', [validators.InputRequired()])
+    submit = SubmitField("Change Password")
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        if not Form.validate(self):
+            return False
+        member = Member.query.filter_by(email=self.email.data).first()
+        if member and member.check_password(self.old_password.data):
+            if member.confirmed:
+                return True
+            else:
+                self.old_password.errors.append("You cannot change your password until your login"
+                                                "has been Activated.")
         else:
             self.email.errors.append("Oops. Either you need to signUp "
                                      "or that's an invalid e-mail password combo.")

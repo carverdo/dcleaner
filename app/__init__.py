@@ -30,7 +30,7 @@ from config_vars import LOGOUT
 ## csrf = CsrfProtect()
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = 'main.signin'
+login_manager.login_view = 'log_auth.signin'
 login_manager.session_protection = 'strong'
 toolbar = DebugToolbarExtension()
 # Moment = Moment()  # local/client time (suspect this is slow)
@@ -50,10 +50,10 @@ def create_app(config_name):
     # moment = Moment.init_app(app)
     ## cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    from .log_auth import log_auth as la_blueprint
+    app.register_blueprint(la_blueprint)
 
-    from .main2 import main2 as dummy_blueprint
+    from .proj import proj as dummy_blueprint
     app.register_blueprint(dummy_blueprint)
 
     return app

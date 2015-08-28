@@ -15,10 +15,10 @@ def init_data():
     db = SQLAlchemy(tmp_app)
     if db.session.query(Member).count() == 0:
         donal = Member(firstname='donal', surname='carville', email='d@gmail.com',
-                       password='dash', adminr=True, active=INITIALLY_ACTIVE, confirmed=True,
+                       password='dasher', adminr=True, active=INITIALLY_ACTIVE, confirmed=True,
                        first_log=datetime.utcnow(), last_log=datetime.utcnow(), logins=1)
         matt = Member(firstname='matt', surname='sheridan', email='m@gmail.com',
-                      password='mash', adminr=True, active=INITIALLY_ACTIVE, confirmed=True,
+                      password='masher', adminr=True, active=INITIALLY_ACTIVE, confirmed=True,
                        first_log=datetime.utcnow(), last_log=datetime.utcnow(), logins=1)
         db.session.add_all([donal, matt])
     db.session.commit()

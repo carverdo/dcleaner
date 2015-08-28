@@ -4,10 +4,10 @@ This module is a template and explains as it goes down the page.
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask import render_template, redirect, url_for, flash, current_app
-from forms import SignupForm, SigninForm
+from forms import SignupForm, SigninForm, ChangePass
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from datetime import datetime
-from . import main
+from . import log_auth
 from ..templates.flash_msg import *
 from ..db_models import Member, Visit
 ## from .. import cache
@@ -60,7 +60,7 @@ def resolve_confirm_status(current_user, token=None):
         current_user.ping()
         flash(f30)
         # Visit.create(**get_geodata())
-        return 'main2.home2'
+        return 'proj.home2'
     else:
         if token: flash(f130 + ' ' + f131)
         else: flash(f130)
@@ -70,8 +70,8 @@ def resolve_confirm_status(current_user, token=None):
 # ========================
 # STATIC PAGES
 # ========================
-@main.route('/')
-@main.route('/home')
+@log_auth.route('/')
+@log_auth.route('/home')
 # @cache.cached(timeout=20)
 def home():
     # current_app.logger.info('On screen words 1')
@@ -80,13 +80,13 @@ def home():
     return render_template('home.html', ct=datetime.utcnow())
 
 
-@main.route('/contactus')
+@log_auth.route('/contactus')
 ## @cache.cached(timeout=200)
 def contactus():
     return render_template('contactus.html')
 
 
-@main.route('/signout')
+@log_auth.route('/signout')
 @login_required
 ## @cache.cached(timeout=200)
 def signout():
@@ -100,7 +100,7 @@ def signout():
 # We have master_panels which are fed headers via patex
 # and whose contents are fed by templates via tadata
 # ========================
-@main.route('/signup', methods=['GET', 'POST'])
+@log_auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     redir = redirect_already_authenticateds(current_user)
@@ -115,7 +115,7 @@ def signup():
                             )
 
 
-@main.route('/signin', methods=['GET', 'POST'])
+@log_auth.route('/signin', methods=['GET', 'POST'])
 def signin():
     form = SigninForm()
     redir = redirect_already_authenticateds(current_user)
@@ -132,14 +132,14 @@ def signin():
 # ========================
 # ACTIVATION TOKEN HANDLING
 # ========================
-@main.route('/confirm/<token>')
+@log_auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
     return redirect(url_for(
         resolve_confirm_status(current_user, token=token)))
 
 
-@main.route('/confirm')
+@log_auth.route('/confirm')
 @login_required
 def resend_token():
     token = current_user.generate_confirm_token()
@@ -149,6 +149,21 @@ def resend_token():
     return redirect(url_for('.home'))
 
 
-@main.route('/test')
-def test():
-    return render_template('confirm_body.txt')
+# ========================
+# PROFILE
+# currently just allows change of password
+# ========================
+@log_auth.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ChangePass()
+    if form.validate_on_submit():
+        current_user.set_password(form.new_password.data)
+        current_user.save()
+        return redirect(url_for(
+            resolve_confirm_status(current_user)
+        ))
+    return set_template('signing.html', form, '.profile',
+                        current_app.config['PAHDS']['profile'],
+                        current_app.config['TADATA']['profile']
+                        )

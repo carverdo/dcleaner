@@ -48,17 +48,17 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="#"><h4></h4></a></li>
-                        {{ macros.navbar_titles('main.home', 'home') }}
+                        {{ macros.navbar_titles('log_auth.home', 'home') }}
                         {% if current_user.is_authenticated() %}
-                            {{ macros.navbar_titles('main.signout', 'signOut') }}
                             {% if not current_user.confirmed %}
-                                {{ macros.navbar_titles('main.resend_token', 'resendToken') }}
+                                {{ macros.navbar_titles('log_auth.resend_token', 'resendToken') }}
                             {% endif %}
+                            {{ macros.navbar_titles('log_auth.signout', 'signOut') }}
                         {% else %}
-                            {{ macros.navbar_titles('main.signup', 'signUp') }}
-                            {{ macros.navbar_titles('main.signin', 'signIn') }}
+                            {{ macros.navbar_titles('log_auth.signup', 'signUp') }}
+                            {{ macros.navbar_titles('log_auth.signin', 'signIn') }}
                         {% endif %}
-                        {{ macros.navbar_titles('main.contactus', 'contactUs') }}
+                        {{ macros.navbar_titles('log_auth.contactus', 'contactUs') }}
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /container -->

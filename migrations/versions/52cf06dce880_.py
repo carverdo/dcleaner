@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 4e0194f32690
+Revision ID: 52cf06dce880
 Revises: None
-Create Date: 2015-08-24 20:05:45.922000
+Create Date: 2015-08-28 15:22:18.551000
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '4e0194f32690'
+revision = '52cf06dce880'
 down_revision = None
 
 from alembic import op
@@ -24,12 +24,12 @@ def upgrade():
     sa.Column('pwdhash', sa.String(), nullable=False),
     sa.Column('adminr', sa.Boolean(), nullable=True),
     sa.Column('active', sa.Boolean(), nullable=True),
+    sa.Column('confirmed', sa.Boolean(), nullable=True),
     sa.Column('first_log', sa.DateTime(), nullable=True),
     sa.Column('last_log', sa.DateTime(), nullable=True),
     sa.Column('logins', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('surname')
+    sa.UniqueConstraint('email')
     )
     op.create_table('visit',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -41,7 +41,7 @@ def upgrade():
     sa.Column('longitude', sa.Float(), nullable=True),
     sa.Column('date', sa.DateTime(), nullable=True),
     sa.Column('member_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['member_id'], ['member.id'], ),
+    sa.ForeignKeyConstraint(['member_id'], ['member.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     ### end Alembic commands ###

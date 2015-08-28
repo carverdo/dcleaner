@@ -68,7 +68,8 @@ class Member(UserMixin, CRUDMixin, db.Model):
     first_log = Column(DateTime(), default=datetime.utcnow)
     last_log = Column(DateTime(), default=datetime.utcnow)
     logins = Column(Integer)
-    ips = relationship('Visit', backref='member', cascade="all, delete-orphan", passive_deletes=True)
+    ips = relationship('Visit', backref='member',
+                       cascade="all, delete-orphan", passive_deletes=True)
 
     def __init__(self, firstname, surname, email, password,
                  adminr=ADMIN_USER, active=INITIALLY_ACTIVE,
