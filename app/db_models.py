@@ -24,8 +24,11 @@ class CRUDMixin(object):
     @classmethod
     def create(cls, commit=True, **kwargs):
         # a bit bespoke (for new signups) -
-        kwargs.pop('password2', None)
-        kwargs.pop('submit', None)
+        try:
+            kwargs.pop('password2', None)
+            kwargs.pop('submit', None)
+        except:
+            pass
         instance = cls(**kwargs)
         return instance.save(commit=commit)
 
@@ -149,8 +152,8 @@ class Visit(CRUDMixin, db.Model):
             setattr(self, key, value)
 
     def __repr__(self):
-        return '<Visit for ip {} in {} at {:%Y-%m-%d %H:%M:%S}>'\
-            .format(self.ip_address, self.city, self.date)
+        return '<Visit for ip {} in {}>'\
+            .format(self.ip_address, self.city)
 
 
 # flask-login needs this definition

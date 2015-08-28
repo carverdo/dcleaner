@@ -76,7 +76,20 @@ def resolve_confirm_status(current_user, token=None):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
-    Visit.create(**get_geodata(True, _key_modifier))
+    """
+    flash(str(get_geodata(True, _key_modifier)))
+    res = get_geodata(True, _key_modifier)
+    res['longitude'], res['latitude'] = 10, 10
+    res['member_id'] = 1
+    ##Visit.create(**get_geodata(True, _key_modifier))
+    flash(str(res))
+    v = Visit(**res)
+    flash(str(v))
+
+    db.session.add(v)
+    db.session.commit()
+    # Visit.create(**res)
+    """
     return render_template('home.html', ct=datetime.utcnow())
 
 
