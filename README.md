@@ -7,7 +7,7 @@
 5. (Move (`db_create_migrate.py` OR `manager.py` and) `db_init_data.py` underneath src root;)
 6. Run these via cmd window to establish database model in pgadmin;
 7. Run `run.py`.
-8. Now you're free to build out main2 for project-specific `forms` and `views`.
+8. Now you're free to build out proj for project-specific `forms` and `views`.
 
 ## Directories outside of app
 `del_area` Temporary trash can. This will have its own gitignore to ignore_all
