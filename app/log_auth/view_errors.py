@@ -13,11 +13,22 @@ from flask import render_template
 # ========================
 # ERRORS
 # ========================
+@log_auth.app_errorhandler(400)
+def page_not_found(e):
+    return render_template('error_codes.html',
+                           msg='Bad request: integrity error'
+                           ), 400
+
+
 @log_auth.app_errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('error_codes.html',
+                           msg='Page not found'
+                           ), 404
 
 
 @log_auth.app_errorhandler(500)
 def page_not_found(e):
-    return render_template('500.html'), 500
+    return render_template('error_codes.html',
+                           msg='An error: unhandled exception'
+                           ), 500

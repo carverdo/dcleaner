@@ -15,6 +15,7 @@ gen
 
 # DIRECTORIES
 venv
+del_area
 
 # SUBDIRECTORIES
 

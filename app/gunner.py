@@ -7,6 +7,12 @@ from threading import Thread
 from flask import render_template
 
 
+def send_email(*args, **kwargs):
+    data = build_message(*args, **kwargs)
+    thr = Thread(target=send_async_email, args=[data])
+    thr.start()
+    return thr
+
 def build_message(recip, subject, template, **kwargs):
     return {
         "from": "Circadian Activate <postmaster@{}>".format(SANDBOX),
@@ -15,20 +21,12 @@ def build_message(recip, subject, template, **kwargs):
         "html": render_template(template + '.txt', **kwargs)
         }
 
-
 def send_async_email(data):
     requests.post(
         MAILGUN_URL.format(SANDBOX),
         auth=("api", MAILGUN_KEY),
         data=data
     )
-
-
-def send_email(*args, **kwargs):
-    data = build_message(*args, **kwargs)
-    thr = Thread(target=send_async_email, args=[data])
-    thr.start()
-    return thr
 
 
 if __name__ == '__main__':

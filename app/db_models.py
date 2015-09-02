@@ -152,8 +152,8 @@ class Visit(CRUDMixin, db.Model):
             setattr(self, key, value)
 
     def __repr__(self):
-        return '<Visit for ip {} in {}>'\
-            .format(self.ip_address, self.city)
+        return '<IP {} in {} on {}>'\
+            .format(self.ip_address, self.city, self.date)
 
 
 # flask-login needs this definition

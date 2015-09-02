@@ -52,6 +52,9 @@
                         {% if current_user.is_authenticated() %}
                             {% if not current_user.confirmed %}
                                 {{ macros.navbar_titles('log_auth.resend_token', 'resendToken') }}
+                            {% else %}
+                                {{ macros.navbar_titles('proj.home2', 'home2') }}
+                                {{ macros.navbar_titles('log_auth.profile', 'profile') }}
                             {% endif %}
                             {{ macros.navbar_titles('log_auth.signout', 'signOut') }}
                         {% else %}

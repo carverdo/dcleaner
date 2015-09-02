@@ -47,11 +47,11 @@ local database via the environment vars; look to `config_vars`
 `run.py` creates the app (heavily calling on `app\__init__`).
 
 ## app
-there are two main blueprint areas: `main` and `main2` each of which gets paired
+there are two main blueprint areas: `log_auth` and `proj` each of which gets paired
 with the app as part of `create_app`.
 
-`main` holds a user login system (since every project will need something similar).
-`main2` is empty, waiting to be populated for each user-case. Contains static and 
+`log_auth` holds a user login system (since every project will need something similar).
+`proj` is empty, waiting to be populated for each user-case. Contains static and 
 templates (see below)... more to follow.
 
 `templates and static/css`  
@@ -66,6 +66,7 @@ extends layout and then calls its main blocks -
 - present forms (around which panels are drawn); 
 - present panels; and 
 - present rows (within panels).
+etc.
 
 the `tdata.htmls` supply the data to those rows; panel header info supplied via
 `views.py / patex`
@@ -82,24 +83,42 @@ Make sure your new pycharm project is git-enabled.
 ## Gitignores
 Create gitignore directly beneath src root. Use the intellij default and then tailor to,
 among other things, ignore the venv. This will keep the github sync as small as possible. 
-(Place other gitignores under subdirectories as required.)
+(Place other gitignores under subdirectories as required.)  
+Make sure there are no stray files / folders, even .pycs.
 
 # Heroku (deploy part 2)
 Make sure procfile is beneath src root - specific instructions to heroku. Double-check 
 `requirements.txt`. Login via website, create and name a new app (make it snappy - it's 
 a public url!). Go to Deploy and connect to GitHub... you're (halfway) done! Website will 
-show up but it's a dummy: you won't be able to log-in. 
+show up but it's a dummy: you won't be able to log-in.
+ 
+## Error Checklist
+1. set create_app('production') / debug=False?
+2. tested on local AND production?
+3. double-checked all config / environment vars (in production)?
+4. got rid of stray files incl .pycs?
+5. got rid of stray folders?
+6. gitignores all ok?
+7. procfile names all good?
+8. requirements.txt correct?
+9. git up to date?
+10. double-checked that don't need any config / environ vars in heroku?
+11. does the slug look too big (7MB about right)?
 
 ## Databases / Provision a database
-...you still don't have a database.
+You still don't have a database.
 `Resources / Add-ons`: just type postgres in the box and click/select 
 `Heroku Postgres Hobby-Dev Free` Provision.
 ### Promote
 In git bash if we haven't already, `heroku login`.  
-`heroku addons` will show us that database.  
-`heroku pg:promote DATABASE` (which means rewire DATABASE; look to connection
+`heroku addons` will show us our databases.  
+`heroku pg:promote DATABASE -app [NAME OF APP]` (which means rewire DATABASE; test this by looking to connection
 setting `Psql` on the heroku dashboard). Not strictly necessary with only one db, but 
 it will re-title the db with an easier-to-remember colour-scheme name.
+### Capture Backup facility
+`herok pg:backups capture --app [APP NAME]`: captures this facility, ie now you can use 'backups'.
+
+
 ### Copy across a DB
 In pgAdmin right-click and `backup` to somewhere in dropbox. Copy the link which will look
 like this:
@@ -108,13 +127,14 @@ But adjust (see start; drop the end):
 `https://dl.dropboxusercontent.com/s/8a2cmqr9hho96z3/gscore_v0.dump`  
 And trick the system into using this back-up to 'restore' our database -
 `heroku pg:backups restore ‘[DROPBOX LINK]’ [DATABASE] --app [APP NAME]` (keep the quotation
-marks; rid squares, use real link, real database name)  
+marks; rid squares, use real link, real database name eg HEROKU_POSTGRES_COPPER_URL)  
 Will get a destruction warning...
 Quick-check: heroku dashboard should now show correct number of tables.
 
 ## Config Vars (under Settings)
 Add a `SECRET_KEY` (otherwise you end up with lots of CSRF errors as heroku keeps regenerating);
 no need for quotation marks as you enter the number. Only need to do once per project.
+Repeat for any other config vars set by environment.
 
 ## Debug = False
 Don't forget.

@@ -10,14 +10,17 @@ from . import proj
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user
 
-
+from ..log_auth.views import login_confirmed
 # ========================
 # Simple Page
 # ========================
 @proj.route('/')
 @proj.route('/home2')
-@login_required
+@login_confirmed
 def home2():
+    """
     if current_user.confirmed:
         return render_template('dummy.html')
     return redirect(url_for('main.home'))
+    """
+    return render_template('dummy.html')

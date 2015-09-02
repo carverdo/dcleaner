@@ -26,7 +26,7 @@ class Config(TemplateParameters):
     ## WTF_CSRF_SECRET_KEY = SECRET_KEY
     DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
         format(PK[0], PK[1], DBNAME)
-    PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
+    PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
         format(PK[0], PK[1], DBNAME)
 
     @staticmethod

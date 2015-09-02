@@ -3,9 +3,11 @@ This module is a template and explains as it goes down the page.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-from flask import render_template, redirect, url_for, flash, current_app
+from flask import render_template, redirect, url_for, flash, \
+    current_app, request, abort
 from forms import SignupForm, SigninForm, ChangePass
-from flask.ext.login import login_user, logout_user, login_required, current_user
+from flask.ext.login import login_user, logout_user, \
+    login_required, current_user
 from datetime import datetime
 from . import log_auth
 from ..templates.flash_msg import *
@@ -14,7 +16,8 @@ from ..db_models import Member, Visit
 # from .. import lg  # don't auto-delete: see below
 from geodata import get_geodata, _key_modifier
 from ..gunner import send_email
-
+from functools import wraps
+from urlparse import urlparse, urljoin
 
 # ========================
 # HELPER FUNCTIONS
@@ -67,6 +70,48 @@ def resolve_confirm_status(current_user, token=None):
         return '.home'
 
 
+def login_confirmed(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_anonymous() or not current_user.confirmed:
+            return redirect(url_for('log_auth.signin'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# ========================
+# UNUSED FUNCTIONS
+# ========================
+def get_redirect_target():
+    """
+    Redirects can now SAFELY incorporate the request.arg 'next':
+    ie a previous redirect to ourPage included url_for('ourPage', next='SOME PAGE'),
+    any redirect on ourPage would now read:
+    redirect(g_r_t() or url_for(blah blah))
+    since we know g_r_t() only produces safe urls
+    and here g_r_t() will reproduce 'SOME PAGE' as a result.
+
+    :return: valid targets only
+    """
+    for target in request.args.get('next'), request.referrer:
+        if not target:
+            continue
+        if _url_is_valid(target):
+            return target
+        else:
+            abort(400)
+
+def _url_is_valid(target):
+    """
+    :param target: potentially dangerous url
+    :return: True if safe
+    """
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and \
+           ref_url.netloc == test_url.netloc
+
+
 # ========================
 # STATIC PAGES
 # ========================
@@ -76,20 +121,7 @@ def resolve_confirm_status(current_user, token=None):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
-    """
-    flash(str(get_geodata(True, _key_modifier)))
-    res = get_geodata(True, _key_modifier)
-    res['longitude'], res['latitude'] = 10, 10
-    res['member_id'] = 1
-    ##Visit.create(**get_geodata(True, _key_modifier))
-    flash(str(res))
-    v = Visit(**res)
-    flash(str(v))
-
-    db.session.add(v)
-    db.session.commit()
-    # Visit.create(**res)
-    """
+    Visit.create(**get_geodata(True, _key_modifier))
     return render_template('home.html', ct=datetime.utcnow())
 
 
@@ -144,6 +176,7 @@ def signin():
 
 # ========================
 # ACTIVATION TOKEN HANDLING
+# 1. first layer security: login_required
 # ========================
 @log_auth.route('/confirm/<token>')
 @login_required
@@ -165,9 +198,10 @@ def resend_token():
 # ========================
 # PROFILE
 # currently just allows change of password
+# 2. second layer: login_confirmed
 # ========================
 @log_auth.route('/profile', methods=['GET', 'POST'])
-@login_required
+@login_confirmed
 def profile():
     form = ChangePass()
     if form.validate_on_submit():
@@ -180,3 +214,17 @@ def profile():
                         current_app.config['PAHDS']['profile'],
                         current_app.config['TADATA']['profile']
                         )
+
+
+# ========================
+# UNDER TESTING
+# just tinkering with formatting; not quite right
+# ========================
+@log_auth.route('/sendsms')
+@login_required
+def sendsms():
+    # token = current_user.generate_confirm_token()
+    token, SMS = ' TEST TOKEN ', '+4478[8 DIGITS no spaces]@mmail.co.uk'
+    send_email(SMS, 'Activate your Signin', 'confirm_bodySMS',
+               newuser=current_user, token=token)
+    return redirect(url_for('.home'))
