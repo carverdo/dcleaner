@@ -9,8 +9,9 @@ __project__ = 'Skeleton_Flask_v11'
 from . import proj
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user
-
 from ..log_auth.views import login_confirmed
+
+
 # ========================
 # Simple Page
 # ========================
