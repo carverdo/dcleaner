@@ -5,7 +5,7 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask.ext.wtf import Form  # Seems odd (this line not next) but correct: wtf Form is slightly different
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, \
-    SelectField, validators, IntegerField, DateTimeField, FloatField
+    SelectField, validators, IntegerField
 from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
 from ..db_models import Member
 

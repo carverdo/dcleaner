@@ -186,8 +186,6 @@ def adm_members():
                         )
 
 
-
-
 # ========================
 # SIGNUP
 # There is always going to be some sort of sign-up.

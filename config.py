@@ -12,8 +12,9 @@ from config_templates import *
 from config_vars import PK, DBNAME
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
+
 # ====================
-# CONFIG CLASSES
+# 1. CONFIG CLASSES
 # ====================
 class Config(TemplateParameters):
     """
@@ -59,8 +60,9 @@ config = {
     'default': DevelConfig
 }
 
+
 # ====================
-# CONFIG OUR SCHEDULER
+# 2. CONFIG OUR SCHEDULER
 # ====================
 def kickstart_scheduler(scheduler, config_name):
     """

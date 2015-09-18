@@ -61,4 +61,3 @@ class TimerForm(Form, DiariseTasks):
             self.run_taskFail = False
         except:
             self.run_taskFail = True
-

@@ -1,5 +1,7 @@
 """
 We import our empty db and write our model changes to it.
+
+NOTE: scheduler creates an additional table not captured in this model.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'

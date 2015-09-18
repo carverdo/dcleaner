@@ -133,14 +133,8 @@ if __name__ == '__main__':
         end=datetime.strptime('2015-09-11 11:55:00', '%Y-%m-%d %H:%M:%S'),
         n=0.1)
     dt.run_tasks('test_fn', 'pop', a=2)
-    dt.diarise_moretasks(
-        end=datetime.strptime('2015-09-11 11:59:00', '%Y-%m-%d %H:%M:%S'),
-        n=0.2)
-    dt.run_tasks('test_fn', 'hippo', a=20)
-    """
-    """
     dt.run_tasks('send_email',
-                 'donal.carville@gmail.com',
+                 'NAME@gmail.com',
                  'With timer',
                  None,
                  'A string of words.'

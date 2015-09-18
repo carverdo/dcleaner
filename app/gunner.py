@@ -10,7 +10,6 @@ from flask import render_template
 class SendEmail(object):
     fr = "Circadian Activate <postmaster@{}>".format(SANDBOX)
 
-    # def __init__(self, recip, subject, msgtype, template, **kwargs):
     def __init__(self, *args, **kwargs):
         self.build_message(*args, **kwargs)
         self.send_email()
@@ -41,12 +40,10 @@ class SendEmail(object):
         return thr
 
 
-
-
 # ==========================================
 if __name__ == '__main__':
     SendEmail(
-        ['donal.carville@gmail.com'],  #, 'matt@circadian-capital.com']
+        ['NAME@gmail.com'],
         'Some Title Words',
         template='This is where the text goes.'
     )

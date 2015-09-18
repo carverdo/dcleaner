@@ -9,6 +9,8 @@ but that will work too.
 
 The group of functions then gets compiled elsewhere for presentation
 to the user.
+
+The __doc__ string is shown on screen.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
