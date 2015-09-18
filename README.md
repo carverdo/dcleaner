@@ -84,7 +84,7 @@ Make sure your new pycharm project is git-enabled.
 Create gitignore directly beneath src root. Use the intellij default and then tailor to,
 among other things, ignore the venv. This will keep the github sync as small as possible. 
 (Place other gitignores under subdirectories as required.)  
-Make sure there are no stray files / folders, even .pycs.
+Make sure there are no stray files / folders, even .pycs. Clear the logs.
 
 # Heroku (deploy part 2)
 Make sure procfile is beneath src root - specific instructions to heroku. Double-check 

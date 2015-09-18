@@ -8,21 +8,22 @@ RUN this script from the cmd line -
 
 1. Create migrations folder
 cd to the folder holding this file.
-    C:..> python db_create_migrate.py db init
+    C:..> venv\scripts\activate
+    <venv> C:..> python db_create_migrate.py db init
 (it will say Please edit ... before proceding; this is not an error, just info.)
 
 2. For EVERY model change (including the first model-overlay on blank dbase)
 (each will flash INFO messages)
 
 2a. Generate one empty table: [alembic_version]
-     C:..> python db_create_migrate.py db migrate
+     <venv> C:..> python db_create_migrate.py db migrate
 
 2b. Generate all the other tables
-    C:..> python db_create_migrate.py db upgrade
+    <venv> C:..> python db_create_migrate.py db upgrade
 We can of course also run: > python db_create_migrate.py db downgrade
 
 3. OPTIONAL (to populate) [can just do via normal python]
-    C:..> python db_init_data.py init_data
+    <venv> C:..> python db_init_data.py init_data
 """
 
 # =================

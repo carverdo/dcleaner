@@ -1,20 +1,21 @@
 <!-- HEADERS FOR NAVBAR -->
-{% macro navbar_titles(u_title, title) %}
-    <li><a href="{{ url_for(u_title) }}"><h3><span class="label">{{ title }}</span></h3></a></li>
+{% macro navbar_titles(u_title, title, col="default") %}
+    <li><a href="{{ url_for(u_title) }}"><h3><span class="label label-{{col}}">{{ title }}</span></h3></a></li>
 {% endmacro %}
 
-<!-- STRUCTURE OF FORM -->
-{% macro form_pres(fn, form, patex, tadata) %}
+
+<!-- STRUCTURE OF FORMS FOR DATA COLLECTION -->
+{% macro form_pres(fn, form, patex, tadata, wid=4, sched_rem=None) %}
     <form action="{{ url_for(fn, **kwargs) }}" method="post">
         {{ form.csrf_token }}
-        <div class="col-xs-12 col-md-4">
-            {{ create_masterpanel(form, patex, tadata) }}
+        <div class="col-xs-12 col-md-{{wid}}">
+            {{ create_masterpanel(form, patex, tadata, sched_rem) }}
         </div>
     </form>
 {% endmacro %}
 
 <!-- LOOK AND FEEL OF THE PANEL (HOLDING THE FORM)-->
-{% macro create_masterpanel(form, patex, tadata) %}
+{% macro create_masterpanel(form, patex, tadata, sched_rem=None) %}
 <div class="panel">
     <div class="panel-heading btn-success"><h2 style="font-size:18px"> {{ patex }} </h2></div>
     <div class="panel-body" align="center">
@@ -33,3 +34,39 @@
 </div>
 {% endmacro %}
 
+<!-- PRESENTATION OF INDIVIDUAL FORM ROWS INSIDE PANEL PART 2-->
+{% macro row_pres_text(tx, fn, placeholder) %}
+<div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">{{ tx }}</span>
+        <input class="form-control" {{ fn(placeholder=placeholder) }}
+    </div>
+</div>
+{% endmacro %}
+
+
+<!-- PRESENTATION OF INDIVIDUAL TABLE ROWS -->
+{% macro table_row(obj) %}
+<div class="table-responsive" id="scroller">
+    <table class="table table-hover table-condensed">
+        <tbody data-link="row" class="rowlink">
+            <tr>
+                <td> id </td>
+                <td> function </td>
+                <td> next_run_time </td>
+                <td> args </td>
+                <td> kwargs </td>
+            </tr>
+            {% for ro in obj %}
+                <tr id="prof_row_style">
+                    <td> {{ro.id}} </td>
+                    <td> {{ro.name}} </td>
+                    <td> {{ro.next_run_time}} </td>
+                    <td> {{ro.args}} </td>
+                    <td> {{ro.kwargs}} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endmacro %}

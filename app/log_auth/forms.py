@@ -4,7 +4,8 @@
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask.ext.wtf import Form  # Seems odd (this line not next) but correct: wtf Form is slightly different
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, \
+    SelectField, validators, IntegerField, DateTimeField, FloatField
 from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
 from ..db_models import Member
 
@@ -28,7 +29,7 @@ class SignupForm(Form):
                               validators.EqualTo('password2', message='Your passwords must match')
                               ])
     password2 = PasswordField('Confirm Password', [validators.InputRequired()])
-    submit = SubmitField("Submit")
+    # submit = SubmitField("Submit")
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -53,7 +54,7 @@ class SigninForm(Form):
                                                 message='{} characters needed in password.'.format(MIN_PASS_LEN))
                               ])
     remember = BooleanField('Remember me?')
-    submit = SubmitField("Sign In")
+    # submit = SubmitField("Sign In")
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -86,7 +87,7 @@ class ChangePass(Form):
                               validators.EqualTo('new_password2', message='Your passwords must match')
                               ])
     new_password2 = PasswordField('Confirm new_Password', [validators.InputRequired()])
-    submit = SubmitField("Change Password")
+    # submit = SubmitField("Change Password")
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -105,3 +106,32 @@ class ChangePass(Form):
             self.email.errors.append("Oops. Either you need to signUp "
                                      "or that's an invalid e-mail password combo.")
             return False
+
+
+# ==========================
+# ADMINISTRATOR EDITING PLATES
+# ==========================
+class adminMember(SignupForm):
+    """
+    Inherit (from signup), modify (including default in model),
+    and auto-present the pre-populated forms data.
+    """
+    id = IntegerField()
+    adminr = SelectField('Admin', choices=[('True', 'Admin'), ('False', 'NotAdmin')])
+    active = SelectField('Active', choices=[('True', 'Active'), ('False', 'NotActive')], default='False',)
+    confirmed = SelectField('Confirmed', choices=[('True', 'Confirmed'), ('False', 'NotConfirmed')], default='',)
+    markfordeletion = SelectField('MFD', choices=[(True, 'DELETE'), (False, '')], default='',)
+
+    def get_existing_data(self, member):
+        # user-entry data
+        self.id.default = member.id
+        self.firstname.default = member.firstname
+        self.surname.default = member.surname
+        self.email.default = member.email
+        # defaults in model
+        self.adminr.default = member.adminr
+        self.active.default = member.active
+        self.confirmed.default = member.confirmed
+        self.markfordeletion.default = False
+        # process those changes
+        self.process()

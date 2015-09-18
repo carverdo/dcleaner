@@ -7,13 +7,19 @@ __project__ = 'Skeleton_Flask_v11'
 
 class TemplateParameters(object):
     PAHDS = dict(
-        signup = "Let's get you signed up...",
+        addtasks = 'Build your schedule',
+        adm_members = 'Control Default Settings of Members',
+        curtasks = 'Your scheduled tasks',
+        profile = 'Change your Password',
         signin = 'Get logged in to begin...',
-        profile = 'Change your Password'
-        )
+        signup = 'Let\'s get you signed up...'
+    )
     TADATA = dict(
-        signup = 'signup_tdata.html',
+        addtasks = 'timer_tdata.html',
+        adm_members = 'adm_members_tdata.html',
+        curtasks = 'sched_tdata.html',
+        profile = 'profile_tdata.html',
         signin = 'signin_tdata.html',
-        profile = 'profile_tdata.html'
-        )
+        signup = 'signup_tdata.html'
+    )
     PANEL = dict(PAHDS=PAHDS, TADATA=TADATA)

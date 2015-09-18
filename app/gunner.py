@@ -7,32 +7,47 @@ from threading import Thread
 from flask import render_template
 
 
-def send_email(*args, **kwargs):
-    data = build_message(*args, **kwargs)
-    thr = Thread(target=send_async_email, args=[data])
-    thr.start()
-    return thr
+class SendEmail(object):
+    fr = "Circadian Activate <postmaster@{}>".format(SANDBOX)
 
-def build_message(recip, subject, template, **kwargs):
-    return {
-        "from": "Circadian Activate <postmaster@{}>".format(SANDBOX),
-        "to": recip,
-        "subject": subject,
-        "html": render_template(template + '.txt', **kwargs)
+    # def __init__(self, recip, subject, msgtype, template, **kwargs):
+    def __init__(self, *args, **kwargs):
+        self.build_message(*args, **kwargs)
+        self.send_email()
+
+    def build_message(self, recip, subject, msgtype=None, template=None, **kwargs):
+        self.data = {
+            "from": self.fr,
+            "to": recip,
+            "subject": subject
         }
+        # we either have html messages or text-only messages
+        if msgtype is not None:
+            self.data["html"] = render_template(template + '.txt', **kwargs)
+        else:
+            self.data["text"] = template
 
-def send_async_email(data):
-    requests.post(
-        MAILGUN_URL.format(SANDBOX),
-        auth=("api", MAILGUN_KEY),
-        data=data
-    )
+    @staticmethod
+    def send_async_email(data):
+        requests.post(
+            MAILGUN_URL.format(SANDBOX),
+            auth=("api", MAILGUN_KEY),
+            data=data
+        )
+
+    def send_email(self):
+        thr = Thread(target=self.send_async_email, args=[self.data])
+        thr.start()
+        return thr
 
 
+
+
+# ==========================================
 if __name__ == '__main__':
-    recip = ['donal.carville@gmail.com']  #, 'matt@circadian-capital.com']
-    subject = 'Test Yikes'
-    text = 'Some text; threaded, testing imports'
-    # kwargs = {'user.username': 'dony', }
-    # send_email(recip, subject, './templates/confirm_body', **kwargs)
-    # data = build_message(recip, subject, text)
+    SendEmail(
+        ['donal.carville@gmail.com'],  #, 'matt@circadian-capital.com']
+        'Some Title Words',
+        template='This is where the text goes.'
+    )
+    # we have not here tested the template version (gets tested in views.py)

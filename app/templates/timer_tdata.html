@@ -1,0 +1,25 @@
+{% import 'macros.html' as macros %}
+
+{{ macros.row_pres("fa fa-calendar-plus-o fa-border btn-info", form.starter) }}
+{{ macros.row_pres("fa fa-calendar-minus-o fa-border btn-danger", form.ender) }}
+{{ macros.row_pres("fa fa-hourglass-end fa-border", form.ner) }}
+
+<span class="input-group-addon">{{form.task.label}}</span>
+<span class="input-group-addon">{{form.task}}</span>
+
+<div class="form-group">
+    <span class="input-group-addon">{{form.args(rows=6, cols=13)}}</span>
+    <span class="input-group-addon">{{form.kwargs(rows=6, cols=13)}}</span>
+</div>
+
+<button type="submit" class="btn btn-primary btn-block">RunSchedule</button>
+
+<br>
+
+<div class="jumbotron" id="small-logo">
+    <h3><small>sample arguments</small></h3>
+    {% for ele in form.printof_args %}
+        {{ele}}
+        <br>
+    {% endfor %}
+</div>

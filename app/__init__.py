@@ -13,16 +13,16 @@ That linkage is registered/happens below.
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask import Flask
-
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
 # from flask.ext.moment import Moment
 ## from flask.ext.wtf.csrf import CsrfProtect
 ## from flask.ext.cache import Cache
-from config import config
-from logs.LogGenerator import GenLogger
+from config import config, kickstart_scheduler
 from config_vars import LOGOUT
+from logs.LogGenerator import GenLogger
+from apscheduler.schedulers.background import BackgroundScheduler
 
 # ================
 # KEEP OUTSIDE create_app - we import elsewhere
@@ -36,6 +36,7 @@ toolbar = DebugToolbarExtension()
 # Moment = Moment()  # local/client time (suspect this is slow)
 ## cache = Cache()
 lg = GenLogger(LOGOUT)
+scheduler = BackgroundScheduler()
 
 
 def create_app(config_name):
@@ -45,10 +46,11 @@ def create_app(config_name):
     config[config_name].init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    if app.config['DEBUG']== True:
+    if app.config['DEBUG'] == True:
         toolbar.init_app(app)
     # moment = Moment.init_app(app)
-    ## cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+    # cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+    kickstart_scheduler(scheduler, config_name)
 
     from .log_auth import log_auth as la_blueprint
     app.register_blueprint(la_blueprint)
@@ -56,4 +58,6 @@ def create_app(config_name):
     from .proj import proj as dummy_blueprint
     app.register_blueprint(dummy_blueprint)
 
-    return app
+    return app # , scheduler
+
+

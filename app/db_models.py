@@ -13,20 +13,21 @@ from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from config_vars import MAX_COL_WIDTHS, ADMIN_USER, INITIALLY_ACTIVE
 
+
 # ==============================
 # DATABASE STRUCTURE
 # ==============================
 class CRUDMixin(object):
     """Inherit object for common operations"""
     __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
+    id = Column(db.Integer, primary_key=True)
 
     @classmethod
     def create(cls, commit=True, **kwargs):
-        # a bit bespoke (for new signups) -
+        # a bit too bespoke (handling only for new signups) -
         try:
             kwargs.pop('password2', None)
-            kwargs.pop('submit', None)
+            # kwargs.pop('submit', None)
         except:
             pass
         instance = cls(**kwargs)
@@ -154,6 +155,21 @@ class Visit(CRUDMixin, db.Model):
     def __repr__(self):
         return '<IP {} in {} on {}>'\
             .format(self.ip_address, self.city, self.date)
+
+
+class MemberSchedule(CRUDMixin, db.Model):
+    __tablename__ = 'memberschedule'
+    id = Column(Integer, primary_key=True)
+    member_id = Column(Integer, ForeignKey('member.id', ondelete='CASCADE'))
+    task_id = Column(Integer)
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def __repr__(self):
+        return '<Member_id {} vs Task_id {}>'\
+            .format(self.member_id, self.task_id)
 
 
 # flask-login needs this definition

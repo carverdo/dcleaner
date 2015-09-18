@@ -1,0 +1,19 @@
+<div class="form-group">
+    {% for ro in form %}
+        <div class="input-group">
+            <span style="color:grey">
+                {{ ro.id(size=5) }}
+                {{ ro.firstname }}
+                {{ ro.surname }}
+                {{ ro.email }}
+            </span>
+            <span>
+                {{ ro.adminr }}
+                {{ ro.active }}
+                {{ ro.confirmed }}
+                <span style="color:red">{{ ro.markfordeletion }}</span>
+            </span>
+        </div>
+    {% endfor %}
+</div>
+<button type="submit" class="btn btn-primary btn-block">Submit all Changes</button>

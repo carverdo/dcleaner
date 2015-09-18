@@ -5,7 +5,7 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask import render_template, redirect, url_for, flash, \
     current_app, request, abort
-from forms import SignupForm, SigninForm, ChangePass
+from forms import SignupForm, SigninForm, ChangePass, adminMember
 from flask.ext.login import login_user, logout_user, \
     login_required, current_user
 from datetime import datetime
@@ -13,9 +13,9 @@ from . import log_auth
 from ..templates.flash_msg import *
 from ..db_models import Member, Visit
 ## from .. import cache
-# from .. import lg  # don't auto-delete: see below
+from .. import lg  # don't auto-delete: see below
 from geodata import get_geodata, _key_modifier
-from ..gunner import send_email
+from ..gunner import SendEmail
 from functools import wraps
 from urlparse import urlparse, urljoin
 
@@ -23,9 +23,9 @@ from urlparse import urlparse, urljoin
 # HELPER FUNCTIONS
 # ========================
 # @cache.cached(timeout=20)  # NO GOOD FOR THE FLASHES!
-def set_template(template, form, fn, patex, tadata):
+def set_template(template, form, fn, patex, tadata, wid=4):
     return render_template(template, form=form, fn=fn,
-                           patex=patex, tadata=tadata)
+                           patex=patex, tadata=tadata, wid=wid)
 
 
 def redirect_already_authenticateds(current_user):
@@ -48,8 +48,9 @@ def process_forms_and_redir(form):
             newuser = Member.create(**form.data)
             login_user(newuser)
             token = newuser.generate_confirm_token()
-            send_email(newuser.email, 'Activate your Signin', 'confirm_body',
-                       newuser=newuser, token=token)
+            SendEmail(newuser.email, 'Activate your Signin',
+                      msgtype='on', template='confirm_body',
+                      newuser=newuser, token=token)
             flash(f20 + ' ' + f21)
             return '.home'
         # Existing (/active) members
@@ -70,6 +71,9 @@ def resolve_confirm_status(current_user, token=None):
         return '.home'
 
 
+# ========================
+# DECORATORS
+# ========================
 def login_confirmed(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -78,6 +82,16 @@ def login_confirmed(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_fn(*args, **kwargs):
+        if current_user.is_anonymous() or not current_user.confirmed \
+                or not current_user.adminr:
+            flash(f150)
+            return redirect(url_for('log_auth.signin'))
+        return f(*args, **kwargs)
+    return decorated_fn
 
 # ========================
 # UNUSED FUNCTIONS
@@ -139,6 +153,41 @@ def signout():
     return redirect(url_for('.home'))
 
 
+@log_auth.route('/adm_members', methods=['GET', 'POST'])
+@admin_required
+def adm_members():
+    """
+    We want to manipulate certain pieces of member data;
+    namely, the adminr, active and confirmed keys.
+    :return: updates the existing database.
+    """
+    if request.method == 'POST':
+        for mfd, ad, ac, co, member in zip(
+                request.form.getlist('markfordeletion'),
+                request.form.getlist('adminr'),
+                request.form.getlist('active'),
+                request.form.getlist('confirmed'),
+                Member.query.order_by(Member.id).all()
+        ):
+            if mfd: member.delete()
+            else: member.update(adminr=ad, active=ac, confirmed=co)
+    # Presentation of existing data
+    all_members = []
+    for member in Member.query.order_by(Member.id).all():
+        form = adminMember()
+        form.get_existing_data(member)
+        all_members.append(form)
+    if not all_members:
+        flash(f40)
+        return redirect(url_for('.home'))
+    return set_template('signing.html', all_members, '.adm_members',
+                        current_app.config['PAHDS']['adm_members'],
+                        current_app.config['TADATA']['adm_members'], 12
+                        )
+
+
+
+
 # ========================
 # SIGNUP
 # There is always going to be some sort of sign-up.
@@ -189,8 +238,9 @@ def confirm(token):
 @login_required
 def resend_token():
     token = current_user.generate_confirm_token()
-    send_email(current_user.email, 'Activate your Signin', 'confirm_body',
-               newuser=current_user, token=token)
+    SendEmail(current_user.email, 'Activate your Signin',
+              msgtype='on', template='confirm_body',
+              newuser=current_user, token=token)
     flash(f21)
     return redirect(url_for('.home'))
 
@@ -225,6 +275,7 @@ def profile():
 def sendsms():
     # token = current_user.generate_confirm_token()
     token, SMS = ' TEST TOKEN ', '+4478[8 DIGITS no spaces]@mmail.co.uk'
-    send_email(SMS, 'Activate your Signin', 'confirm_bodySMS',
-               newuser=current_user, token=token)
+    SendEmail(SMS, 'Activate your Signin',
+              msgtype='on', template='confirm_bodySMS',
+              newuser=current_user, token=token)
     return redirect(url_for('.home'))

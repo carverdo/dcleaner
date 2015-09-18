@@ -10,7 +10,7 @@ __project__ = 'Skeleton_Flask_v11'
 import os
 from config_templates import *
 from config_vars import PK, DBNAME
-
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 # ====================
 # CONFIG CLASSES
@@ -59,6 +59,23 @@ config = {
     'default': DevelConfig
 }
 
+# ====================
+# CONFIG OUR SCHEDULER
+# ====================
+def kickstart_scheduler(scheduler, config_name):
+    """
+    simple call to jobstore;
+    add any other features that you wish.
+    """
+    jobstores = {
+        'sqlalchemy': SQLAlchemyJobStore(
+            url=config[config_name].SQLALCHEMY_DATABASE_URI)
+    }
+    scheduler.configure(jobstores=jobstores)
+    scheduler.start()
+
+
+# =====================================
 if __name__ == '__main__':
     print config['development'].DEBUG
     print Config.DEVEL_DATABASE_NAME
