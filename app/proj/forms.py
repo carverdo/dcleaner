@@ -17,12 +17,12 @@ from .timer import DiariseTasks
 class TimerForm(Form, DiariseTasks):
     starter = DateTimeField('sta') #, default=datetime.now())
     ender = DateTimeField("end") #, default=datetime.now() + timedelta(minutes=10))
-    ner = FloatField(default=0.1)
+    ner = FloatField(default=0.5)
     task = SelectField('TasktoRun', choices=[(x, x) for x in
                                              DiariseTasks.get_functions().keys()]
     )
-    args = TextAreaField(default=(1,))  # default="enter your args here... 14, 'fixed',")
-    kwargs = TextAreaField(default={'a':1})  # default="and your kwargs here... {'a':1, 'b':2}")
+    args = TextAreaField(default=(['donal.carville@gmail.com'], 'Rugby Game', 5.0, 'Friday'))  # default="enter your args here... 14, 'fixed',")
+    kwargs = TextAreaField(default={'aa': 0})  # default="and your kwargs here... {'a':1, 'b':2}")
 
     @classmethod
     def get_args(cls):
@@ -46,7 +46,7 @@ class TimerForm(Form, DiariseTasks):
 
     def update_vals(self):
         self.starter.data = datetime.now()
-        self.ender.data = datetime.now() + timedelta(minutes=10)
+        self.ender.data = datetime.now() + timedelta(seconds=55)
         #self.process()
 
     def run_task(self):

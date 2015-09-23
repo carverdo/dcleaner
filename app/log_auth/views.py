@@ -271,8 +271,7 @@ def profile():
 @log_auth.route('/sendsms')
 @login_required
 def sendsms():
-    # token = current_user.generate_confirm_token()
-    token, SMS = ' TEST TOKEN ', '+4478[8 DIGITS no spaces]@mmail.co.uk'
+    token, SMS = ' TEST TOKEN ', '+447831196739@mmail.co.uk'
     SendEmail(SMS, 'Activate your Signin',
               msgtype='on', template='confirm_bodySMS',
               newuser=current_user, token=token)

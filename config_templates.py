@@ -12,7 +12,7 @@ class TemplateParameters(object):
         curtasks = 'Your scheduled tasks',
         profile = 'Change your Password',
         signin = 'Get logged in to begin...',
-        signup = 'Let\'s get you signed up...'
+        signup = 'Register to receive payments' #'Let\'s get you signed up...'
     )
     TADATA = dict(
         addtasks = 'timer_tdata.html',

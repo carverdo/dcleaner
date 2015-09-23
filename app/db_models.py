@@ -119,7 +119,7 @@ class Member(UserMixin, CRUDMixin, db.Model):
         self.save(self)
     # ===========================
     # ACTIVATION
-    def generate_confirm_token(self, expiry=3600):
+    def generate_confirm_token(self, expiry=3600):  # seconds
         s = Serializer(current_app.config['SECRET_KEY'], expiry)
         return s.dumps({'confirm': self.id})
     def confirm_token(self, token):

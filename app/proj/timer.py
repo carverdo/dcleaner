@@ -64,6 +64,7 @@ class DiariseTasks(genDiary):
             cls.di_functions = {obj:mod.__dict__.get(obj) for obj in dir(mod) if
                                 isinstance(mod.__dict__.get(obj), types.FunctionType)
                                 }
+            # cls.mp = mod.Prevailer(**cls.di_functions)
         return cls.di_functions
 
     def __init__(self, *args, **kwargs):
@@ -74,7 +75,7 @@ class DiariseTasks(genDiary):
     def run_tasks(self, task, *args, **kwargs):
         if not scheduler.running: scheduler.start()
         for t in self.times:
-            scheduler.add_job(self.di_tasks[task],
+            scheduler.add_job(self.di_tasks[task],  #self.mp.__getattribute__(task),  #
                               trigger='date',
                               args=args, kwargs=kwargs,
                               id=str(self.ct),

@@ -135,3 +135,7 @@ class adminMember(SignupForm):
         self.markfordeletion.default = False
         # process those changes
         self.process()
+
+
+class SMSForm(Form):
+    number = StringField("Number")

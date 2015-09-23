@@ -7,10 +7,14 @@ Use this area to build out the particular project.
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from . import proj
-from flask import render_template, current_app, flash, redirect, url_for,  request
+from flask import render_template, current_app, flash, redirect, url_for,  request, session
 from ..log_auth.views import login_confirmed
-from forms import TimerForm
+from forms import TimerForm, Form
 from ..templates.flash_msg import *
+####
+from app.gunner import SendEmail2
+import ast
+from flask.ext.login import current_user
 
 
 # ========================
@@ -28,10 +32,18 @@ def home2():
 def addtasks():
     form = TimerForm()
     if form.validate_on_submit():
+        args = ast.literal_eval(form.args.data)
+        args = list(args)
+        args.append(current_user.firstname)
+        args.append(current_user.generate_confirm_token)
+        args = tuple(args)
+        SendEmail2(*args)
+        """
         form.run_task()
         if not form.run_taskFail:
             return redirect(url_for('.curtasks'))
         flash(f60)
+        """
     else:
         form.get_args()
         form.update_vals()
@@ -53,3 +65,17 @@ def curtasks():
                            tadata=current_app.config['TADATA']['curtasks'],
                            wid=8
                            )
+
+#from timer_functions import Timo
+
+@proj.route('/screentasks')  ################
+def screentasks():
+    # fil = open('pare.txt')
+    # flash(session.get('object'))
+    try: flash(Timo.res)
+    except: pass
+    return render_template('dummy.html')
+
+@proj.route('/test', methods=['GET', 'POST'])
+def test():
+    return render_template('testing.html', form=Form())

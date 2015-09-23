@@ -91,6 +91,7 @@ Make sure procfile is beneath src root - specific instructions to heroku. Double
 `requirements.txt`. Login via website, create and name a new app (make it snappy - it's 
 a public url!). Go to Deploy and connect to GitHub... you're (halfway) done! Website will 
 show up but it's a dummy: you won't be able to log-in.
+NB Any pages with any references to dbase will not present properly.
  
 ## Error Checklist
 1. set create_app('production') / debug=False?
@@ -112,22 +113,22 @@ You still don't have a database.
 ### Promote
 In git bash if we haven't already, `heroku login`.  
 `heroku addons` will show us our databases.  
-`heroku pg:promote DATABASE -app [NAME OF APP]` (which means rewire DATABASE; test this by looking to connection
+`heroku pg:promote DATABASE --app [NAME OF APP]` (which means rewire DATABASE; test this by looking to connection
 setting `Psql` on the heroku dashboard). Not strictly necessary with only one db, but 
 it will re-title the db with an easier-to-remember colour-scheme name.
-### Capture Backup facility
-`herok pg:backups capture --app [APP NAME]`: captures this facility, ie now you can use 'backups'.
+### Capture/Backup facility
+`heroko pg:backups capture --app [APP NAME]`: captures this facility, ie now you can use 'backups'.
 
 
 ### Copy across a DB
 In pgAdmin right-click and `backup` to somewhere in dropbox. Copy the link which will look
-like this:
+like this (go into dropbox.com and share link):
 `https://www.dropbox.com/s/8a2cmqr9hho96z3/gscore_v0.dump?dl=0`  
 But adjust (see start; drop the end):
-`https://dl.dropboxusercontent.com/s/8a2cmqr9hho96z3/gscore_v0.dump`  
+`https://dl.dropboxusercontent.com/s/8a2cmqr9hho96z3/gscore_v0.dump`
 And trick the system into using this back-up to 'restore' our database -
-`heroku pg:backups restore ‘[DROPBOX LINK]’ [DATABASE] --app [APP NAME]` (keep the quotation
-marks; rid squares, use real link, real database name eg HEROKU_POSTGRES_COPPER_URL)  
+`heroku pg:backups restore '[DROPBOX LINK]' [DATABASE] --app [APP NAME]` (keep the single quotation
+marks - don't mistakenly use GRAVE ACCENTS!; rid squares, use real link, real database name eg HEROKU_POSTGRES_COPPER_URL)  
 Will get a destruction warning...
 Quick-check: heroku dashboard should now show correct number of tables.
 
