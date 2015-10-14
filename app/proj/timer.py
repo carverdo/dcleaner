@@ -73,20 +73,31 @@ class DiariseTasks(genDiary):
         self.ct = 0
 
     def run_tasks(self, task, *args, **kwargs):
-        if not scheduler.running: scheduler.start()
-        for t in self.times:
-            scheduler.add_job(self.di_tasks[task],  #self.mp.__getattribute__(task),  #
-                              trigger='date',
-                              args=args, kwargs=kwargs,
-                              id=str(self.ct),
-                              name=task,
-                              next_run_time=t,
-                              jobstore='sqlalchemy' #'default' #
-                              )
-            MemberSchedule.create(member_id=current_user.id, task_id=self.ct)
-            lg.logger.info("[{}] - added task to run at {}".format(datetime.now(), t))
-            print "[{}] - added task to run at - {}".format(datetime.now(), t)
-            self.ct = max(map(lambda x: int(x.id), self.remaining)) + 1
+        """
+        optionally we can run immediately (one of the kwargs)
+        but generally we run with a delay.
+        """
+        immed = kwargs.pop('immed')
+        if immed:
+            self.di_tasks[task](*args, **kwargs)
+            lg.logger.info("[{}] - ran task".format(datetime.now()))
+            print "[{}] - ran task".format(datetime.now())
+        else:
+            if not scheduler.running: scheduler.start()
+            for t in self.times:
+                scheduler.add_job(self.di_tasks[task],  #self.mp.__getattribute__(task),  #
+                                  trigger='date',
+                                  args=args, kwargs=kwargs,
+                                  id=str(self.ct),
+                                  name=task,
+                                  next_run_time=t,
+                                  jobstore='sqlalchemy' #'default' #
+                                  )
+                MemberSchedule.create(member_id=current_user.id, task_id=self.ct)
+                lg.logger.info("[{}] - added task to run at {}".format(datetime.now(), t))
+                print "[{}] - added task to run at - {}".format(datetime.now(), t)
+                try: self.ct = max(map(lambda x: int(x.id), self.remaining)) + 1
+                except: self.ct = 0
 
     # helper functions
     def get_remaining(self):

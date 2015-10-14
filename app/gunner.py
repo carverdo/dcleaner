@@ -6,6 +6,7 @@ import requests
 from threading import Thread
 from flask import render_template
 
+
 class SendEmail(object):
     fr = "Circadian Activate <postmaster@{}>".format(SANDBOX)
 
@@ -21,7 +22,15 @@ class SendEmail(object):
         }
         # we either have html messages or text-only messages
         if msgtype is not None:
-            self.data["html"] = render_template(template + '.txt', **kwargs)
+            try:
+                # our preference: building real html pages
+                temp_text = render_template('./guns/{}.html'.format(template), **kwargs)
+            except:
+                # fallback: string populating with html formatting
+                # needed with the scheduler
+                temp_text = open('./app/templates/guns/{}.txt'.format(template)).read()
+                temp_text = temp_text.format(**kwargs)
+            self.data["html"] = temp_text
         else:
             self.data["text"] = template
 
@@ -37,38 +46,6 @@ class SendEmail(object):
         thr = Thread(target=self.send_async_email, args=[self.data])
         thr.start()
         return thr
-
-##############################
-class SendEmail2(object):
-    fr = "Circadian Activate <postmaster@{}>".format(SANDBOX)
-
-    def __init__(self, *args, **kwargs):
-        self.build_message(*args, **kwargs)
-        self.send_email()
-
-    def build_message(self, recip, subject,
-                      amount, day, payee, token, **kwargs):
-        self.data = {
-            "from": self.fr,
-            "to": recip,
-            "subject": subject
-        }
-        kwargs = {'amount': amount, 'day': day, 'payee': payee, 'token': token}
-        self.data["html"] = render_template('payment_request.txt', **kwargs)
-
-    @staticmethod
-    def send_async_email(data):
-        requests.post(
-            MAILGUN_URL.format(SANDBOX),
-            auth=("api", MAILGUN_KEY),
-            data=data
-        )
-
-    def send_email(self):
-        thr = Thread(target=self.send_async_email, args=[self.data])
-        thr.start()
-        return thr
-
 
 
 # ==========================================

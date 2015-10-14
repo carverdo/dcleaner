@@ -5,16 +5,17 @@
     <div id="rcorners1" style="border-radius: 12px; background-color: #FFBA66; width: 400px; height: 170px; padding: 10px;">
         <p style="font-weight:bold">
             If you wish to authorise
-            <h2 style="color: #545454">GBP {{amount}}</h2>
-            to be sent from your current account
-            <h2 style="color: #545454">on {{day}}</h2>
+            <h2 style="color: #545454">GBP {amount}</h2>
+            to be sent from your current account on
+            <h2 style="color: #545454">{day}</h2>
             to
-            <h2 style="color: #545454">{{payee}}</h2>
+            <h2 style="color: #545454">{payee}</h2>
             please click
-            <a href="{{ url_for('proj.home2', token=token, _external=True) }}">here</a>
+            <a href="#">here</a>
             within the next 10 minutes.
-            <br>
             Otherwise ignore this message.
+        </p>
+        <p>
             Doing nothing allows link to expire and NO money will leave your account.
         </p>
         &nbsp;

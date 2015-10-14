@@ -4,10 +4,14 @@
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask.ext.wtf import Form  # Seems odd (this line not next) but correct: wtf Form is slightly different
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, \
+from wtforms import StringField, PasswordField, BooleanField, \
     SelectField, validators, IntegerField
 from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
-from ..db_models import Member
+from ..db_models import Member, Visit
+from pass_stren import PasswordCalc
+pc = PasswordCalc()
+from flask import flash
+from ..templates. flash_msg import *
 
 
 # ==========================
@@ -40,6 +44,10 @@ class SignupForm(Form):
         if Member.query.filter_by(email=self.email.data).first():
             self.email.errors.append("That email is already taken")
             return False
+        if pc.get_entropy(self.password.data) == 'weak':
+            # self.password.errors.append("That password is too simple")
+            flash(f15)
+            return True
         else:
             return True
 
@@ -137,5 +145,28 @@ class adminMember(SignupForm):
         self.process()
 
 
+class adminVisits(Form):
+    """
+
+    """
+    id = IntegerField()
+    num_visits = StringField("# Visits")
+    num_ips = StringField("# IPs")
+    lastdate = StringField("Last Visit")
+
+    def get_existing_data(self, member_id):
+        # user-entry data
+        memvis = Visit.query.filter_by(member_id=member_id).order_by(Visit.date)
+        self.id.default = member_id
+        self.num_visits.default = memvis.count()
+        self.num_ips.default = len(set([m.ip_address for m in memvis]))  # len(set(memvis.with_entities('ip_address')))
+        self.lastdate.default = memvis[-1].date
+        # process those changes
+        self.process()
+
+
+# ==========================
+# USED?
+# ==========================
 class SMSForm(Form):
     number = StringField("Number")

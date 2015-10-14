@@ -5,7 +5,7 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from flask import render_template, redirect, url_for, flash, \
     current_app, request, abort
-from forms import SignupForm, SigninForm, ChangePass, adminMember
+from forms import SignupForm, SigninForm, ChangePass, adminMember, adminVisits
 from flask.ext.login import login_user, logout_user, \
     login_required, current_user
 from datetime import datetime
@@ -23,9 +23,12 @@ from urlparse import urlparse, urljoin
 # HELPER FUNCTIONS
 # ========================
 # @cache.cached(timeout=20)  # NO GOOD FOR THE FLASHES!
-def set_template(template, form, fn, patex, tadata, wid=4):
-    return render_template(template, form=form, fn=fn,
-                           patex=patex, tadata=tadata, wid=wid)
+def set_template(template, form, endpoint, panel_args, kwargs={}):
+    return render_template(template,
+                           form=form,
+                           endpoint=endpoint,
+                           panel_args=panel_args,
+                           kwargs=kwargs)
 
 
 def redirect_already_authenticateds(current_user):
@@ -93,6 +96,7 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_fn
 
+
 # ========================
 # UNUSED FUNCTIONS
 # ========================
@@ -136,13 +140,13 @@ def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
     Visit.create(**get_geodata(True, _key_modifier))
-    return render_template('home.html', ct=datetime.utcnow())
+    return render_template('./log_auth/home.html', ct=datetime.utcnow())
 
 
 @log_auth.route('/contactus')
 ## @cache.cached(timeout=200)
 def contactus():
-    return render_template('contactus.html')
+    return render_template('./log_auth/contactus.html')
 
 
 @log_auth.route('/signout')
@@ -180,10 +184,36 @@ def adm_members():
     if not all_members:
         flash(f40)
         return redirect(url_for('.home'))
-    return set_template('signing.html', all_members, '.adm_members',
-                        current_app.config['PAHDS']['adm_members'],
-                        current_app.config['TADATA']['adm_members'], 12
-                        )
+    return set_template('panelbuilder.html', all_members, '.adm_members',
+                        panel_args=dict(
+                            patex=current_app.config['PAHDS']['adm_members'],
+                            tadata=current_app.config['TADATA']['adm_members'],
+                            wid=12
+                        ))
+
+@log_auth.route('/visits')
+def visits():
+    # Presentation of group/summary data
+    memids = set(v.member_id for v in Visit.query)
+    all_data = []
+    for m_id in memids:
+        form = adminVisits()  # excessive if we don't allow edits
+        form.get_existing_data(m_id)
+        all_data.append(form)
+    # Row click activates detail for member
+    if request.args:
+        try: m_id = int(request.args.get('m'))
+        except: m_id = None
+        all_data = Visit.query.filter_by(member_id=m_id).order_by(Visit.date)
+        tadata = current_app.config['TADATA']['adm_INDIvisits']
+    else:
+        tadata = current_app.config['TADATA']['adm_visits'],
+    return set_template('panelbuilder.html', all_data, '.visits',
+                        panel_args=dict(
+                            patex=current_app.config['PAHDS']['adm_visits'],
+                            tadata=tadata,
+                            wid=12
+                        ))
 
 
 # ========================
@@ -201,10 +231,11 @@ def signup():
     if redir:
         return redirect(url_for(redir))
     else:
-        return set_template('signing.html', form, '.signup',
-                            current_app.config['PAHDS']['signup'],
-                            current_app.config['TADATA']['signup']
-                            )
+        return set_template('panelbuilder.html', form, '.signup',
+                            panel_args=dict(
+                                patex=current_app.config['PAHDS']['signup'],
+                                tadata=current_app.config['TADATA']['signup']
+                            ))
 
 
 @log_auth.route('/signin', methods=['GET', 'POST'])
@@ -216,10 +247,12 @@ def signin():
     if redir:
         return redirect(url_for(redir))
     else:
-        return set_template('signing.html', form, '.signin',
-                            current_app.config['PAHDS']['signin'],
-                            current_app.config['TADATA']['signin']
-                            )
+        return set_template('panelbuilder.html', form, '.signin',
+                            panel_args=dict(
+                                patex=current_app.config['PAHDS']['signin'],
+                                tadata=current_app.config['TADATA']['signin']
+                            ))
+
 
 # ========================
 # ACTIVATION TOKEN HANDLING
@@ -237,7 +270,7 @@ def confirm(token):
 def resend_token():
     token = current_user.generate_confirm_token()
     SendEmail(current_user.email, 'Activate your Signin',
-              msgtype='on', template='confirm_body',
+              msgtype='on', template='./log_auth/confirm_body',
               newuser=current_user, token=token)
     flash(f21)
     return redirect(url_for('.home'))
@@ -258,16 +291,18 @@ def profile():
         return redirect(url_for(
             resolve_confirm_status(current_user)
         ))
-    return set_template('signing.html', form, '.profile',
-                        current_app.config['PAHDS']['profile'],
-                        current_app.config['TADATA']['profile']
-                        )
+    return set_template('panelbuilder.html', form, '.profile',
+                        panel_args=dict(
+                            patex=current_app.config['PAHDS']['profile'],
+                            tadata=current_app.config['TADATA']['profile']
+                        ))
 
 
 # ========================
 # UNDER TESTING
 # just tinkering with formatting; not quite right
 # ========================
+########################################
 @log_auth.route('/sendsms')
 @login_required
 def sendsms():

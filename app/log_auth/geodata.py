@@ -1,24 +1,18 @@
+"""
+HAVE NOT TESTED FOR SPEED (but second one seems better)
+
+Decent link here about ip spoofing -
+http://esd.io/blog/flask-apps-heroku-real-ip-spoofing.html
+
+I think it has already been incorporated and my code works on his committed change.
+"""
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-
 from json import loads
-from re import compile, VERBOSE
 from urllib2 import urlopen
 from flask import request
 from flask.ext.login import current_user
-
-# HAVE NOT TESTED FOR SPEED (but second one seems better)
-GEO_URL_0 = "http://freegeoip.net/json/{}"
-GEO_URL ='http://www.geoplugin.net/json.gp?ip={}'
-
-VALID_IP = compile(r"""
-\b
-(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
-\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
-\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
-\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
-\b
-""", VERBOSE)
+from config_vars import GEO_URL, VALID_IP
 
 
 # ========================
@@ -28,6 +22,7 @@ def _key_modifier(data):
     for k in data.keys(): data[k.replace('geoplugin_', '')] = data.pop(k)
     data['zip_code'] = data.pop('areaCode')
     return data
+
 
 def _gen_shortdata(data, ip):
     """Truncate the data provided; add new data"""
@@ -55,6 +50,7 @@ def get_geodata(switched_on=False, keymod_fn=None, geo_url=GEO_URL):
     # ip = request.access_route[0] or request.remote_addr
     # ip = request.headers.getlist('X-Forwarded-For', request.remote_addr)
     # ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+
     ip = request.environ.get('REMOTE_ADDR', request.remote_addr)
     if not VALID_IP.match(ip):
         raise ValueError('Invalid IPv4 format')

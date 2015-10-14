@@ -77,6 +77,17 @@ def kickstart_scheduler(scheduler, config_name):
     scheduler.start()
 
 
+# ====================
+# 3. CONFIG STRIPE
+# ====================
+def setup_stripe(stripe, stripe_keys):
+    """
+    helper
+    """
+    stripe.api_key = stripe_keys['secret_key']
+    return stripe
+
+
 # =====================================
 if __name__ == '__main__':
     print config['development'].DEBUG

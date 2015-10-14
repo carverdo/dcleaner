@@ -181,7 +181,7 @@ def load_user(user_id):
 
 
 if __name__ == '__main__':
-    mem = Member('pat','brok','PB','fish', 0)
+    mem = Member('pat', 'brok', 'PB', 'fish', 0)
     print mem
     print mem.pwdhash
     print mem.check_password('Fish'), mem.check_password('fish')

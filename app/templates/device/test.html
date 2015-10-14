@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block redder %}
+{% endblock %}
+
+{% block content %}
+    <label>Value: <input type="text" id="theValue"></label>
+    <input type="button" id="setValue" value="Set">
+    <script>
+        (function() {
+          // Use an input to show the current value and let
+          // the user set a new one
+          var input = document.getElementById("theValue");
+
+          // Reading the value, which was stored as "theValue"
+          if (localStorage && 'theValue' in localStorage) {
+            input.value = localStorage.theValue;
+          }
+
+          document.getElementById("setValue").onclick = function () {
+            // Writing the value
+            localStorage && (localStorage.theValue = input.value);
+          };
+        })();
+    </script>
+
+    <div id="echoT"></div>
+    <script type="text/javascript">
+        var resHist = [];
+        var task = flashText;
+        var millis = 500;
+        var nIntervId;
+        repeatit(task, millis);
+
+        function repeatit(task, millis) {
+          nIntervId = setInterval(task, millis);
+        }
+
+        function flashText() {
+          var oElem = document.getElementById("echoT");
+          oElem.style.color = oElem.style.color == "red" ? "blue" : "red";
+          prevail = document.getElementById("theValue").value;
+          resHist.push(prevail);
+          oElem.innerHTML = resHist;
+        }
+
+        function stopTextColor() {
+          clearInterval(nIntervId);
+        }
+    </script>
+    <button onclick="stopTextColor();">Stop</button>
+
+{% endblock %}

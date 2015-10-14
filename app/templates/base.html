@@ -17,11 +17,12 @@
     <!-- FAVICON -->
     <link rel="shortcut icon" href="http://faviconist.com/icons/135fe75b1f4053c28c33602a6050b70f/favicon.ico">
     <!-- BOOTSTRAP JASNY (for mobile?) -->
-    <!-- <link href="static/css/jasny-bootstrap.min.css" rel="stylesheet"> -->
+    <!--<link href="static/css/jasny-bootstrap.min.css" rel="stylesheet"> -->
     <!-- OTHER -->
     <!--<link href="/static/css/rangeslider.css" rel="stylesheet"> -->
     <!-- MY STYLING OVER-RIDES -->
     <link href="/static/css/main_new.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
     {% block head %}
     {% endblock %}
 </head>
@@ -63,7 +64,6 @@
                             {% endif %}
                             {{ macros.navbar_titles('log_auth.signout', 'signOut') }}
                         {% else %}
-                            {{ macros.navbar_titles('log_auth.signup', 'signUp') }}
                             {{ macros.navbar_titles('log_auth.signin', 'signIn') }}
                         {% endif %}
                         {{ macros.navbar_titles('log_auth.contactus', 'contactUs') }}
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Latest javascript -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
     <script src="/static/js/bootstrap.min.js"></script>
     <!-- <script src="/static/js/moment.min.js"></script> -->
     <!-- double curly moment.include_moment() double curly -->
@@ -106,7 +106,7 @@
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="/static/js/graph.js"></script>
     {% endif %}
-    <!-- <script src="static/js/jasny-bootstrap.min.js"></script> -->
+    <script src="static/js/jasny-bootstrap.min.js"></script>
     <!-- <script src="/static/js/rangeslider.min.js"></script> -->
 
 </body>

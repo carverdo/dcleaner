@@ -5,21 +5,26 @@
 
 
 <!-- STRUCTURE OF FORMS FOR DATA COLLECTION -->
-{% macro form_pres(fn, form, patex, tadata, wid=4, sched_rem=None) %}
-    <form action="{{ url_for(fn, **kwargs) }}" method="post">
+{% macro form_pres2(endpoint, form, panel_args, kwargs={}) %}
+    {% if endpoint == '' %}
+        <form action="" method="post">
+    {% else %}
+        <form action="{{ url_for(endpoint, **kwargs) }}" method="post">
+    {% endif %}
         {{ form.csrf_token }}
-        <div class="col-xs-12 col-md-{{wid}}">
-            {{ create_masterpanel(form, patex, tadata, sched_rem) }}
-        </div>
+        {{ create_masterpanel2(form, **panel_args) }}
     </form>
 {% endmacro %}
 
 <!-- LOOK AND FEEL OF THE PANEL (HOLDING THE FORM)-->
-{% macro create_masterpanel(form, patex, tadata, sched_rem=None) %}
-<div class="panel">
-    <div class="panel-heading btn-success"><h2 style="font-size:18px"> {{ patex }} </h2></div>
-    <div class="panel-body" align="center">
-        {% include tadata %}
+{% macro create_masterpanel2(form, patex, tadata, wid=4, sched_rem=None,
+                             stripedata=None) %}
+<div class="col-xs-12 col-md-{{wid}}">
+    <div class="panel">
+        <div class="panel-heading btn-success"><h2 style="font-size:18px"> {{ patex }} </h2></div>
+        <div class="panel-body" align="center">
+            {% include tadata %}
+        </div>
     </div>
 </div>
 {% endmacro %}

@@ -16,11 +16,12 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
+import stripe
 # from flask.ext.moment import Moment
 ## from flask.ext.wtf.csrf import CsrfProtect
 ## from flask.ext.cache import Cache
-from config import config, kickstart_scheduler
-from config_vars import LOGOUT
+from config import config, kickstart_scheduler, setup_stripe
+from config_vars import LOGOUT, STRIPE_KEYS
 from logs.LogGenerator import GenLogger
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -37,7 +38,8 @@ toolbar = DebugToolbarExtension()
 ## cache = Cache()
 lg = GenLogger(LOGOUT)
 scheduler = BackgroundScheduler()
-
+stripe = setup_stripe(stripe, STRIPE_KEYS)
+bosh = 4
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -55,9 +57,15 @@ def create_app(config_name):
     from .log_auth import log_auth as la_blueprint
     app.register_blueprint(la_blueprint)
 
-    from .proj import proj as dummy_blueprint
-    app.register_blueprint(dummy_blueprint)
+    from .proj import proj as proj_blueprint
+    app.register_blueprint(proj_blueprint)
 
-    return app # , scheduler
+    from .paym import paym as cash_blueprint
+    app.register_blueprint(cash_blueprint)
+
+    from .device import devy as devy_blueprint
+    app.register_blueprint(devy_blueprint)
+
+    return app
 
 

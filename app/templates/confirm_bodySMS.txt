@@ -1,2 +1,0 @@
-Copy paste this TEST link into your browser: {{ token }}
-{{ url_for('log_auth.confirm', token=token, _external=True) }}

@@ -1,0 +1,16 @@
+{% import 'macros.html' as macros %}
+
+{{ macros.row_pres("fa fa-commenting fa-lg", form.d_description, "testDescription") }}
+{{ macros.row_pres("fa fa-money fa-lg", form.d_currency, "gbp") }}
+{{ macros.row_pres("fa fa-battery-half fa-lg", form.d_pounds, "Does not matter") }}
+
+<script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-image="https://s3.amazonaws.com/stripe-uploads/acct_16su3IL4CwdzCNykmerchant-icon-1444219712767-Circadian%20Orange%20Logo%20Only.png"
+    data-key="{{stripedata['p_key']}}"
+    data-name="NAME_TITLE_STATIC"
+    data-description="DESC_TITLE_STATIC"
+    data-currency="{{stripedata['currency']}}"
+    data-amount="stripedata['pence'] DELIBERATELY EMPTY"
+    data-locale="auto">
+</script>

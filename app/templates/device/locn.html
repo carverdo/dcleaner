@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block redder %}
+{% endblock %}
+
+{% block content %}
+    <p id="longlat"></p>
+
+    <script>
+        getLocation();
+        var x = document.getElementById("longlat");
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+        }
+    </script>
+{% endblock %}
