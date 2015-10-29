@@ -71,22 +71,27 @@ def s3_delete(bucket, key):
 
 
 def s3_download(bucket, d_name):
-    key = bucket.new_key(d_name)
+    # key = bucket.new_key(d_name)
+    key = bucket.get_key(d_name)
     try:
         name_only = os.path.split(key.name)[-1]
-        flash(name_only)
     except:
-        flash('no name_only')
+        name_only = key.name
+    flash(name_only)
     try:
         directory = os.path.join(os.environ['HOMEPATH'], 'downloads')
         flash(directory)
-        flash(os.path.exists(directory))
     except:
         flash('no direct')
-    # if not os.path.exists(directory):
-    #     os.makedirs(directory)
-    # key.get_contents_to_filename(os.path.join(directory, name_only))
-    # flash(f72.format(d_name))
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        flash('made dory')
+    try:
+        key.get_contents_to_filename(os.path.join(directory, name_only))
+        flash(f72.format(d_name))
+        flash(os.path.join(directory, name_only))
+    except:
+        pass
 
 
 # ==================================================
@@ -144,10 +149,10 @@ def download():
         d_name = request.args.get('d')
         if d_name:
             s3_delete(bucket, d_name)
-            return redirect(url_for('.download'))
         else:
             s_name = request.args.get('s')
             s3_download(bucket, s_name)
+        return redirect(url_for('.download'))
     if not bucket: form = []
     else: form = bucket.list()
     return render_template('panelbuilder.html',
