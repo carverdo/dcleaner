@@ -82,10 +82,14 @@ def s3_download(bucket, d_name):
         directory = os.path.join(os.environ['HOMEPATH'], 'downloads')
         flash(directory)
     except:
+        directory = 'C:/dawnloads'
         flash('no direct')
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-        flash('made dory')
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            flash('made dory')
+    except:
+        flash('couldnt make dory')
     try:
         key.get_contents_to_filename(os.path.join(directory, name_only))
         flash(f72.format(d_name))
