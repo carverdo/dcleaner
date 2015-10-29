@@ -72,12 +72,21 @@ def s3_delete(bucket, key):
 
 def s3_download(bucket, d_name):
     key = bucket.new_key(d_name)
-    name_only = os.path.split(key.name)[-1]
-    directory = os.path.join(os.environ['HOMEPATH'], 'downloads')
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    key.get_contents_to_filename(os.path.join(directory, name_only))
-    flash(f72.format(d_name))
+    try:
+        name_only = os.path.split(key.name)[-1]
+        flash(name_only)
+    except:
+        flash('no name_only')
+    try:
+        directory = os.path.join(os.environ['HOMEPATH'], 'downloads')
+        flash(directory)
+        flash(os.path.exists(directory))
+    except:
+        flash('no direct')
+    # if not os.path.exists(directory):
+    #     os.makedirs(directory)
+    # key.get_contents_to_filename(os.path.join(directory, name_only))
+    # flash(f72.format(d_name))
 
 
 # ==================================================

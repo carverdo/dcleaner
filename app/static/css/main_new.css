@@ -28,7 +28,7 @@ h1, h2 {
     filter: none;
     border: none;
     box-shadow: none;
-    background-color: #EBC285;
+    background-color: #DD9933;
     height: 20px;
 
     padding-top: 0px;
@@ -58,6 +58,10 @@ h1, h2 {
 
 .navbar-nav .label{
     font-family:Oswald;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    background-color: #F3DBB6;
 }
 
 /* for mesages */

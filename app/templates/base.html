@@ -50,62 +50,50 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="#"><h4></h4></a></li>
-
                         {% if current_user.is_authenticated() %}
-                            {{ macros.navbar_titles('log_auth.signout', 'signOut') }}
+                            {{ macros.navbar_titles('log_auth.signout', 'signOut', shape='label') }}
                             {% if not current_user.confirmed %}
-                                {{ macros.navbar_titles('log_auth.resend_token', 'resendToken', 'warning') }}
+                                {{ macros.navbar_titles('log_auth.resend_token', 'resendToken', 'warning', shape='label') }}
                             {% else %}
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><h3><span class="label label-info"> Tasks </span></h3></a>
+                                    {{ macros.navbar_drops('profile') }}
                                     <ul class="dropdown-menu">
-                                        {{ macros.navbar_titles('proj.addtasks', 'addTasks', 'info') }}
-                                        {{ macros.navbar_titles('proj.curtasks', 'manageTasks', 'info') }}
-                                        <li><a href="#">addTasks</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><h3><span class="label label-warning"> profile </span></h3></a>
-                                    <ul class="dropdown-menu">
-                                        {{ macros.navbar_titles('log_auth.profile', 'profile', 'info') }}
+                                        {{ macros.navbar_titles2('log_auth.profile', 'myLogin', 'p') }}
                                         {% if current_user.adminr %}
-                                            {{ macros.navbar_titles('log_auth.adm_members', 'manageUsers', 'danger') }}
+                                            {{ macros.navbar_titles2('log_auth.adm_members', 'manageUsers', 'p') }}
                                         {% endif %}
                                     </ul>
                                 </li>
+                                <li class="dropdown">
+                                    {{ macros.navbar_drops('Tasks', 'info') }}
+                                    <ul class="dropdown-menu">
+                                        {{ macros.navbar_titles2('proj.addtasks', 'addTasks', 'p') }}
+                                        {{ macros.navbar_titles2('proj.curtasks', 'manageTasks', 'p') }}
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    {{ macros.navbar_drops('fileManager', 'info') }}
+                                    <ul class="dropdown-menu">
+                                        {{ macros.navbar_titles2('updown.upload', 'upload', 'p') }}
+                                        {{ macros.navbar_titles2('updown.download', 'download', 'p') }}
+                                        {% if current_user.adminr %}
+                                            {{ macros.navbar_titles2('updown.keyrotate', 'rotate', 'p') }}
+                                            {{ macros.navbar_titles2('updown.keyremove', 'remove', 'p') }}
+                                            {{ macros.navbar_titles2('updown.adm_bucketmap', 'bucketmap', 'p') }}
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    {{ macros.navbar_drops('device', 'info') }}
+                                    <ul class="dropdown-menu">
+                                        {{ macros.navbar_titles2('device.locn', 'locn', 'p') }}
+                                        {{ macros.navbar_titles2('device.orientn', 'orientn', 'p') }}
+                                        {{ macros.navbar_titles2('device.motion', 'motion', 'p') }}
+                                    </ul>
+                                </li>
+                                {{ macros.navbar_titles('paym.stramount', 'payment', 'primary', shape='label') }}
                             {% endif %}
-
                         {% endif %}
-
-                        {% if current_user.is_authenticated() %}
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><h3><span class="label label-info"> fileManager </span></h3></a>
-                                <ul class="dropdown-menu">
-                                    {{ macros.navbar_titles('updown.upload', 'upload') }}
-                                    {{ macros.navbar_titles('updown.download', 'download') }}
-                                    {% if current_user.adminr %}
-                                        {{ macros.navbar_titles('updown.keyrotate', 'rotate', 'warning') }}
-                                        {{ macros.navbar_titles('updown.keyremove', 'remove', 'danger') }}
-                                        {{ macros.navbar_titles('updown.adm_bucketmap', 'bucketmap', 'warning') }}
-                                    {% endif %}
-                                </ul>
-                            </li>
-
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><h3><span class="label label-info"> device </span></h3></a>
-                                <ul class="dropdown-menu">
-                                    {{ macros.navbar_titles('device.locn', 'locn') }}
-                                    {{ macros.navbar_titles('device.orientn', 'orientn') }}
-                                    {{ macros.navbar_titles('device.motion', 'motion') }}
-                                </ul>
-                            </li>
-
-                            {{ macros.navbar_titles('paym.stramount', 'payment', 'primary') }}
-
-                        {% endif %}
-
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /container -->
