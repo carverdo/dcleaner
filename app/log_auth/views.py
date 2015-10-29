@@ -13,8 +13,8 @@ from . import log_auth
 from ..templates.flash_msg import *
 from ..db_models import Member, Visit
 ## from .. import cache
-from .. import lg  # don't auto-delete: see below
-from geodata import get_geodata, _key_modifier
+# from .. import lg  # don't auto-delete: see below
+# from geodata import get_geodata, _key_modifier  # not used as we use javascript approach now.
 from ..gunner import SendEmail
 from functools import wraps
 from urlparse import urlparse, urljoin
@@ -139,8 +139,8 @@ def _url_is_valid(target):
 def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
-    Visit.create(**get_geodata(True, _key_modifier))
-    return render_template('./log_auth/home.html', ct=datetime.utcnow())
+    # Visit.create(**get_geodata(True, _key_modifier))
+    return render_template('./log_auth/home.html', ct=datetime.utcnow())  #
 
 
 @log_auth.route('/contactus')
@@ -311,3 +311,12 @@ def sendsms():
               msgtype='on', template='confirm_bodySMS',
               newuser=current_user, token=token)
     return redirect(url_for('.home'))
+
+"""
+could not get this working properly; see template for more
+from pass_stren import PasswordCalc
+pc = PasswordCalc()
+@log_auth.route('/test')
+def test():
+    return render_template('./log_auth/test.html', pc=pc)
+"""

@@ -4,12 +4,12 @@
 {% endblock %}
 
 {% block content %}
-    <script>
-         $(function() {
+    <script type=text/javascript>
+        $(function() {
             $("#submitBtn").click(function() {
-                 $.ajax({
+                $.ajax({
                     type: "GET",
-                    url: "./echo/",
+                    url: "./test2echo/",
                     contentType: "application/json; charset=utf-8",
                     data: { echoValue: $('input[name="echoText"]').val() },
 
@@ -21,7 +21,7 @@
                     }
                 });
             });
-          });
+        });
     </script>
     <input class="form-control input-md" type="text" size="10" id="echoText" name="echoText"
            placeholder="Matthew" style="width:50%">

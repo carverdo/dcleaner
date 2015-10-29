@@ -174,6 +174,28 @@ class MemberSchedule(CRUDMixin, db.Model):
             .format(self.member_id, self.task_id)
 
 
+class MemberBucketStore(CRUDMixin, db.Model):
+    __tablename__ = 'memberbucketstore'
+    id = Column(Integer, primary_key=True)
+    member_id = Column(Integer, ForeignKey('member.id'))
+    bucket = Column(String, default=None)
+    # next columns are all chosen/populated by the boto.iam interface
+    user_name = Column(String, nullable=False)
+    access_key_selector = Column(String(30))
+    access_key_id = Column(String, nullable=False)
+    secret_access_key = Column(String, nullable=False)
+    create_date = Column(DateTime())
+    status = Column(String(10))
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def __repr__(self):
+        return '<S3_access ({}, {}) to {}>'.format(
+            self.member_id, self.user_name, self.bucket)
+
+
 # flask-login needs this definition
 @login_manager.user_loader
 def load_user(user_id):

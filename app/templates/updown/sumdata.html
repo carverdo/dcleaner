@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block redder %}
+{% endblock %}
+
+{% block content %}
+    <h1>Excel file upload (csv, tsv, csvz, tsvz only)</h1>
+    <form action="" method=post enctype=multipart/form-data>
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1" style="background-color:orange">
+                <input type=file name=file>
+            </span>
+            <input type=submit class="btn btn-primary" value=sumData aria-describedby="basic-addon1">
+        </div>
+    </form>
+{% endblock %}

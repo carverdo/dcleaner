@@ -18,3 +18,8 @@ f150 = 'Sorry, let\'s redirect you somewhere more useful.'
 f60 = 'No function scheduled: your function and arguments don\'t match OR, ' \
       'your end time is too early.'
 f61 = 'Completed.'
+
+f70 = 'Uploaded successfully. Filename: {}'
+f71 = 'Successfully deleted {}.'
+f72 = 'Successfully downloaded {}.'
+f170 = 'Talk to your admin. You don\'t appear to have authority to {}.'

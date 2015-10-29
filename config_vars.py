@@ -41,12 +41,12 @@ VALID_IP = compile(r"""
 # ====================
 MAILGUN_URL = 'https://api.mailgun.net/v3/{}/messages'
 SANDBOX = 'sandbox26a6aabbd3e946feba81293c4b4d9dcc.mailgun.org'
-MAILGUN_KEY = os.environ.get('MAILGUN_KEY', None)
+MAILGUN_KEY = os.environ.get('MAILGUN_KEY')
 
 # ====================
 # STRIPE VARIABLES
 # ====================
-STRIPE_KEYS = os.environ.get('STRIPE_KEYS', None)
+STRIPE_KEYS = os.environ.get('STRIPE_KEYS')
 if STRIPE_KEYS is not None:
     tmp = STRIPE_KEYS.split(' ')
 else: tmp = [None, None]
@@ -55,9 +55,22 @@ STRIPE_KEYS = {
     'publishable_key': tmp[1]
     }
 
+# ====================
+# AWS VARIABLES
+# ====================
+AWS_KEYS = os.environ.get('AWS_KEYS')
+if AWS_KEYS is not None:
+    tmp = AWS_KEYS.split(' ')
+else: tmp = [None, None]
+AWS_KEYS = {
+    'S3_KEY': tmp[0],
+    'S3_SECRET': tmp[1]
+    }
+
 
 # ========================
 if __name__ == '__main__':
     print PK
     print MAILGUN_KEY
     print STRIPE_KEYS
+    print AWS_KEYS

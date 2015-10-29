@@ -3,6 +3,8 @@ __project__ = 'Skeleton_Flask_v11'
 
 from . import devy
 from flask import render_template, request, jsonify
+from app.db_models import Visit
+from app.log_auth.geodata import get_clientdata
 
 
 @devy.route('/locn')
@@ -15,21 +17,44 @@ def orientn():
     return render_template('./device/orientn.html')
 
 
-@devy.route('/ajaxsub', methods=['GET', 'POST'])
-def ajaxsub():
-    return render_template('./device/ajax.html')
+@devy.route('/motion')
+def motion():
+    return render_template('./device/motion.html')
 
 
+# =================================================
 @devy.route('/test')
 def test():
     return render_template('./device/test.html')
 
 
-@devy.route('/echo/', methods=['GET'])
-def echo():
-    ret_data = {"value": request.args.get('echoValue')}
+@devy.route('/test2')
+def test2():
+    return render_template('./device/test2.html')
+
+
+@devy.route('/test2echo/', methods=['GET'])
+def test2echo():
+    ret_data = {'value': request.args.get('echoValue')}
     return jsonify(ret_data)
 
+
+# =================================================
+# CALCULATION SCRIPT
+# =================================================
+@devy.route('/_clientdata')
+def clientdata():
+    """
+    This function is called by locn_script as it determines client data.
+    That data is processed here, and, if desired, sent back.
+    """
+    # basic client data
+    data = get_clientdata()
+    # plus, better geographically generated client data (more accurate)
+    data['latitude'] = request.args.get('lat', 0, type=float)
+    data['longitude'] = request.args.get('long', 0, type=float)
+    Visit.create(**data)
+    return jsonify(result=data.values())
 
 
 """

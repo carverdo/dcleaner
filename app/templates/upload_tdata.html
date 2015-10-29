@@ -1,0 +1,7 @@
+{% import 'macros.html' as macros %}
+{{ macros.row_pres("fa fa-cloud-upload", form.attach) }}
+{{ macros.row_pres("fa fa-file", form.subdir, "Add subdir. if desired") }}
+<button type="submit" class="btn btn-primary btn-block">upload</button>
+<br>
+{{ macros.row_pres("fa fa-ellipsis-h", form.bucket, "Bucket ref (admin only)") }}
+

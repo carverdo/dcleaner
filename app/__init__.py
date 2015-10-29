@@ -66,6 +66,9 @@ def create_app(config_name):
     from .device import devy as devy_blueprint
     app.register_blueprint(devy_blueprint)
 
+    from .updown import updo as updo_blueprint
+    app.register_blueprint(updo_blueprint)
+
     return app
 
 

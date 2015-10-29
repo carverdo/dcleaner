@@ -4,21 +4,7 @@
 {% endblock %}
 
 {% block content %}
-    <p id="longlat"></p>
-
-    <script>
-        getLocation();
-        var x = document.getElementById("longlat");
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
-        function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude +
-            "<br>Longitude: " + position.coords.longitude;
-        }
-    </script>
+    <p id="lalo"></p>
+    <p id="result"></p>
+    <script src="static/js/snips/locn.js"></script>
 {% endblock %}

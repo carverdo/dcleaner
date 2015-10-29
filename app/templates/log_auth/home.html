@@ -6,11 +6,30 @@
 {% block content %}
 <div>
     <!-- <p align="right"> DOUBLE CURLY moment(ct, local=True).format('Do MMM YYYY, h:mm:ss a') DOUBLE CURLY</p>  -->
-    <p align="right"> {{ct}} </p>
-    <br><br><br>
-    <div class="jumbotron" id="big-logo">
-        <h1>splash <small>Page.</small></h1>
-    </div>
-    <br><br><br><br><br><br><br><br><br>
 </div>
+<!-- grab location data -->
+<script src="static/js/snips/locn.js"></script>
+<!-- run parallax (for demo purpose) -->
+<section id="story-freext">
+    <article>
+        <p align="right"> {{ct}} </p>
+        <div class="jumbotron" id="big-logo">
+            <h1>splash <small>Page.</small></h1>
+        </div>
+        <button class="btn btn-default" type="button">
+            <ul class="nav nav-pills nav-justified">
+                <li role="presentation">
+                    <a href="signin">signIn</a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills nav-justified">
+                <li role="presentation">
+                    <a href="contactus">get in touch</a>
+                </li>
+            </ul>
+        </button>
+    </article>
+    <div class="parallax" data-velocity="-0"></div>
+</section>
+<script src="static/js/snips/llax.js"></script>
 {% endblock %}

@@ -1,0 +1,23 @@
+<div class="table-responsive" id="scroller">
+    <table class="table table-hover table-condensed">
+        <thead style="color:green">
+            <td> Files (prepended with any directory names) </td>
+            <td> Delete? </td>
+        </thead>
+        <tbody data-link="row" class="rowlink">
+        {% for ro in form %}
+            <tr id="prof_row_style">
+                <td> <a href="?s={{ro.name}}"></a> {{ ro.name }} </td>
+                <td>
+                    <a class="btn btn-danger btn-group" href="?d={{ro.name}}" role="button">DELETE</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+
+
+
+

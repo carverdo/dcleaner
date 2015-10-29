@@ -35,13 +35,17 @@ class PasswordCalc(object):
             self.get_entropy(password)
 
     def get_entropy(self, password):
+        self.get_entropy_val(password)
+        return self.table_conversion(self.h)
+
+    def get_entropy_val(self, password):
         self.password = password
         self.variety, o_password = 0, set(map(ord, password))
         for group in self.upp, self.low, self.dig, self.sym:
             if set.intersection(o_password, group): self.variety += len(group)
         # convert choices into bits to determine variety
         self.h = log(pow(self.variety, len(password)), 2)
-        return self.table_conversion(self.h)
+        return self.h
 
     def table_conversion(self, h):
         """fairly arbitrary breakpoints"""

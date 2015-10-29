@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block redder %}
+{% endblock %}
+
+{% block content %}
+    <script src="http://cdn.crunchify.com/wp-content/uploads/code/knob.js"></script>
+
+    <input type="text" id="myTextBox">
+    <p id="res"></p>
+    <input type="text" class="dial" style="border:none">
+    <meter value=0 id="PassValue" max="100"></meter>
+
+    <script>
+        var res;
+        setecho();
+
+        function setecho() {
+            $("#myTextBox").bind("change paste keyup", function() {
+                echo = $(this).val();
+                res = calc_stren(echo);
+                // just various ways of demonstrating that (dud) result
+                popEle('res', res);
+                knobfunction(res);
+                document.getElementById('PassValue').setAttribute('value', res );
+            });
+        }
+
+        // The problem lies here. Cant get our function to accept the
+        // dynamic value; put inverted commas round "echo" to see more.
+        // To go with full jscript look here -
+        // http://www.sitepoint.com/5-bootstrap-password-strength-metercomplexity-demos/
+        function calc_stren(echo) {
+            return {{ pc.get_entropy_val("echo") }}
+        }
+
+        function knobfunction(value){
+            $('.dial')
+            .val(value)
+            .trigger('change');
+            $('.dial').knob();
+        }
+
+        function popEle(name, val) {
+            x = document.getElementById(name);
+            x.innerHTML = val;
+        }
+    </script>
+{% endblock %}

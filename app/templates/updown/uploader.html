@@ -1,0 +1,12 @@
+{% import 'macros.html' as macros %}
+{% extends "base.html" %}
+
+{% block redder %}
+{% endblock %}
+
+{% block content %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ macros.create_masterpanel2(form, **panel_args) }}
+    </form>
+{% endblock %}
