@@ -48,7 +48,7 @@ var task = flashText;
 var millis = 500;
 var nIntervId;
 var oElem = document.getElementById("echoMotion");
-repeatit(task, millis);
+// repeatit(task, millis);
 
 function repeatit(task, millis) {
     resHist.push('start');
@@ -61,8 +61,8 @@ function flashText() {
         millis,
         document.getElementById("doTiltLR").innerHTML,
         document.getElementById("doTiltFB").innerHTML,
-        document.getElementById("doDirection").innerHTML,
-        ];
+        document.getElementById("doDirection").innerHTML
+    ];
     resHist.push(prevail);
     oElem.innerHTML = resHist;
 }

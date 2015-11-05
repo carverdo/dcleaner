@@ -89,15 +89,15 @@ var resHist = [];
 var task = flashText, millis = 500, nIntervId;
 var oElem = document.getElementById("echoMotion");
 
+resHist.push(captures.start);
+
 function repeatit(task, millis) {
-    resHist.push(captures.start);
     nIntervId = setInterval(task, millis);
 }
 
 function flashText() {
     oElem.style.color = oElem.style.color == "red" ? "blue" : "red";
     var prevail = [
-        millis,
         captures.milli,
         captures.b,
         captures.g
