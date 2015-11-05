@@ -11,9 +11,10 @@ function init() {
 }
 
 function deviceMotionHandler(eventData) {
-    var info, xyz = "[X, Y, Z]";
+    document.getElementById("dmEvent").innerHTML = "DeviceMotion";
 
-    // Grab the acceleration including gravity from the results
+    var info, xyz = "[X, Y, Z]";
+    // Grab the acceleration from the results
     var acceleration = eventData.acceleration;
     info = xyz.replace("X", round(acceleration.x));
     info = info.replace("Y", round(acceleration.y));
@@ -27,7 +28,7 @@ function deviceMotionHandler(eventData) {
     info = info.replace("Z", round(acceleration.z));
     document.getElementById("moAccelGrav").innerHTML = info;
 
-    // Grab the acceleration including gravity from the results
+    // Grab the rotation rate from the results
     var rotation = eventData.rotationRate;
     info = xyz.replace("X", round(rotation.alpha));
     info = info.replace("Y", round(rotation.beta));

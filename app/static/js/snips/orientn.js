@@ -47,16 +47,22 @@ var resHist = [];
 var task = flashText;
 var millis = 500;
 var nIntervId;
-var oElem = document.getElementById("echoLR");
+var oElem = document.getElementById("echoMotion");
 repeatit(task, millis);
 
 function repeatit(task, millis) {
+    resHist.push('start');
     nIntervId = setInterval(task, millis);
 }
 
 function flashText() {
     oElem.style.color = oElem.style.color == "red" ? "blue" : "red";
-    prevail = document.getElementById("doTiltLR").innerHTML;
+    var prevail = [
+        millis,
+        document.getElementById("doTiltLR").innerHTML,
+        document.getElementById("doTiltFB").innerHTML,
+        document.getElementById("doDirection").innerHTML,
+        ];
     resHist.push(prevail);
     oElem.innerHTML = resHist;
 }

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block redder %}
+{% endblock %}
+
+{% block content %}
+    <div class="main">
+        <h2>Device Motion</h2>
+        <p id="zz"></p>
+        <table>
+            <tr>
+                <td>Event Supported</td><td id="dmEvent"></td>
+            </tr>
+            <tr>
+                <td>acceleration</td><td id="moCapture"></td>
+            </tr>
+
+            <tr>
+                <td>interval</td><td id="moInterval"></td>
+            </tr>
+            <tr>
+                <td>Event Supported</td><td id="dmEvent2"></td>
+            </tr>
+            <tr>
+                <td>acceleration</td><td id="moCapture2"></td>
+            </tr>
+
+            <tr>
+                <td>interval</td><td id="moInterval2"></td>
+            </tr>
+
+
+        </table>
+    </div>
+
+
+
+    <br><br><br>
+    <button onclick="repeatit(task, millis);">Start</button>
+    <button onclick="stopCollecting();">Stop</button>
+    <div id="echoMotion"></div>
+    <br><br><br>
+    <script src="static/js/snips/move_capture.js"></script>
+{% endblock %}

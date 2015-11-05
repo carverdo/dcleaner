@@ -22,6 +22,9 @@ def motion():
     return render_template('./device/motion.html')
 
 
+@devy.route('/capture')
+def capture():
+    return render_template('./device/move_capture.html')
 # =================================================
 @devy.route('/test')
 def test():
