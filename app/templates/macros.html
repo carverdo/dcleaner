@@ -9,7 +9,15 @@
     <li><a href="{{ url_for(u_title) }}"><{{size}}><span class="{{shape}} {{shape}}-{{col}}">{{ title }}</span></{{size}}></a></li>
 {% endmacro %}
 {% macro navbar_titles2(u_title, title, size="h3") %}
-    <li><a href="{{ url_for(u_title) }}"><{{size}}>{{ title }}</{{size}}></a></li>
+    <a href="{{ url_for(u_title) }}">
+        <{{size}}>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                {{ title }}
+                </div>
+            </div>
+        </{{size}}>
+    </a>
 {% endmacro %}
 
 

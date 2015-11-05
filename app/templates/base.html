@@ -25,6 +25,12 @@
     <!-- MY STYLING OVER-RIDES -->
     <link href="/static/css/main_new.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <!-- For animation & scrollmagic; needs to go at top-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+    <!-- should be replaced with minified version when development is finished -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+    <!-- should be removed when development is finished -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/debug.addIndicators.min.js"></script>
     {% block head %}
     {% endblock %}
 </head>
@@ -41,7 +47,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#" title="splashPageProject">
+                    <a class="navbar-brand" href="{{ url_for('log_auth.home') }}" title="splashPageProject">
                         <h1><font color="white">splash<br><small><font color="linen">Page.</font></small></font></h1>
                         <!--<img id="logo" src="/static/image/logo.png">-->
                     </a>
@@ -57,23 +63,22 @@
                             {% else %}
                                 <li class="dropdown">
                                     {{ macros.navbar_drops('profile') }}
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu"><li>
                                         {{ macros.navbar_titles2('log_auth.profile', 'myLogin', 'p') }}
                                         {% if current_user.adminr %}
                                             {{ macros.navbar_titles2('log_auth.adm_members', 'manageUsers', 'p') }}
                                         {% endif %}
-                                    </ul>
-                                </li>
+                                    </li></ul>
                                 <li class="dropdown">
                                     {{ macros.navbar_drops('Tasks', 'info') }}
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu"><li>
                                         {{ macros.navbar_titles2('proj.addtasks', 'addTasks', 'p') }}
                                         {{ macros.navbar_titles2('proj.curtasks', 'manageTasks', 'p') }}
-                                    </ul>
+                                    </li></ul>
                                 </li>
                                 <li class="dropdown">
                                     {{ macros.navbar_drops('fileManager', 'info') }}
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu"><li>
                                         {{ macros.navbar_titles2('updown.upload', 'upload', 'p') }}
                                         {{ macros.navbar_titles2('updown.download', 'download', 'p') }}
                                         {% if current_user.adminr %}
@@ -81,18 +86,25 @@
                                             {{ macros.navbar_titles2('updown.keyremove', 'remove', 'p') }}
                                             {{ macros.navbar_titles2('updown.adm_bucketmap', 'bucketmap', 'p') }}
                                         {% endif %}
-                                    </ul>
+                                    </li></ul>
                                 </li>
                                 <li class="dropdown">
                                     {{ macros.navbar_drops('device', 'info') }}
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu"><li>
                                         {{ macros.navbar_titles2('device.locn', 'locn', 'p') }}
                                         {{ macros.navbar_titles2('device.orientn', 'orientn', 'p') }}
                                         {{ macros.navbar_titles2('device.motion', 'motion', 'p') }}
-                                    </ul>
+                                    </li></ul>
                                 </li>
                                 {{ macros.navbar_titles('paym.stramount', 'payment', 'primary', shape='label') }}
                             {% endif %}
+                        {% else %}
+                            <!-- The following span will only show when the nav menu is collapsed -->
+                            <span class="visible-xs-inline">
+                                <li class="dropdown"><a href="#" data-toggle="dropdown">
+                                    {{ macros.navbar_titles('log_auth.signin', 'signIn', col='info', shape='label') }}
+                                </a></li>
+                            </span>
                         {% endif %}
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -123,9 +135,7 @@
             {% endblock %}
         </div>
     </div>
-
     <!-- Latest javascript -->
-
     <script src="/static/js/bootstrap.min.js"></script>
     <!-- <script src="/static/js/moment.min.js"></script> -->
     <!-- double curly moment.include_moment() double curly -->
@@ -136,6 +146,6 @@
     <script src="static/js/jasny-bootstrap.min.js"></script>
     <!-- <script src="/static/js/rangeslider.min.js"></script> -->
     <script type="text/javascript" src="static/js/jquery.tooltipster.min.js"></script>
-    <script type="text/javascript" src="static/js/jquery.scrolly.js"></script>
+    <!-- <script type="text/javascript" src="static/js/jquery.scrolly.js"></script>  -->
 </body>
 </html>

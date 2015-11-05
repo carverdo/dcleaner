@@ -34,14 +34,7 @@ h1, h2 {
     padding-top: 0px;
     padding-bottom: 0px;
 }
-.navbar-box .nav  > li  > a{
-    color: #fff;
-    text-shadow: none;
-}
-.navbar-box .nav  > li  > a:hover{
-    color: #000;
-    background: none;
-}
+
 .navbar-box .navbar-brand {
     margin-top: -34px;
 }
@@ -60,11 +53,19 @@ h1, h2 {
     font-family:Oswald;
 }
 
-.navbar-nav > li > .dropdown-menu {
-    background-color: #F3DBB6;
+/* selecting our buttons: background on hover & dropdown */
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.50);
 }
 
-/* for mesages */
+.navbar-nav > li > .dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.50);
+}
+
+/* for messages */
 .redder{
     color: red;
     font-weight: bold;
@@ -174,25 +175,47 @@ h1, h2 {
     text-align: center;
 }
 
-/* Parallax Effects */
-section {
-    min-height: 1000px;
-    position: relative;
-    width: 100% !important;
-    min-width: 1000px;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+/* settings for parallax style background image */
+#roper {
+    background: url(../image/shoelaces2.png);
+    height:750px;
 }
-section article{position:absolute;top:240px;left:40px;right:40px;z-index:4;}
-section:nth-of-type(1){background:none;height:1200px;}
-section:nth-of-type(2){background:none;height:1600px;}
 
-#story-freext>div:nth-of-type(1) {
-    background: url(../image/shoelaces2.jpg) 50% 0 no-repeat fixed;
-    margin: 0;
-    height: 1600px;
-    position:absolute;
-    top:0px;left:0;
-    width:100%;
+/* main holder for parallax */
+section {
+  text-align: center;
+}
+
+.full-screen {
+  min-height: 400px; /* makes panels the entire window height; DOES IT? */
+}
+
+.blue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blue {
+    background-color: #3883d8;
+}
+.red {
+    background-color: #cf3535;
+}
+
+
+div .imgFit {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#boxer {
+    background: url(../image/cube.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 300px; /* makes panels the entire window height; DOES IT? */
 }

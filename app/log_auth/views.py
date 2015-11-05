@@ -18,6 +18,7 @@ from ..db_models import Member, Visit
 from ..gunner import SendEmail
 from functools import wraps
 from urlparse import urlparse, urljoin
+from sqlalchemy import desc
 
 # ========================
 # HELPER FUNCTIONS
@@ -140,7 +141,7 @@ def home():
     # current_app.logger.info('On screen words 1')
     # lg.logger.info('Text words 1')
     # Visit.create(**get_geodata(True, _key_modifier))
-    return render_template('./log_auth/home.html', ct=datetime.utcnow())  #
+    return render_template('./log_auth/home.html', ct=datetime.utcnow())
 
 
 @log_auth.route('/contactus')
@@ -204,7 +205,7 @@ def visits():
     if request.args:
         try: m_id = int(request.args.get('m'))
         except: m_id = None
-        all_data = Visit.query.filter_by(member_id=m_id).order_by(Visit.date)
+        all_data = Visit.query.filter_by(member_id=m_id).order_by(desc(Visit.date))
         tadata = current_app.config['TADATA']['adm_INDIvisits']
     else:
         tadata = current_app.config['TADATA']['adm_visits'],

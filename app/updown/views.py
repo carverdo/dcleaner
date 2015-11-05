@@ -6,15 +6,16 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 
 from . import updo
-from flask import render_template, request, flash, redirect, url_for, current_app
+from flask import render_template, request, flash, redirect, url_for, current_app, send_file
 from flask.ext.login import current_user, login_required
 from ..log_auth.views import admin_required
 from forms import DataUploadForm, BucketMap
 from werkzeug import secure_filename
-from flask.ext import excel
+# from flask.ext import excel
 from app.templates.flash_msg import *
 import boto
 import os
+from StringIO import StringIO
 from uuid import uuid4
 from sqlalchemy import desc
 from collections import Counter
@@ -23,6 +24,9 @@ from key_rotate import KeyRotation
 from app.db_models import MemberBucketStore, Member
 
 
+# ==================================================
+# FUNCTIONS
+# ==================================================
 def s3_conn_bucket(S3_KEY, S3_SECRET, bucket_name):
     """Connect to Amazon S3."""
     try:
@@ -32,13 +36,30 @@ def s3_conn_bucket(S3_KEY, S3_SECRET, bucket_name):
         flash(f170.format('access S3'))
 
 
+def conn_to_s3_bucket(bucketname='circadianboard'):  # bit of a fudge
+    """
+    adapt connection approach based upon user;
+    bucketname only matters for admins (who use a master key).
+    """
+    # flash(AWS_KEYS['S3_KEY'])
+    # flash(AWS_KEYS['S3_SECRET'])
+    # flash(bucketname)
+    if not current_user.adminr:
+        row = MemberBucketStore.query.filter_by(member_id=current_user.id).\
+            order_by(desc(MemberBucketStore.id)).first()
+        bucket = s3_conn_bucket(row.access_key_id, row.secret_access_key, row.bucket)
+    else:
+        bucket = s3_conn_bucket(AWS_KEYS['S3_KEY'], AWS_KEYS['S3_SECRET'], bucketname)
+    return bucket
+
+
 def run_naming(src_file):
     """
     Gens unique filename via uuid4.
     """
     src_name = secure_filename(src_file.data.filename)
     sta, dot_ext = os.path.splitext(src_name)
-    return sta + uuid4().hex + dot_ext
+    return sta + '_' + uuid4().hex + dot_ext
 
 
 def s3_upload(src_file, upload_dir=None, bucket=None, acl='authenticated-read'):
@@ -62,72 +83,44 @@ def s3_upload(src_file, upload_dir=None, bucket=None, acl='authenticated-read'):
         pass
 
 
-def s3_delete(bucket, key):
+def s3_delete(key):
     try:
+        bucket = conn_to_s3_bucket()
         bucket.delete_key(key)
         flash(f71.format(key))
     except:
         flash(f170.format('delete data'))
 
 
-def s3_download(bucket, d_name):
-    # key = bucket.new_key(d_name)
-    key = bucket.get_key(d_name)
+# Gets addressing because it uses the browser for downloading
+@updo.route('/s3_downloader/<s_name>')
+@login_required
+def s3_downloader(s_name):
     try:
-        name_only = os.path.split(key.name)[-1]
+        bucket = conn_to_s3_bucket()
+        key = bucket.get_key(s_name)
+        # In-memory file save
+        buffer = StringIO()
+        key.get_contents_to_file(buffer)
+        buffer.seek(0)
+        flash(f72.format(s_name))
+        return send_file(buffer, as_attachment=True, attachment_filename=s_name)
     except:
-        name_only = key.name
-    flash(name_only)
-    # try:
-    #     directory = os.path.join(os.environ['HOMEPATH'], 'downloads')
-    #     flash(directory)
-    # except:
-    #     directory = 'C:/dawnloads'
-    #     flash('no direct')
-    # try:
-    #     if not os.path.exists(directory):
-    #         os.makedirs(directory)
-    #         flash('made dory')
-    # except:
-    #     flash('couldnt make dory')
-    try:
-        key.get_contents_to_filename(name_only)  # os.path.join(directory,
-        flash('done')
-        # flash(f72.format(d_name))
-        # flash(os.path.join(directory, name_only))
-    except:
-        pass
+        flash(f170.format('download data'))
 
 
 # ==================================================
-# @updo.route('/sumdata', methods=['GET', 'POST'])
-# def sumdata_file():
-#     form = DataUploadForm()
-#     if request.method == 'POST':
-#         return jsonify({"result": request.get_array(field_name='file')})
-#     return render_template('./updown/sumdata.html', form=form)
-
-
-def conn_to_s3_bucket(bucketname=None):
-    """
-    adapt connection approach based upon user;
-    bucketname only matters for admins (who use a master key).
-    """
-    if not current_user.adminr:
-        row = MemberBucketStore.query.filter_by(member_id=current_user.id).\
-            order_by(desc(MemberBucketStore.id)).first()
-        bucket = s3_conn_bucket(row.access_key_id, row.secret_access_key, row.bucket)
-    else:
-        bucket = s3_conn_bucket(AWS_KEYS['S3_KEY'], AWS_KEYS['S3_SECRET'], bucketname)
-    return bucket
-
-
+# VIEWS
+# ==================================================
 @updo.route('/upload', methods=('GET', 'POST'))
 @login_required
 def upload():
     form = DataUploadForm()
     if request.method == 'POST':
-        bucket = conn_to_s3_bucket(form.bucket.data)
+        if form.bucket.data:
+            bucket = conn_to_s3_bucket(form.bucket.data)
+        else:
+            bucket = conn_to_s3_bucket()
         src_file = form.attach
         subdir = form.subdir.data
         s3_upload(src_file, subdir, bucket)
@@ -145,19 +138,16 @@ def upload():
 @updo.route('/download')
 @login_required
 def download():
-    if current_user.adminr:
-        bucket = conn_to_s3_bucket('circadianboard')  # bit of a fudge
-    else:
-        bucket = conn_to_s3_bucket()
     # Row click activates detail for member
-    if bucket and request.args:
+    if request.args:
         d_name = request.args.get('d')
         if d_name:
-            s3_delete(bucket, d_name)
+            s3_delete(d_name)
         else:
             s_name = request.args.get('s')
-            s3_download(bucket, s_name)
-        return redirect(url_for('.download'))
+            return redirect(url_for('.s3_downloader', s_name=s_name))
+    # Presentation
+    bucket = conn_to_s3_bucket()
     if not bucket: form = []
     else: form = bucket.list()
     return render_template('panelbuilder.html',
@@ -172,11 +162,18 @@ def download():
                            )
 
 
-@updo.route('/download', methods=['GET'])
-@login_required
-def download_file():
-    return excel.make_response_from_array([[1,2], [3, 4]], "csv")
-
+# ==================================================
+# @updo.route('/sumdata', methods=['GET', 'POST'])
+# def sumdata_file():
+#     form = DataUploadForm()
+#     if request.method == 'POST':
+#         return jsonify({"result": request.get_array(field_name='file')})
+#     return render_template('./updown/sumdata.html', form=form)
+#
+# @updo.route('/download', methods=['GET'])
+# @login_required
+# def download_file():
+#     return excel.make_response_from_array([[1,2], [3, 4]], "csv")
 
 @updo.route('/keyrotate')
 @admin_required
@@ -213,6 +210,7 @@ def keyremove():
 
 
 @updo.route('/adm_bucketmap', methods=['GET', 'POST'])
+@admin_required
 def adm_bucketmap():
     """
     We want to manually wire (for now) the member_id

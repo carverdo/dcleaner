@@ -10,26 +10,31 @@
 <!-- grab location data -->
 <script src="static/js/snips/locn.js"></script>
 <!-- run parallax (for demo purpose) -->
-<section id="story-freext">
-    <article>
-        <p align="right"> {{ct}} </p>
-        <div class="jumbotron" id="big-logo">
-            <h1>splash <small>Page.</small></h1>
+<section id="roper" class="full-screen">
+    <div id="pinned-trigger1">
+        <div id="pinned-element1">
+            <br><br><br><br><br><br>
+            <p align="right"> {{ct}} </p>
+            <div class="jumbotron" id="big-logo">
+                <h1>splash <small>Page.</small></h1>
+            </div>
+            <button class="btn btn-default" type="button">
+                <ul class="nav nav-pills nav-justified">
+                    <li role="presentation">
+                        <a href="signin">signIn</a>
+                    </li>
+                </ul>
+                <ul class="nav nav-pills nav-justified">
+                    <li role="presentation">
+                        <a href="contactus">get in touch</a>
+                    </li>
+                </ul>
+            </button>
         </div>
-        <button class="btn btn-default" type="button">
-            <ul class="nav nav-pills nav-justified">
-                <li role="presentation">
-                    <a href="signin">signIn</a>
-                </li>
-            </ul>
-            <ul class="nav nav-pills nav-justified">
-                <li role="presentation">
-                    <a href="contactus">get in touch</a>
-                </li>
-            </ul>
-        </button>
-    </article>
-    <div class="parallax" data-velocity="-0"></div>
+    </div>
 </section>
+<!-- Filler to get the scrolling working right -->
+<section class="full-screen"></section>
 <script src="static/js/snips/llax.js"></script>
+
 {% endblock %}
