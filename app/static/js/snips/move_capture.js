@@ -1,6 +1,8 @@
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 var onoff = 0;
+var acc = {}; // TEMP STORE
+var rot = {}; // TEMP STORE
 // DECLARATIONS AND RUN
 // ============================================================
 // point in time data captured from phone
@@ -13,7 +15,6 @@ var captures = {
 
 // we set our declared variables in a function as we can later
 // use that function as a reset
-var acc = {}; // TEMP STORE
 var vel = {}, pos = {}, cords = {};
 var nIntervId; // interval stamps for our clock
 var series = {  // default dots in graph
@@ -137,6 +138,10 @@ function terminal_vel(millis) {
     var r = rescaleToColor(captures.dir_a) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FUDGE
     var g = rescaleToColor(captures.dir_g) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
     var b = rescaleToColor(captures.dir_b) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
+    rot['r'].push(r);
+    rot['b'].push(b);
+    rot['g'].push(g);
+
     var opacity = 0.5;
     // pop data xy co-ordinates
     cords.push({
@@ -148,6 +153,7 @@ function terminal_vel(millis) {
     document.getElementById('pos').innerHTML = JSON.stringify(cords);
     document.getElementById('vel').innerHTML = JSON.stringify(vel);
     document.getElementById('acc').innerHTML = JSON.stringify(acc);
+    document.getElementById('rot').innerHTML = JSON.stringify(rot);
     // populate our pre-defined chart with data
     series.data = cords;
     chartsettings.series = [series];
@@ -185,6 +191,12 @@ function motionVars() {
         y: [0],
         z: [0]
     };
+    rot = {  // TEMP STORE
+        r: [0],
+        b: [0],
+        g: [0]
+    };
+
 }
 
 function rescaleToColor(angle) {
