@@ -13,6 +13,7 @@ var captures = {
 
 // we set our declared variables in a function as we can later
 // use that function as a reset
+var acc = {}; // TEMP STORE
 var vel = {}, pos = {}, cords = {};
 var nIntervId; // interval stamps for our clock
 var series = {  // default dots in graph
@@ -91,7 +92,69 @@ function OrientationHandler(eventData) {
     document.getElementById('north').innerHTML = captures.dir_a; // temp fudge
 }
 
-// CONVENIENCE
+// RUNNING OUR SAMPLER
+// ============================================================
+function addCountDownLayer(task, millis) {
+     repeatit(
+        countAndGo, [task, millis], 1000
+    );
+}
+
+function repeatit(task, param, millis) {
+    nIntervId = setInterval(
+        function() { task(param); }, millis);
+}
+function stopCollecting() {
+    clearInterval(nIntervId);
+    document.getElementById('egg').innerHTML = "Capture";
+}
+
+// VELOCITY CALCS
+// ============================================================
+function terminal_vel(millis) {
+    var secs = millis / 1000;
+    // run through our xyz axes
+    for (var axis in vel) {
+        var t_acc = 'acc_' + axis;
+        var foo = Math.floor(Math.random() * 11) - 5.5;  // temp fudge
+        if (onoff != 0) {
+            captures[t_acc] = foo;  // temp fudge
+        };
+        console.log(captures[t_acc]);
+        acc[axis].push(captures[t_acc]);  // temp store
+
+        // v = u + at
+        var u = vel[axis].slice(-1)[0];
+        var v = u + captures[t_acc] * secs;
+        vel[axis].push(v);
+        // s = (u + v) / 2 * t
+        // but we want cumulative s
+        pos[axis].push(
+            pos[axis].slice(-1)[0] + (u + v) * 0.5 * secs
+        );
+    }
+    // turn our tilts into colours and gather
+    var r = rescaleToColor(captures.dir_a) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FUDGE
+    var g = rescaleToColor(captures.dir_g) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
+    var b = rescaleToColor(captures.dir_b) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
+    var opacity = 0.5;
+    // pop data xy co-ordinates
+    cords.push({
+        x: pos.x.slice(-1)[0],
+        y: pos.y.slice(-1)[0],
+        color: 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')'
+    });
+    // populate page
+    document.getElementById('pos').innerHTML = JSON.stringify(cords);
+    document.getElementById('vel').innerHTML = JSON.stringify(vel);
+    document.getElementById('acc').innerHTML = JSON.stringify(acc);
+    // populate our pre-defined chart with data
+    series.data = cords;
+    chartsettings.series = [series];
+    $('#sigbox').highcharts(chartsettings);
+}
+
+// CONVENIENCES
 // ============================================================
 function round(val) {
     var amt = 1000;
@@ -117,14 +180,17 @@ function motionVars() {
         y: 0,
         color: 'rgba(100, 100, 100, .5)'
     }];
+    acc = {  // TEMP STORE
+        x: [0],
+        y: [0],
+        z: [0]
+    };
 }
 
 function rescaleToColor(angle) {
-    console.log(angle);
     if (angle <= 0) {
         angle += 360;
     }
-    console.log(angle);
     return Math.floor(angle * 255 / 360);
 }
 
@@ -148,64 +214,6 @@ function toggler() {
     onoff = 1 - onoff;
     document.getElementById('booler').innerHTML = onoff;
 }
-
-
-// RUNNING OUR SAMPLER
-// ============================================================
-function addCountDownLayer(task, millis) {
-     repeatit(
-        countAndGo, [task, millis], 1000
-    );
-}
-
-function repeatit(task, param, millis) {
-    nIntervId = setInterval(
-        function() { task(param); }, millis);
-}
-function stopCollecting() {
-    clearInterval(nIntervId);
-    document.getElementById('egg').innerHTML = "Capture";
-}
-
-// VELOCITY CALCS
-// ============================================================
-function terminal_vel(millis) {
-    var secs = millis / 1000;
-    // run through our xyz axes
-    for (var axis in vel) {
-        var t_acc = 'acc_' + axis;
-        // v = u + at
-        var u = vel[axis].slice(-1)[0];
-        var foo = Math.floor(Math.random() * 11) - 5;  // temp fudge
-        var v = u + captures[t_acc] * secs + foo * onoff;  // temp fudge
-        vel[axis].push(v);
-        // s = (u + v) / 2 * t
-        // but we want cumulative s
-        pos[axis].push(
-            pos[axis].slice(-1)[0] + (u + v ) * 0.5 * secs
-        );
-    }
-    // turn our tilts into colours and gather
-    var r = rescaleToColor(captures.dir_a) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FUDGE
-    var g = rescaleToColor(captures.dir_g) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
-    var b = rescaleToColor(captures.dir_b) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
-    var opacity = 0.5;
-    // pop data xy co-ordinates
-    cords.push({
-        x: pos.x.slice(-1)[0],
-        y: pos.y.slice(-1)[0],
-        color: 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')'
-    });
-    // populate page
-    document.getElementById('pos').innerHTML = JSON.stringify(cords);
-    document.getElementById('vel').innerHTML = JSON.stringify(vel);
-    document.getElementById('vel').innerHTML = JSON.stringify(vel);
-    // populate our pre-defined chart with data
-    series.data = cords;
-    chartsettings.series = [series];
-    $('#sigbox').highcharts(chartsettings);
-}
-
 
 // TEST FUNCTION
 // ============================================================
