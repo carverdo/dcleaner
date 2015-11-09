@@ -4,22 +4,18 @@
 {% endblock %}
 
 {% block content %}
+    <h3 id="north"></h3>
     <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 24px">
-        <div class="btn-group" role="group">
-            <span class="label label-danger"
-                  onclick="stopCollecting();">Stop</span>
-        </div>
-        <div class="btn-group" role="group">
-            <span class="label label-success"
-                  onclick="addCountDownLayer(terminal_vel, 500);" id="egg">Capture</span>
-        </div>
-        <div class="btn-group" role="group">
-            <span class="label label-warning"
-                  onclick="motionVars();">Wipe & Restart</span>
-        </div>
-    </div>
-    <span class="label label-warning"
+        <button type="button" class="btn btn-danger" onclick="stopCollecting();">
+            Stop</button>
+        <button type="button" class="btn btn-success"
+                onclick="addCountDownLayer(terminal_vel, 100);" id="egg">
+                Capture</button>
+        <button type="button" class="btn btn-warning" onclick="motionVars();">
+            Wipe & Restart</button>
+        <span class="label label-warning"
               onclick="toggler();" id="booler">0</span>
+    </div>
     <!-- Graph Container -->
     <div id="sigbox" style="width:100%; height:400px;"></div>
     <div class="table-responsive" id="scroller">
@@ -30,6 +26,7 @@
             <tr><td id="vel"></td></tr>
         </table>
     </div>
+    <h3>trash</h3>
 
     <!--
     <h2>Device Motion</h2>

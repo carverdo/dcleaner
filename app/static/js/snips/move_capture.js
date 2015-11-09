@@ -88,12 +88,13 @@ function OrientationHandler(eventData) {
     captures.dir_b = round(eventData.beta);
     captures.dir_g = round(eventData.gamma);
     captures.interval = round(eventData.interval);
+    document.getElementById('north').innerHTML = captures.dir_a; // temp fudge
 }
 
 // CONVENIENCE
 // ============================================================
 function round(val) {
-    var amt = 10;
+    var amt = 1000;
     return Math.round(val * amt) /  amt;
 }
 
@@ -119,10 +120,10 @@ function motionVars() {
 }
 
 function rescaleToColor(angle) {
-    if (angle < 0) {
+    if (angle <= 0) {
         angle += 360;
     }
-    return angle * 255 / 360;
+    return Math.floor(angle * 255 / 360);
 }
 
 function countAndGo(fn_param) {
@@ -196,6 +197,7 @@ function terminal_vel(millis) {
     });
     // populate page
     document.getElementById('pos').innerHTML = JSON.stringify(cords);
+    document.getElementById('vel').innerHTML = JSON.stringify(vel);
     document.getElementById('vel').innerHTML = JSON.stringify(vel);
     // populate our pre-defined chart with data
     series.data = cords;
