@@ -18,7 +18,7 @@ var nIntervId; // interval stamps for our clock
 var series = {  // default dots in graph
     name: 'Signature',
 };
-var rem = 3;  // countdown clock
+var rem = 1;  // countdown clock, 3 seconds
 // And run
 motionVars();
 getDeviceData();
@@ -120,16 +120,17 @@ function motionVars() {
 }
 
 function rescaleToColor(angle) {
+    console.log(angle);
     if (angle <= 0) {
         angle += 360;
     }
+    console.log(angle);
     return Math.floor(angle * 255 / 360);
 }
 
 function countAndGo(fn_param) {
     // runs our timer first & then the main function with its parameters
     if (rem >= 0) {
-        console.log(rem);
         document.getElementById('egg').innerHTML = rem;
         rem -= 1;
     } else {
@@ -185,9 +186,9 @@ function terminal_vel(millis) {
         );
     }
     // turn our tilts into colours and gather
-    var r = rescaleToColor(captures.dir_a) + Math.floor(Math.random() * 256) * onoff; //FUDGE
-    var g = rescaleToColor(captures.dir_g) + Math.floor(Math.random() * 256) * onoff; //FFF
-    var b = rescaleToColor(captures.dir_b) + Math.floor(Math.random() * 256) * onoff; //FFF
+    var r = rescaleToColor(captures.dir_a) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FUDGE
+    var g = rescaleToColor(captures.dir_g) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
+    var b = rescaleToColor(captures.dir_b) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
     var opacity = 0.5;
     // pop data xy co-ordinates
     cords.push({
