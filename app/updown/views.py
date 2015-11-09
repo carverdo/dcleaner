@@ -45,12 +45,15 @@ def conn_to_s3_bucket(bucketname='circadianboard'):  # bit of a fudge
     # flash(AWS_KEYS['S3_SECRET'])
     # flash(bucketname)
     if not current_user.adminr:
-        row = MemberBucketStore.query.filter_by(member_id=current_user.id).\
-            order_by(desc(MemberBucketStore.id)).first()
-        bucket = s3_conn_bucket(row.access_key_id, row.secret_access_key, row.bucket)
+        try:
+            row = MemberBucketStore.query.filter_by(member_id=current_user.id).\
+                order_by(desc(MemberBucketStore.id)).first()
+            return s3_conn_bucket(row.access_key_id, row.secret_access_key, row.bucket)
+        except:  # if it has not been bucket-mapped, row returns empty
+            flash(f170.format('access S3'))
+            return None
     else:
-        bucket = s3_conn_bucket(AWS_KEYS['S3_KEY'], AWS_KEYS['S3_SECRET'], bucketname)
-    return bucket
+        return s3_conn_bucket(AWS_KEYS['S3_KEY'], AWS_KEYS['S3_SECRET'], bucketname)
 
 
 def run_naming(src_file):
@@ -229,7 +232,7 @@ def adm_bucketmap():
                 MemberBucketStore.query.order_by(MemberBucketStore.id).all()
         ):
             iam.update(bucket=bu, user_name=un)
-            if mid.isdigit()and int(mid) in all_mem_ids:
+            if mid.isdigit() and int(mid) in all_mem_ids:
                 iam.update(member_id=int(mid))
         return redirect(url_for('.adm_bucketmap'))
     # Presentation of existing data
@@ -241,8 +244,10 @@ def adm_bucketmap():
     if not all_iams:
         flash(f40)
         return redirect(url_for('log_auth.home'))
+    # Presentation of existing members / Repetition from log_auth!
+    all_members = Member.query.order_by(Member.id).all()
     return render_template('panelbuilder.html',
-                           form=all_iams,
+                           form=[all_iams, all_members],
                            endpoint='.adm_bucketmap',
                            panel_args=dict(
                                wid=8,
