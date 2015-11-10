@@ -123,11 +123,14 @@ function terminal_vel(millis) {
         };
         console.log(captures[t_acc]);
         acc[axis].push(captures[t_acc]);  // temp store
+        console.log(acc[axis].slice(-2));
         // v = u + at
         // we need mean a;
         var u = vel[axis].slice(-1)[0];
-        mean_a = ( acc[axis].slice(-2) + acc[axis].slice(-1) ) / 2;
+        mean_a = ( acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1] ) / 2;
+        console.log(mean_a);
         var v = u + mean_a * secs;
+        console.log(v);
         vel[axis].push(v);
         // s = (u + v) / 2 * t
         // but we want cumulative s
