@@ -20,7 +20,7 @@ var nIntervId; // interval stamps for our clock
 var series = {  // default dots in graph
     name: 'Signature',
 };
-var rem = 1;  // countdown clock, 3 seconds
+var rem = 2;  // countdown clock, 3 seconds
 // And run
 motionVars();
 getDeviceData();
@@ -123,10 +123,11 @@ function terminal_vel(millis) {
         };
         console.log(captures[t_acc]);
         acc[axis].push(captures[t_acc]);  // temp store
-
         // v = u + at
+        // we need mean a;
         var u = vel[axis].slice(-1)[0];
-        var v = u + captures[t_acc] * secs;
+        mean_a = ( acc[axis].slice(-2) + acc[axis].slice(-1) ) / 2;
+        var v = u + mean_a * secs;
         vel[axis].push(v);
         // s = (u + v) / 2 * t
         // but we want cumulative s
@@ -200,8 +201,13 @@ function motionVars() {
 }
 
 function rescaleToColor(angle) {
-    if (angle <= 0) {
+    // we only measure along one direction;
+    if (angle < 0) {  // all positive;
         angle += 360;
+    }
+    angle -= 180;  // reverse polarity for coloring;
+    if (angle <= 0) {  // ignore plus/minus;
+        angle *= -1;
     }
     return Math.floor(angle * 255 / 360);
 }
@@ -213,7 +219,7 @@ function countAndGo(fn_param) {
         rem -= 1;
     } else {
         stopCollecting();
-        rem = 3;
+        rem = 2;
         document.getElementById('egg').innerHTML = "Capturing Data";
         // now for the main function
         task = fn_param[0];
