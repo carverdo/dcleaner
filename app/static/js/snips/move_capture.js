@@ -212,7 +212,7 @@ function rescaleToColor(angle) {
     if (angle <= 0) {  // ignore plus/minus;
         angle *= -1;
     }
-    return Math.floor(angle * 255 / 360);
+    return Math.floor(angle * 255 / 180);
 }
 
 function countAndGo(fn_param) {
