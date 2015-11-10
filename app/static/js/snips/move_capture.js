@@ -91,7 +91,7 @@ function OrientationHandler(eventData) {
     document.getElementById("moInterval2").innerHTML = info;
     */
     // captures.doSupported = true;
-    var true_a = Math.round(eventData.alpha);
+    var true_a = eventData.alpha;
     var true_b = Math.round(eventData.beta);
     var true_g = Math.round(eventData.gamma);
     document.getElementById('raws').innerHTML = [
