@@ -121,16 +121,12 @@ function terminal_vel(millis) {
         if (onoff != 0) {
             captures[t_acc] = foo;  // temp fudge
         };
-        console.log(captures[t_acc]);
         acc[axis].push(captures[t_acc]);  // temp store
-        console.log(acc[axis].slice(-2));
         // v = u + at
         // we need mean a;
         var u = vel[axis].slice(-1)[0];
         mean_a = ( acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1] ) / 2;
-        console.log(mean_a);
         var v = u + mean_a * secs;
-        console.log(v);
         vel[axis].push(v);
         // s = (u + v) / 2 * t
         // but we want cumulative s
@@ -139,13 +135,12 @@ function terminal_vel(millis) {
         );
     }
     // turn our tilts into colours and gather
-    var r = rescaleToColor(captures.dir_a) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FUDGE
-    var g = rescaleToColor(captures.dir_g) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
-    var b = rescaleToColor(captures.dir_b) * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
+    var r = captures.dir_a * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FUDGE
+    var g = captures.dir_g * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
+    var b = captures.dir_b * (1 - onoff) + Math.floor(Math.random() * 256) * onoff; //FFF
     rot['r'].push(r);
-    rot['b'].push(b);
     rot['g'].push(g);
-
+    rot['b'].push(b);
     var opacity = 0.5;
     // pop data xy co-ordinates
     cords.push({
