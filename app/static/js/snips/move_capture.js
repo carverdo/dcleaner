@@ -90,7 +90,9 @@ function OrientationHandler(eventData) {
     captures.dir_b = round(eventData.beta);
     captures.dir_g = round(eventData.gamma);
     captures.interval = round(eventData.interval);
-    document.getElementById('north').innerHTML = captures.dir_a; // temp fudge
+    document.getElementById('alpha, beta, gamma').innerHTML = [
+        captures.dir_a, captures.dir_b, captures.dir_g
+    ]; // temp fudge
 }
 
 // RUNNING OUR SAMPLER
