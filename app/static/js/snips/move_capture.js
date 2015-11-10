@@ -66,15 +66,20 @@ function MotionHandler(eventData) {
     captures.acc_x = round(eventData.acceleration.x);
     captures.acc_y = round(eventData.acceleration.y);
     captures.acc_z = round(eventData.acceleration.z);
-    captures.ra = round(eventData.rotationRate.alpha);
-    captures.rb = round(eventData.rotationRate.beta);
-    captures.rg = round(eventData.rotationRate.gamma);
+    // captures.ra = round(eventData.rotationRate.alpha);
+    // captures.rb = round(eventData.rotationRate.beta);
+    // captures.rg = round(eventData.rotationRate.gamma);
 }
 
 function OrientationHandler(eventData) {
-    /* alpha is the compass direction
-    beta is the front-to-back tilt in degrees, where front is positive
-    gamma is the left-to-right tilt in degrees, where right is positive */
+    /*
+    alpha is the compass direction (rotation around z axis);
+    varies 0 to 360;
+    beta is rotation around the long y axis on LHS of phone;
+    varies -90 to +90 (so doesn't know if upside down);
+    think of as capturing the off-horizontal;
+    gamma is rotation around short x axis at base of phone;
+    varies -180 to +180;
     /*
     var info, xyz = "[a, b, g]";
     document.getElementById("dmEvent2").innerHTML = "DeviceOrientation";
@@ -86,9 +91,9 @@ function OrientationHandler(eventData) {
     document.getElementById("moInterval2").innerHTML = info;
     */
     // captures.doSupported = true;
-    captures.dir_a = round(eventData.alpha);
-    captures.dir_b = round(eventData.beta);
-    captures.dir_g = round(eventData.gamma);
+    captures.dir_a = Math.abs(round(eventData.alpha) - 180);
+    captures.dir_b = Math.abs(round(eventData.beta));
+    captures.dir_g = Math.abs(round(eventData.gamma)) * 2;
     captures.interval = round(eventData.interval);
     document.getElementById('north').innerHTML = [
         captures.dir_a, captures.dir_b, captures.dir_g
