@@ -91,6 +91,12 @@ function OrientationHandler(eventData) {
     document.getElementById("moInterval2").innerHTML = info;
     */
     // captures.doSupported = true;
+    true_a = Math.round(eventData.alpha);
+    true_b = Math.round(eventData.beta);
+    true_g = Math.round(eventData.gamma);
+    document.getElementById('raws').innerHTML = [
+        true_a, true_b, true_g
+    ]; // temp fudge
     captures.dir_a = Math.round(Math.abs(round(eventData.alpha) - 180));
     captures.dir_b = Math.round(Math.abs(round(eventData.beta)));
     captures.dir_g = Math.round(Math.abs(round(eventData.gamma)) * 2);
