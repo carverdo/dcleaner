@@ -224,7 +224,7 @@ function motionVars() {
 function rescaleToColor(angle) {
     // opacity for northerly direction (of face);
     // red toward east; blue toward west;
-    opacity = round(Math.abs((angle - 180) / 180));
+    opacity = round(Math.abs(angle - 180) / 180);
     if (angle > 180) {
         color = 'rgba(0, 0, 255, ' + opacity + ')'
     } else {
