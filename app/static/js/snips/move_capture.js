@@ -289,8 +289,8 @@ function compassHeading(alpha, beta, gamma) {
         } else if(rA < 0) {
             compassHeading += 2 * Math.PI;
         }
-        return compassHeading * (180 / Math.PI); // Compass Heading (in degrees)
+        return Math.round(compassHeading * (180 / Math.PI)); // Compass Heading (in degrees)
     } else {
-        return "Unadjusted " + alpha;
+        return "Unadjusted " + 360 - alpha;
     }
 }
