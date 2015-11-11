@@ -162,9 +162,7 @@ function terminal_vel(millis) {
         captures.dir_b = Math.floor(Math.random() * 256) * onoff; //FUDGE
         captures.northFace = Math.floor(Math.random() * 360); //FUDGE
     }
-    rot['r'].push(captures.dir_a);
-    rot['g'].push(captures.dir_g);
-    rot['b'].push(captures.dir_b);
+    rot['theta'].push(captures.NorthFace);
     // pop data xy co-ordinates
     cords.push({
         x: pos.x.slice(-1)[0],
@@ -214,9 +212,7 @@ function motionVars() {
         z: [0]
     };
     rot = {  // TEMP STORE
-        r: [0],
-        b: [0],
-        g: [0]
+        theta: [0],
     };
 
 }
