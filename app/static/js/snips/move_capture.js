@@ -1,6 +1,10 @@
 /*
 Capturing and modifying positional data for
 display on the phone.
+
+Some refs -
+http://stackoverflow.com/questions/18112729/calculate-compass-heading-from-deviceorientation-event-api
+http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 */
 var onoff = 0;
 var acc = {}; // TEMP STORE
@@ -10,7 +14,7 @@ var rot = {}; // TEMP STORE
 // use that function as a reset
 // ============================================================
 var captures = {}; // point in time data captured from phone
-var vel = {}, pos = {}, cords = {};
+var vel = {}, pos = {}, cords = {}, cords2 = {};
 var nIntervId; // interval stamps for our clock
 var series = {  // default dots in graph
     name: 'Signature',
@@ -147,12 +151,12 @@ function terminal_vel(millis) {
         acc[axis].push(captures[t_acc]);  // temp store
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
-        mean_a = ( acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1] ) / 2;
+        mean_a = (acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1]) / 2;
         var v = u + mean_a * secs;
         vel[axis].push(v);
-        // s = (u + v) / 2 * t, but we want cumulative s
+        // s = (u + v) / 2 * t, but we want cumulative s // pos[axis].slice(-1)[0] +
         pos[axis].push(
-            pos[axis].slice(-1)[0] + (u + v) * 0.5 * secs
+            (u + v) * 0.5 * secs
         );
     }
     // turn our tilts into colours and gather
@@ -163,13 +167,18 @@ function terminal_vel(millis) {
         captures.northFace = Math.floor(Math.random() * 360); //FUDGE
     }
     rot['theta'].push(captures.northFace);
+    cords2.push(
+        eastNorth(pos.x.slice(-1)[0], captures.northFace)
+    );
     // pop data xy co-ordinates
+    var tmp = eastNorth(pos.x.slice(-1)[0], captures.northFace);
     cords.push({
-        x: pos.x.slice(-1)[0],
-        y: pos.y.slice(-1)[0],
+        x: tmp[0], // pos.x.slice(-1)[0],
+        y: tmp[1], // pos.y.slice(-1)[0],
         color: rescaleToColor(captures.northFace)
     });
     // populate page
+    document.getElementById('eano').innerHTML = JSON.stringify(cords2);
     document.getElementById('pos').innerHTML = JSON.stringify(cords);
     document.getElementById('vel').innerHTML = JSON.stringify(vel);
     document.getElementById('acc').innerHTML = JSON.stringify(acc);
@@ -214,7 +223,9 @@ function motionVars() {
     rot = {  // TEMP STORE
         theta: [0],
     };
-
+    cords2 = [  // TEMP STORE
+        [0, 0]
+    ];
 }
 
 function rescaleToColor(angle) {
@@ -251,4 +262,9 @@ function countAndGo(fn_param) {
 function toggler() {
     onoff = 1 - onoff;
     document.getElementById('booler').innerHTML = onoff;
+}
+
+function eastNorth(vec, theta) {
+    rads = (theta - 90) * Math.PI / 180;
+    return [vec * Math.sin(rads), vec * Math.cos(rads)];
 }
