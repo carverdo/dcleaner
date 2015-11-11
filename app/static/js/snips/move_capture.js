@@ -162,7 +162,7 @@ function terminal_vel(millis) {
         captures.dir_b = Math.floor(Math.random() * 256) * onoff; //FUDGE
         captures.northFace = Math.floor(Math.random() * 360); //FUDGE
     }
-    rot['theta'].push(captures.NorthFace);
+    rot['theta'].push(captures.northFace);
     // pop data xy co-ordinates
     cords.push({
         x: pos.x.slice(-1)[0],
