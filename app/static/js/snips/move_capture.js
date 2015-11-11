@@ -80,7 +80,7 @@ function OrientationHandler(eventData) {
 // ============================================================
 function addCountDownLayer(task, millis) {
      repeatit(
-        countAndGo, [task, millis], 1000
+        countAndGo, [task, millis], millis
     );
 }
 
