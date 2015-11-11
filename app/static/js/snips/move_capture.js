@@ -192,7 +192,7 @@ function terminal_vel(millis) {
 // CONVENIENCES
 // ============================================================
 function round(val) {
-    var amt = 100;
+    var amt = 10000;
     return Math.round(val * amt) /  amt;
 }
 
