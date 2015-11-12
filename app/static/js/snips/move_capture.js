@@ -177,6 +177,8 @@ function terminal_vel(millis) {
         captures.northFace = Math.floor(Math.random() * 360); //FUDGE
     }
     rot['theta'].push(captures.northFace);
+    rot['beta'].push(captures.dir_b);
+    rot['gamma'].push(captures.dir_g);
 
     // pop data xy co-ordinates
     var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
@@ -239,6 +241,8 @@ function motionVars() {
     };
     rot = {  // TEMP STORE
         theta: [0],
+        beta: [0],
+        gamma: [0]
     };
     cords2 = [{  // TEMP STORE
         x: 0,
