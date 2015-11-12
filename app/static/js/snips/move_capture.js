@@ -197,9 +197,9 @@ function terminal_vel(millis) {
     });
 
     // temp-pop //FUDGE
-    document.getElementById('vex').innerHTML = Math.round(vel.x.slice(-1)[0]);
-    document.getElementById('vey').innerHTML = Math.round(vel.y.slice(-1)[0]);
-    document.getElementById('vez').innerHTML = Math.round(vel.z.slice(-1)[0]);
+    document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
+    document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
+    document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
 
 
 
