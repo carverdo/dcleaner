@@ -14,7 +14,7 @@ var chartsettings = {
     xAxis: {
         title: {
             enabled: true,
-            text: 'Pos_x (m)'
+            text: 'East (m)'
         },
         startOnTick: true,
         endOnTick: true,
@@ -22,7 +22,7 @@ var chartsettings = {
     },
     yAxis: {
         title: {
-            text: 'Pos_y (m)'
+            text: 'North (m)'
         }
     },
     legend: {

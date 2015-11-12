@@ -284,6 +284,6 @@ function toggler() {
 }
 
 function eastNorth(vec, theta) {
-    rads = (theta - 90) * Math.PI / 180;
-    return [vec * Math.sin(rads), vec * Math.cos(rads)];
+    rads = theta * Math.PI / 180;
+    return [vec * Math.cos(rads), -vec * Math.sin(rads)];
 }
