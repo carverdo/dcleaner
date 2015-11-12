@@ -70,8 +70,8 @@ function OrientationHandler(eventData) {
         captures.dir_a, captures.dir_b, captures.dir_g
     );
     document.getElementById('accs').innerHTML = [
-        round1(captures.acc_x), round1(captures.acc_y),
-        round1(captures.acc_z)
+        Math.round(captures.acc_x), Math.round(captures.acc_y),
+        Math.round(captures.acc_z)
     ]; // temp fudge
 
 
