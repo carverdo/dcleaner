@@ -195,6 +195,10 @@ function terminal_vel(millis) {
         color: rescaleToColor(captures.northFace)
     });
 
+    // temp-pop //FUDGE
+    document.getElementById('acc_x').innerHTML = captures.acc_x;
+    document.getElementById('acc_y').innerHTML = captures.acc_y;
+    document.getElementById('acc_z').innerHTML = captures.acc_z;
 
     // populate page
     document.getElementById('eano').innerHTML = JSON.stringify(cords2);
