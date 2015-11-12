@@ -162,9 +162,6 @@ function terminal_vel(millis) {
         vel[axis].push(v);
         // s = (u + v) / 2 * t, but we want cumulative s // pos[axis].slice(-1)[0] +
         ds = (u + v) * 0.5 * secs;
-        console.log(u);
-        console.log(v);
-        console.log(ds);
         pos[axis].push(
             ds
         );
@@ -182,7 +179,6 @@ function terminal_vel(millis) {
 
     // pop data xy co-ordinates
     var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
-    console.log(cords.slice(-1));
     cords2.push({
         x: eano[0] + cords2.slice(-1)[0]['x'],
         y: eano[1] + cords2.slice(-1)[0]['y'],
@@ -196,9 +192,14 @@ function terminal_vel(millis) {
     });
 
     // temp-pop //FUDGE
-    document.getElementById('acc_x').innerHTML = captures.acc_x;
-    document.getElementById('acc_y').innerHTML = captures.acc_y;
-    document.getElementById('acc_z').innerHTML = captures.acc_z;
+    document.getElementById('acc_x').innerHTML = round1(captures.acc_x);
+    document.getElementById('acc_y').innerHTML = round1(captures.acc_y);
+    document.getElementById('acc_z').innerHTML = round1(captures.acc_z);
+    document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
+    document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
+    document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
+
+
 
     // populate page
     document.getElementById('eano').innerHTML = JSON.stringify(cords2);
@@ -218,6 +219,12 @@ function round(val) {
     var amt = 10000;
     return Math.round(val * amt) /  amt;
 }
+
+function round1(val) {
+    var amt = 10;
+    return Math.round(val * amt) /  amt;
+}
+
 
 function motionVars() {
     // cumulative capture of velocity, pos;
