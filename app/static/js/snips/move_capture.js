@@ -69,6 +69,11 @@ function OrientationHandler(eventData) {
     captures.northFace = compassHeading(
         captures.dir_a, captures.dir_b, captures.dir_g
     );
+    document.getElementById('accs').innerHTML = [
+        round1(captures.acc_x), round1(captures.acc_y),
+        round1(captures.acc_z)
+    ]; // temp fudge
+
 
     document.getElementById('compass').innerHTML = captures.northFace;
     document.getElementById('raws').innerHTML = [
@@ -192,9 +197,6 @@ function terminal_vel(millis) {
     });
 
     // temp-pop //FUDGE
-    document.getElementById('acc_x').innerHTML = round1(captures.acc_x);
-    document.getElementById('acc_y').innerHTML = round1(captures.acc_y);
-    document.getElementById('acc_z').innerHTML = round1(captures.acc_z);
     document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
     document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
     document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
