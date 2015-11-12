@@ -80,7 +80,7 @@ function OrientationHandler(eventData) {
 // ============================================================
 function addCountDownLayer(task, millis) {
      repeatit(
-        countAndGo, [task, millis], millis
+        countAndGo, [task, millis], 1000  // reps 1sec on our countdown clock
     );
 }
 
@@ -155,8 +155,12 @@ function terminal_vel(millis) {
         var v = u + mean_a * secs;
         vel[axis].push(v);
         // s = (u + v) / 2 * t, but we want cumulative s // pos[axis].slice(-1)[0] +
+        ds = (u + v) * 0.5 * secs;
+        console.log(u);
+        console.log(v);
+        console.log(ds);
         pos[axis].push(
-            (u + v) * 0.5 * secs
+            ds
         );
     }
     // turn our tilts into colours and gather
@@ -167,16 +171,23 @@ function terminal_vel(millis) {
         captures.northFace = Math.floor(Math.random() * 360); //FUDGE
     }
     rot['theta'].push(captures.northFace);
-    cords2.push(
-        eastNorth(pos.x.slice(-1)[0], captures.northFace)
-    );
+
     // pop data xy co-ordinates
-    var tmp = eastNorth(pos.x.slice(-1)[0], captures.northFace);
-    cords.push({
-        x: tmp[0], // pos.x.slice(-1)[0],
-        y: tmp[1], // pos.y.slice(-1)[0],
+    var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
+    console.log(cords.slice(-1));
+    cords2.push({
+        x: eano[0] + cords.slice(-1)[0]['x'],
+        y: eano[1] + cords.slice(-1)[0]['y'],
         color: rescaleToColor(captures.northFace)
     });
+
+    cords.push({
+        x: eano[0],  // pos.x.slice(-1)[0],  //
+        y: eano[1], // pos.y.slice(-1)[0],  //
+        color: rescaleToColor(captures.northFace)
+    });
+
+
     // populate page
     document.getElementById('eano').innerHTML = JSON.stringify(cords2);
     document.getElementById('pos').innerHTML = JSON.stringify(cords);
@@ -184,7 +195,7 @@ function terminal_vel(millis) {
     document.getElementById('acc').innerHTML = JSON.stringify(acc);
     document.getElementById('rot').innerHTML = JSON.stringify(rot);
     // populate our pre-defined chart with data
-    series.data = cords;
+    series.data = cords2; ///////////////////////////
     chartsettings.series = [series];
     $('#sigbox').highcharts(chartsettings);
 }
@@ -223,9 +234,11 @@ function motionVars() {
     rot = {  // TEMP STORE
         theta: [0],
     };
-    cords2 = [  // TEMP STORE
-        [0, 0]
-    ];
+    cords2 = [{  // TEMP STORE
+        x: 0,
+        y: 0,
+        color: 'rgba(100, 100, 100, .5)'
+    }];
 }
 
 function rescaleToColor(angle) {
