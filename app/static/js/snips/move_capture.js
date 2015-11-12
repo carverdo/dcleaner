@@ -176,8 +176,8 @@ function terminal_vel(millis) {
     var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
     console.log(cords.slice(-1));
     cords2.push({
-        x: eano[0] + cords.slice(-1)[0]['x'],
-        y: eano[1] + cords.slice(-1)[0]['y'],
+        x: eano[0] + cords2.slice(-1)[0]['x'],
+        y: eano[1] + cords2.slice(-1)[0]['y'],
         color: rescaleToColor(captures.northFace)
     });
 
