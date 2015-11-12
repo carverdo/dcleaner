@@ -105,7 +105,13 @@ function compassHeading(alpha, beta, gamma) {
     The exception to the rule is where the phone is totally flat;
     then the top the phone acts as north.
      */
-    if (beta != 0 || gamma !=0) {
+    if (Math.abs(beta) < 5) {
+        beta = 0;
+    }
+    if (Math.abs(gamma) < 5) {
+        gamma = 0;
+    }
+    if (Math.abs(beta) != 0 || Math.abs(gamma) != 0) {
         // degrees to radians
         var alphaRad = alpha * (Math.PI / 180);
         var betaRad = beta * (Math.PI / 180);
