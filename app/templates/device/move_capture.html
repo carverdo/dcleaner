@@ -6,18 +6,16 @@
 {% block content %}
     <h3 id="dmEvent">Motion ok</h3>
     <h3 id="dmEvent2">Orientation ok</h3>
-    <h3 id="accs">a_x</h3>
-    <h3 id="vex">v_x</h3>
-    <h3 id="vey">v_y</h3>
-    <h3 id="vez">v_z</h3>
 
+    <h3 id="accs">a_x</h3>
     <h3 id="compass">North</h3>
     <h3 id="raws">TRUE alpha, beta, gamma</h3>
+
     <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 24px">
         <button type="button" class="btn btn-danger" onclick="stopCollecting();">
             Stop</button>
         <button type="button" class="btn btn-success"
-                onclick="addCountDownLayer(terminal_vel, 50);" id="egg">
+                onclick="repeatit(terminal_vel, 1000, 1000);" id="egg">
                 Capture</button>
         <button type="button" class="btn btn-warning" onclick="motionVars();">
             Wipe & Restart</button>
@@ -30,7 +28,6 @@
         <table class="table table-hover table-condensed">
             <thead style="color:green">
             <thead><td><h2>Pos then Vel</h2></thead>
-            <tr><td id="eano"></td></tr>
             <tr><td id="pos"></td></tr>
             <tr><td id="vel"></td></tr>
             <tr><td id="acc"></td></tr>
@@ -42,4 +39,5 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="static/js/snips/move_graph_sets.js"></script>
     <script src="static/js/snips/move_capture.js"></script>
+<!-- onclick="addCountDownLayer(terminal_vel, 500);" id="egg"> -->
 {% endblock %}

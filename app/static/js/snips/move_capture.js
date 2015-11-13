@@ -6,10 +6,6 @@ http://stackoverflow.com/questions/18112729/calculate-compass-heading-from-devic
 http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 */
 
-
-var onoff = 0;
-
-
 // DECLARATIONS AND RUN
 // some declared variables in a function as we can later reset
 // ============================================================
@@ -44,10 +40,13 @@ function getDeviceData() {
 
 function MotionHandler(eventData) {
     /* Grab acceleration results */
-    captures.milli = new Date().getMilliseconds();
     captures.acc_x = round(eventData.acceleration.x);
     captures.acc_y = round(eventData.acceleration.y);
     captures.acc_z = round(eventData.acceleration.z);
+    document.getElementById('accs').innerHTML = [
+    Math.round(captures.acc_x), Math.round(captures.acc_y),
+    Math.round(captures.acc_z)
+    ]; // temp fudge
 }
 
 function OrientationHandler(eventData) {
@@ -67,12 +66,6 @@ function OrientationHandler(eventData) {
     captures.northFace = compassHeading(
         captures.dir_a, captures.dir_b, captures.dir_g
     );
-    document.getElementById('accs').innerHTML = [
-        Math.round(captures.acc_x), Math.round(captures.acc_y),
-        Math.round(captures.acc_z)
-    ]; // temp fudge
-
-
     document.getElementById('compass').innerHTML = captures.northFace;
     document.getElementById('raws').innerHTML = [
         captures.dir_a, captures.dir_b, captures.dir_g
@@ -94,6 +87,49 @@ function repeatit(task, param, millis) {
 function stopCollecting() {
     clearInterval(nIntervId);
     document.getElementById('egg').innerHTML = "Capture";
+}
+
+// VELOCITY CALCS (this is the main onclick function)
+// ============================================================
+function terminal_vel(millis) {
+    var secs = millis / 1000;
+    // run through our xyz axes
+    for (var axis in vel) {
+        var t_acc = 'acc_' + axis;
+        acc[axis].push(captures[t_acc]);  // temp store
+        // v = u + at, but we need mean a;
+        var u = vel[axis].slice(-1)[0];
+        mean_a = (acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1]) / 2;
+        var v = u + mean_a * secs;
+        vel[axis].push(v);
+        // s = (u + v) / 2 * t, but we want cumulative s // pos[axis].slice(-1)[0] +
+        ds = (u + v) * 0.5 * secs;
+        pos[axis].push(
+            ds
+        );
+    }
+    // turn our tilts into colours and gather
+    rot['theta'].push(captures.northFace);
+    rot['beta'].push(captures.dir_b);
+    rot['gamma'].push(captures.dir_g);
+    // pop data xy co-ordinates
+    // var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
+    cords2.push({
+        x: pos.x.slice(-1)[0] + cords2.slice(-1)[0]['x'],
+        y: pos.y.slice(-1)[0] + cords2.slice(-1)[0]['y'],
+        color: rescaleToColor(captures.northFace)
+    });
+    console.log(rescaleToColor(captures.northFace));
+    // populate page
+    // document.getElementById('eano').innerHTML = JSON.stringify(cords2);
+    document.getElementById('pos').innerHTML = JSON.stringify(cords2);
+    document.getElementById('vel').innerHTML = JSON.stringify(vel);
+    document.getElementById('acc').innerHTML = JSON.stringify(acc);
+    document.getElementById('rot').innerHTML = JSON.stringify(rot);
+    // populate our pre-defined chart with data
+    series.data = cords2; ///////////////////////////
+    chartsettings.series = [series];
+    $('#sigbox').highcharts(chartsettings);
 }
 
 // CONVERTING ALPHA
@@ -146,74 +182,7 @@ function compassHeading(alpha, beta, gamma) {
 }
 
 
-// VELOCITY CALCS (this is the main onclick function)
-// ============================================================
-function terminal_vel(millis) {
-    var secs = millis / 1000;
-    // run through our xyz axes
-    for (var axis in vel) {
-        var t_acc = 'acc_' + axis;
-        var foo = Math.floor(Math.random() * 11) - 5.5;  // temp fudge
-        if (onoff != 0) {
-            captures[t_acc] = foo;  // temp fudge
-        };
-        acc[axis].push(captures[t_acc]);  // temp store
-        // v = u + at, but we need mean a;
-        var u = vel[axis].slice(-1)[0];
-        mean_a = (acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1]) / 2;
-        var v = u + mean_a * secs;
-        vel[axis].push(v);
-        // s = (u + v) / 2 * t, but we want cumulative s // pos[axis].slice(-1)[0] +
-        ds = (u + v) * 0.5 * secs;
-        pos[axis].push(
-            ds
-        );
-    }
-    // turn our tilts into colours and gather
-    if (onoff == 1) {
-        captures.dir_a = Math.floor(Math.random() * 256) * onoff; //FUDGE
-        captures.dir_g = Math.floor(Math.random() * 256) * onoff; //FUDGE
-        captures.dir_b = Math.floor(Math.random() * 256) * onoff; //FUDGE
-        captures.northFace = Math.floor(Math.random() * 360); //FUDGE
-    }
-    rot['theta'].push(captures.northFace);
-    rot['beta'].push(captures.dir_b);
-    rot['gamma'].push(captures.dir_g);
 
-    // pop data xy co-ordinates
-    // var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
-    var eano = [pos.x.slice(-1)[0], pos.y.slice(-1)[0]];
-
-    cords2.push({
-        x: eano[0] + cords2.slice(-1)[0]['x'],
-        y: eano[1] + cords2.slice(-1)[0]['y'],
-        color: rescaleToColor(captures.northFace)
-    });
-
-    cords.push({
-        x: eano[0],  // pos.x.slice(-1)[0],  //
-        y: eano[1], // pos.y.slice(-1)[0],  //
-        color: rescaleToColor(captures.northFace)
-    });
-
-    // temp-pop //FUDGE
-    console.log(cords2.slice(-1)[0]);
-    document.getElementById('vex').innerHTML = cords2.slice(-1)[0].x;
-    document.getElementById('vey').innerHTML = cords2.slice(-1)[0].y;
-    // document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
-    // document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
-    // document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
-    // populate page
-    document.getElementById('eano').innerHTML = JSON.stringify(cords2);
-    document.getElementById('pos').innerHTML = JSON.stringify(cords);
-    document.getElementById('vel').innerHTML = JSON.stringify(vel);
-    document.getElementById('acc').innerHTML = JSON.stringify(acc);
-    document.getElementById('rot').innerHTML = JSON.stringify(rot);
-    // populate our pre-defined chart with data
-    series.data = cords2; ///////////////////////////
-    chartsettings.series = [series];
-    $('#sigbox').highcharts(chartsettings);
-}
 
 // CONVENIENCES
 // ============================================================
@@ -310,3 +279,53 @@ function eastNorth(vec, theta) {
 // var acc = {}; // TEMP STORE
 // var rot = {}; // TEMP STORE
 // captures.interval = round(eventData.interval);
+
+
+// document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
+// document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
+// document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
+
+// captures.milli = new Date().getMilliseconds();
+
+/*
+var onoff = 0; // FUDGE
+
+
+var foo = Math.floor(Math.random() * 11) - 5.5;  // temp fudge
+if (onoff != 0) {
+    captures[t_acc] = foo;  // temp fudge
+};
+
+    if (onoff == 1) {
+        captures.dir_a = Math.floor(Math.random() * 256) * onoff; //FUDGE
+        captures.dir_g = Math.floor(Math.random() * 256) * onoff; //FUDGE
+        captures.dir_b = Math.floor(Math.random() * 256) * onoff; //FUDGE
+        captures.northFace = Math.floor(Math.random() * 360); //FUDGE
+    }
+
+
+    cords.push({
+        x: eano[0],  // pos.x.slice(-1)[0],  //
+        y: eano[1], // pos.y.slice(-1)[0],  //
+        color: rescaleToColor(captures.northFace)
+    });
+
+
+    // temp-pop //FUDGE
+    document.getElementById('acx').innerHTML = cords2.slice(-1)[0].x;
+    document.getElementById('acy').innerHTML = cords2.slice(-1)[0].y;
+
+
+    document.getElementById('pos').innerHTML = JSON.stringify(cords);
+
+cords2.push(
+        // x: eano[0] + cords2.slice(-1)[0]['x'],
+        // y: eano[1] + cords2.slice(-1)[0]['y'],
+
+        // y: pos.y.slice(-1)[0] + cords2.slice(-1)[0]['y'],
+        // color: rescaleToColor(captures.northFace)
+    );
+
+
+*/
+
