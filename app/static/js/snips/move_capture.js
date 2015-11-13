@@ -1,20 +1,19 @@
 /*
-Capturing and modifying positional data for
-display on the phone.
+Capturing and modifying positional data for display on the phone.
 
 Some refs -
 http://stackoverflow.com/questions/18112729/calculate-compass-heading-from-deviceorientation-event-api
 http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 */
+
+
 var onoff = 0;
-var acc = {}; // TEMP STORE
-var rot = {}; // TEMP STORE
+
+
 // DECLARATIONS AND RUN
-// we set some declared variables in a function as we can later
-// use that function as a reset
+// some declared variables in a function as we can later reset
 // ============================================================
 var captures = {}; // point in time data captured from phone
-var vel = {}, pos = {}, cords = {}, cords2 = {};
 var nIntervId; // interval stamps for our clock
 var series = {  // default dots in graph
     name: 'Signature',
@@ -65,7 +64,6 @@ function OrientationHandler(eventData) {
     captures.dir_a = round(eventData.alpha);
     captures.dir_b = round(eventData.beta);
     captures.dir_g = round(eventData.gamma);
-    captures.interval = round(eventData.interval);
     captures.northFace = compassHeading(
         captures.dir_a, captures.dir_b, captures.dir_g
     );
@@ -183,7 +181,9 @@ function terminal_vel(millis) {
     rot['gamma'].push(captures.dir_g);
 
     // pop data xy co-ordinates
-    var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
+    // var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
+    var eano = [pos.x.slice(-1)[0], pos.y.slice(-1)[0]];
+
     cords2.push({
         x: eano[0] + cords2.slice(-1)[0]['x'],
         y: eano[1] + cords2.slice(-1)[0]['y'],
@@ -197,12 +197,12 @@ function terminal_vel(millis) {
     });
 
     // temp-pop //FUDGE
-    document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
-    document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
-    document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
-
-
-
+    console.log(cords2.slice(-1)[0]);
+    document.getElementById('vex').innerHTML = cords2.slice(-1)[0].x;
+    document.getElementById('vey').innerHTML = cords2.slice(-1)[0].y;
+    // document.getElementById('vex').innerHTML = round1(vel.x.slice(-1)[0]);
+    // document.getElementById('vey').innerHTML = round1(vel.y.slice(-1)[0]);
+    // document.getElementById('vez').innerHTML = round1(vel.z.slice(-1)[0]);
     // populate page
     document.getElementById('eano').innerHTML = JSON.stringify(cords2);
     document.getElementById('pos').innerHTML = JSON.stringify(cords);
@@ -304,3 +304,9 @@ function eastNorth(vec, theta) {
     rads = theta * Math.PI / 180;
     return [vec * Math.cos(rads), -vec * Math.sin(rads)];
 }
+
+
+// var vel = {}, pos = {}, cords = {}, cords2 = {};
+// var acc = {}; // TEMP STORE
+// var rot = {}; // TEMP STORE
+// captures.interval = round(eventData.interval);
