@@ -38,16 +38,6 @@ function getDeviceData() {
     }
 }
 
-function MotionHandler(eventData) {
-    /* Grab acceleration results */
-    captures.acc_x = createBucket(eventData.acceleration.x, 0.3);
-    captures.acc_y = createBucket(eventData.acceleration.y, 0.3);
-    captures.acc_z = createBucket(eventData.acceleration.z, 0.3);
-    document.getElementById('accs').innerHTML = [
-        captures.acc_x, captures.acc_y, captures.acc_z
-    ]; // temp fudge
-}
-
 function OrientationHandler(eventData) {
     /*    Grab and modify rotation data
     alpha is the compass direction (rotation around z axis (out of face);
@@ -70,6 +60,17 @@ function OrientationHandler(eventData) {
         captures.dir_a, captures.dir_b, captures.dir_g
     ]; // temp fudge
 }
+
+function MotionHandler(eventData) {
+    /* Grab acceleration results */
+    captures.acc_x = eventData.acceleration.x;
+    captures.acc_y = eventData.acceleration.y;
+    captures.acc_z = eventData.acceleration.z;
+    document.getElementById('accs').innerHTML = [
+        captures.acc_x, captures.acc_y, captures.acc_z
+    ]; // temp fudge
+}
+
 
 // RUNNING OUR SAMPLER
 // ============================================================
@@ -95,7 +96,12 @@ function terminal_vel(millis) {
     // run through our xyz axes
     for (var axis in vel) {
         var t_acc = 'acc_' + axis;
-        acc[axis].push(captures[t_acc]);  // temp store
+        acc[axis].push(
+            captures[t_acc]
+        );  // temp store
+        bucketAcc[axis].push(
+            createBucket(captures[t_acc], 0.5)
+        );
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
         mean_a = (acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1]) / 2;
@@ -121,6 +127,7 @@ function terminal_vel(millis) {
     document.getElementById('cum_disp').innerHTML = JSON.stringify(cords2);
     document.getElementById('disp').innerHTML = JSON.stringify(disp);
     document.getElementById('vel').innerHTML = JSON.stringify(vel);
+    document.getElementById('bucketAcc').innerHTML = JSON.stringify(bucketAcc);
     document.getElementById('acc').innerHTML = JSON.stringify(acc);
     document.getElementById('rot').innerHTML = JSON.stringify(rot);
     // populate our pre-defined chart with data
@@ -218,6 +225,11 @@ function motionVars() {
         color: 'rgba(100, 100, 100, .5)'
     }];
     acc = {  // TEMP STORE
+        x: [0],
+        y: [0],
+        z: [0]
+    };
+    bucketAcc = {  // TEMP STORE
         x: [0],
         y: [0],
         z: [0]
