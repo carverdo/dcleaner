@@ -104,7 +104,7 @@ function terminal_vel(millis) {
         );
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
-        mean_a = (acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1]) / 2;
+        mean_a = (bucketAcc[axis].slice(-2)[0] + bucketAcc[axis].slice(-2)[1]) / 2;
         var v = u + mean_a * secs;
         vel[axis].push(v);
         // s = (u + v) / 2 * t, but we want cumulative s // disp[axis].slice(-1)[0] +
