@@ -40,12 +40,11 @@ function getDeviceData() {
 
 function MotionHandler(eventData) {
     /* Grab acceleration results */
-    captures.acc_x = round(eventData.acceleration.x);
-    captures.acc_y = round(eventData.acceleration.y);
-    captures.acc_z = round(eventData.acceleration.z);
+    captures.acc_x = createBucket(eventData.acceleration.x, 0.15);
+    captures.acc_y = createBucket(eventData.acceleration.y, 0.15);
+    captures.acc_z = createBucket(eventData.acceleration.z, 0.15);
     document.getElementById('accs').innerHTML = [
-    Math.round(captures.acc_x), Math.round(captures.acc_y),
-    Math.round(captures.acc_z)
+        captures.acc_x, captures.acc_y, captures.acc_z
     ]; // temp fudge
 }
 
@@ -189,11 +188,15 @@ function round(val) {
     return Math.round(val * amt) /  amt;
 }
 
-function round1(val) {
-    var amt = 10;
-    return Math.round(val * amt) /  amt;
+function createBucket(val, size) {
+    if (val >= 0) {
+        clean = Math.floor(val);
+    } else {
+        clean = Math.ceil(val);
+    }
+    edge = Math.floor((val - clean) / size) * size;
+    return clean + edge;
 }
-
 
 function motionVars() {
     // cumulative capture of velocity, disp;
