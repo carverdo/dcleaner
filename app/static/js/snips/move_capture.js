@@ -102,27 +102,25 @@ function terminal_vel(millis) {
         mean_a = (acc[axis].slice(-2)[0] + acc[axis].slice(-2)[1]) / 2;
         var v = u + mean_a * secs;
         vel[axis].push(v);
-        // s = (u + v) / 2 * t, but we want cumulative s // pos[axis].slice(-1)[0] +
+        // s = (u + v) / 2 * t, but we want cumulative s // disp[axis].slice(-1)[0] +
         ds = (u + v) * 0.5 * secs;
-        pos[axis].push(
-            ds
-        );
+        disp[axis].push(ds);
     }
     // turn our tilts into colours and gather
     rot['theta'].push(captures.northFace);
     rot['beta'].push(captures.dir_b);
     rot['gamma'].push(captures.dir_g);
     // pop data xy co-ordinates
-    // var eano = eastNorth(pos.x.slice(-1)[0], captures.northFace);
+    // var eano = eastNorth(disp.x.slice(-1)[0], captures.northFace);
     cords2.push({
-        x: pos.x.slice(-1)[0] + cords2.slice(-1)[0]['x'],
-        y: pos.y.slice(-1)[0] + cords2.slice(-1)[0]['y'],
+        x: disp.x.slice(-1)[0] + cords2.slice(-1)[0]['x'],
+        y: disp.y.slice(-1)[0] + cords2.slice(-1)[0]['y'],
         color: rescaleToColor(captures.northFace)
     });
-    console.log(rescaleToColor(captures.northFace));
     // populate page
     // document.getElementById('eano').innerHTML = JSON.stringify(cords2);
-    document.getElementById('pos').innerHTML = JSON.stringify(cords2);
+    document.getElementById('cum_disp').innerHTML = JSON.stringify(cords2);
+    document.getElementById('disp').innerHTML = JSON.stringify(disp);
     document.getElementById('vel').innerHTML = JSON.stringify(vel);
     document.getElementById('acc').innerHTML = JSON.stringify(acc);
     document.getElementById('rot').innerHTML = JSON.stringify(rot);
@@ -198,15 +196,15 @@ function round1(val) {
 
 
 function motionVars() {
-    // cumulative capture of velocity, pos;
-    // co-ordinates is just pos restated for the graph;
+    // cumulative capture of velocity, disp;
+    // co-ordinates is just disp restated for the graph;
     // set up like this allows us to reset these vars.
     vel = {
         x: [0],
         y: [0],
         z: [0]
     };
-    pos = {
+    disp = {
         x: [0],
         y: [0],
         z: [0]
