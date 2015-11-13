@@ -55,10 +55,10 @@ function OrientationHandler(eventData) {
     captures.northFace = compassHeading(
         captures.dir_a, captures.dir_b, captures.dir_g
     );
-    document.getElementById('compass').innerHTML = captures.northFace;
     document.getElementById('raws').innerHTML = [
         captures.dir_a, captures.dir_b, captures.dir_g
     ]; // temp fudge
+    document.getElementById('compass').innerHTML = captures.northFace;
 }
 
 function MotionHandler(eventData) {
@@ -100,7 +100,7 @@ function terminal_vel(millis) {
             captures[t_acc]
         );  // temp store
         bucketAcc[axis].push(
-            createBucket(captures[t_acc], 0.5)
+            createBucket(captures[t_acc], 0.05)
         );
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
@@ -181,7 +181,7 @@ function compassHeading(alpha, beta, gamma) {
         return Math.round(compassHeading * (180 / Math.PI)); // Compass Heading (in degrees)
     } else {
         revAlpha = 360 - alpha;
-        return round(revAlpha);
+        return Math.round(revAlpha);
     }
 }
 
