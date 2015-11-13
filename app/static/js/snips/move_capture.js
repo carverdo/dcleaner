@@ -63,9 +63,9 @@ function OrientationHandler(eventData) {
 
 function MotionHandler(eventData) {
     /* Grab acceleration results */
-    captures.acc_x = eventData.acceleration.x;
-    captures.acc_y = eventData.acceleration.y;
-    captures.acc_z = eventData.acceleration.z;
+    captures.acc_x = round(eventData.acceleration.x);
+    captures.acc_y = round(eventData.acceleration.y);
+    captures.acc_z = round(eventData.acceleration.z);
     document.getElementById('accs').innerHTML = [
         captures.acc_x, captures.acc_y, captures.acc_z
     ]; // temp fudge
@@ -131,9 +131,9 @@ function terminal_vel(millis) {
     document.getElementById('acc').innerHTML = JSON.stringify(acc);
     document.getElementById('rot').innerHTML = JSON.stringify(rot);
     // populate our pre-defined chart with data
-    series.data = cords2; ///////////////////////////
-    chartsettings.series = [series];
-    $('#sigbox').highcharts(chartsettings);
+    // series.data = cords2; ///////////////////////////
+    // chartsettings.series = [series];
+    // $('#sigbox').highcharts(chartsettings);
 }
 
 // CONVERTING ALPHA
@@ -185,13 +185,10 @@ function compassHeading(alpha, beta, gamma) {
     }
 }
 
-
-
-
 // CONVENIENCES
 // ============================================================
 function round(val) {
-    var amt = 10000;
+    var amt = 100;
     return Math.round(val * amt) /  amt;
 }
 

@@ -7,9 +7,9 @@
     <h3 id="dmEvent">Motion ok</h3>
     <h3 id="dmEvent2">Orientation ok</h3>
 
-    <h3 id="accs">a_x</h3>
     <h3 id="compass">North</h3>
     <h3 id="raws">TRUE alpha, beta, gamma</h3>
+    <h3 id="accs">accs</h3>
 
     <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 24px">
         <button type="button" class="btn btn-danger" onclick="stopCollecting();">
@@ -23,7 +23,7 @@
               onclick="toggler();" id="booler">0</span>
     </div>
     <!-- Graph Container -->
-    <div id="sigbox" style="width:100%; height:400px;"></div>
+
     <div class="table-responsive" id="scroller">
         <table class="table table-hover table-condensed">
             <thead style="color:green">
@@ -36,10 +36,11 @@
             <tr><td id="rot"></td></tr>
         </table>
     </div>
+    <div id="sigbox" style="width:100%; height:400px;"></div>
     <h3>trash</h3>
     <!-- Javascript for our graph -->
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="static/js/snips/move_graph_sets.js"></script>
+    <!-- <script src="http://code.highcharts.com/highcharts.js"></script> -->
+    <!-- <script src="static/js/snips/move_graph_sets.js"></script> -->
     <script src="static/js/snips/move_capture.js"></script>
 
 {% endblock %}
