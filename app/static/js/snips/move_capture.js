@@ -105,10 +105,10 @@ function terminal_vel(millis) {
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
         mean_a = (bucketAcc[axis].slice(-2)[0] + bucketAcc[axis].slice(-2)[1]) / 2;
-        var v = u + mean_a * secs;
+        var v = round(u + mean_a * secs);
         vel[axis].push(v);
         // s = (u + v) / 2 * t, but we want cumulative s // disp[axis].slice(-1)[0] +
-        ds = (u + v) * 0.5 * secs;
+        ds = round((u + v) * 0.5 * secs);
         disp[axis].push(ds);
     }
     // turn our tilts into colours and gather
@@ -118,8 +118,8 @@ function terminal_vel(millis) {
     // pop data xy co-ordinates
     // var eano = eastNorth(disp.x.slice(-1)[0], captures.northFace);
     cords2.push({
-        x: disp.x.slice(-1)[0] + cords2.slice(-1)[0]['x'],
-        y: disp.y.slice(-1)[0] + cords2.slice(-1)[0]['y'],
+        x: round(disp.x.slice(-1)[0] + cords2.slice(-1)[0]['x']),
+        y: round(disp.y.slice(-1)[0] + cords2.slice(-1)[0]['y']),
         color: rescaleToColor(captures.northFace)
     });
     // populate page
