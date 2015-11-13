@@ -195,10 +195,11 @@ function round(val) {
 function createBucket(val, size) {
     if (val >= 0) {
         clean = Math.floor(val);
+        edge = Math.floor((val - clean) / size) * size;
     } else {
         clean = Math.ceil(val);
+        edge = Math.ceil((val - clean) / size) * size;
     }
-    edge = Math.floor((val - clean) / size) * size;
     return clean + edge;
 }
 
