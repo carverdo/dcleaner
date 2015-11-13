@@ -100,7 +100,7 @@ function terminal_vel(millis) {
             captures[t_acc]
         );  // temp store
         bucketAcc[axis].push(
-            createBucket(captures[t_acc], 0.05)
+            createBucket(captures[t_acc], 0.10)
         );
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
@@ -200,7 +200,7 @@ function createBucket(val, size) {
         clean = Math.ceil(val);
         edge = Math.ceil((val - clean) / size) * size;
     }
-    return clean + edge;
+    return round(clean + edge);
 }
 
 function motionVars() {
