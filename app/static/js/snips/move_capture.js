@@ -40,9 +40,9 @@ function getDeviceData() {
 
 function MotionHandler(eventData) {
     /* Grab acceleration results */
-    captures.acc_x = createBucket(eventData.acceleration.x, 0.15);
-    captures.acc_y = createBucket(eventData.acceleration.y, 0.15);
-    captures.acc_z = createBucket(eventData.acceleration.z, 0.15);
+    captures.acc_x = createBucket(eventData.acceleration.x, 0.3);
+    captures.acc_y = createBucket(eventData.acceleration.y, 0.3);
+    captures.acc_z = createBucket(eventData.acceleration.z, 0.3);
     document.getElementById('accs').innerHTML = [
         captures.acc_x, captures.acc_y, captures.acc_z
     ]; // temp fudge
