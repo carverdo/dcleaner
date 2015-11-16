@@ -210,10 +210,14 @@ function handleOrientation(event) {
     acc['x'].push(acc_x);
     acc['y'].push(acc_y);
     rot['theta'].push(northFace);
+
+
     if (onoff == 1) {
         document.getElementById('acx').innerHTML = acc['x'];
         document.getElementById('acy').innerHTML = acc['y'];
         document.getElementById('theta').innerHTML = rot['theta'];
+    } else {
+        motionVars();
     }
 }
 
