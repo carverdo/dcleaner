@@ -63,11 +63,15 @@ function OrientationHandler(eventData) {
 
 function MotionHandler(eventData) {
     /* Grab acceleration results */
+    captures.interval = eventData.interval;
     captures.acc_x = round(eventData.acceleration.x);
     captures.acc_y = round(eventData.acceleration.y);
     captures.acc_z = round(eventData.acceleration.z);
     document.getElementById('accs').innerHTML = [
         captures.acc_x, captures.acc_y, captures.acc_z
+    ]; // temp fudge
+    document.getElementById('ival').innerHTML = [
+        captures.interval
     ]; // temp fudge
 }
 
@@ -124,7 +128,7 @@ function compassHeading(alpha, beta, gamma) {
 // CONVENIENCES
 // ============================================================
 function round(val) {
-    var amt = 100;
+    var amt = 1;
     return Math.round(val * amt) /  amt;
 }
 
@@ -172,18 +176,18 @@ function motionVars() {
 // ==============================================
 // NEW STUFF XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 // ==============================================
-var ball   = document.querySelector('.ball');
+var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
 var maxY = garden.clientHeight - ball.clientHeight;
 
 function handleOrientation(event) {
-    var x = event.beta;  // In degree in the range [-180,180]
-    var y = event.gamma; // In degree in the range [-90,90]
+    var x = captures.acc_x / 10; //event.beta;  // In degree in the range [-180,180]
+    var y = captures.acc_y / 10; // event.gamma; // In degree in the range [-90,90]
 
     document.getElementById('beta').innerHTML = "beta : " + x + "\n";
     document.getElementById('gamma').innerHTML = "gamma: " + y + "\n";
-
+    /*
     // Because we don't want to have the device upside down
     // We constrain the x value to the range [-90,90]
     if (x >  90) { x =  90};
@@ -193,11 +197,11 @@ function handleOrientation(event) {
     // x and y to [0,180]
     x += 90;
     y += 90;
-
+    */
     // 10 is half the size of the ball
     // It center the positioning point to the center of the ball
-    ball.style.top  = (maxX*x/180 - 10) + "px";
-    ball.style.left = (maxY*y/180 - 10) + "px";
+    ball.style.top  = (maxX * (x + 0.5) ) + "px";
+    ball.style.left = (maxY* (y + 0.5) ) + "px";
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
