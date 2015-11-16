@@ -100,7 +100,7 @@ function terminal_vel(millis) {
             captures[t_acc]
         );  // temp store
         bucketAcc[axis].push(
-            createBucket(captures[t_acc], 1.00)
+            createBucket(captures[t_acc], 0.40)
         );
         // v = u + at, but we need mean a;
         var u = vel[axis].slice(-1)[0];
