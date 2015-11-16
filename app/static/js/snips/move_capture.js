@@ -120,11 +120,12 @@ function terminal_vel(millis) {
     cords2.push({
         x: round(disp.x.slice(-1)[0] + cords2.slice(-1)[0]['x']),
         y: round(disp.y.slice(-1)[0] + cords2.slice(-1)[0]['y']),
-        // color: rescaleToColor(captures.northFace)
+        color: rescaleToColor(captures.northFace)
     });
     // populate page
     // document.getElementById('eano').innerHTML = JSON.stringify(cords2);
-    document.getElementById('cum_disp').innerHTML = JSON.stringify(cords2);
+    document.getElementById('cum_dispx').innerHTML = JSON.stringify(cords2['x']);
+    document.getElementById('cum_dispy').innerHTML = JSON.stringify(cords2['y']);
     document.getElementById('dispx').innerHTML = JSON.stringify(disp['x']);
     document.getElementById('dispy').innerHTML = JSON.stringify(disp['y']);
     document.getElementById('vex').innerHTML = JSON.stringify(vel['x']);
