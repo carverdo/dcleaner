@@ -15,7 +15,7 @@ var series = {  // default dots in graph
     name: 'Signature',
 };
 var rem = 2;  // countdown clock, 3 seconds
-
+var onoff = 0;
 // AND RUN
 // ============================================================
 motionVars();
@@ -172,6 +172,10 @@ function motionVars() {
     }];
 }
 
+function toggler() {
+    onoff = 1 - onoff;
+    document.getElementById('booler').innerHTML = onoff;
+}
 
 // ==============================================
 // NEW STUFF XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -206,9 +210,11 @@ function handleOrientation(event) {
     acc['x'].push(acc_x);
     acc['y'].push(acc_y);
     rot['theta'].push(northFace);
-    document.getElementById('acx').innerHTML = acc['x'];
-    document.getElementById('acy').innerHTML = acc['y'];
-    document.getElementById('theta').innerHTML = rot['theta'];
+    if (onoff == 1) {
+        document.getElementById('acx').innerHTML = acc['x'];
+        document.getElementById('acy').innerHTML = acc['y'];
+        document.getElementById('theta').innerHTML = rot['theta'];
+    }
 }
 
 window.addEventListener('deviceorientation', handleOrientation);

@@ -4,17 +4,22 @@
 {% endblock %}
 
 {% block content %}
-    <p id="dmEvent">Motion ok</p>
-    <p id="dmEvent2">Orientation ok</p>
-    <h3 id="raws">TRUE alpha, beta, gamma</h3>
+    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 24px">
+        <button type="button" class="btn btn-warning"
+              onclick="toggler();" id="booler">0</button>
+        <button type="button" class="btn btn-warning" onclick="motionVars();">Wipe</button>
+    </div>
+    <div id="acx">acx</div>
+    <div id="acy">acy</div>
+    <div id="theta">theta</div>
     <h3 id="compass">North</h3>
     <h3 id="accs">accs</h3>
-    <h3 id="ival">ival</h3>
     <div class="garden">
         <div class="ball"></div>
     </div>
-    <div id="acx"></div>
-    <div id="acy"></div>
-    <div id="theta"></div>
+    <p id="raws">TRUE alpha, beta, gamma</p>
+    <p id="ival">ival</p>
+    <p id="dmEvent">Motion ok</p>
+    <p id="dmEvent2">Orientation ok</p>
     <script src="static/js/snips/ball.js"></script>
 {% endblock %}
