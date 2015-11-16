@@ -120,15 +120,19 @@ function terminal_vel(millis) {
     cords2.push({
         x: round(disp.x.slice(-1)[0] + cords2.slice(-1)[0]['x']),
         y: round(disp.y.slice(-1)[0] + cords2.slice(-1)[0]['y']),
-        color: rescaleToColor(captures.northFace)
+        // color: rescaleToColor(captures.northFace)
     });
     // populate page
     // document.getElementById('eano').innerHTML = JSON.stringify(cords2);
     document.getElementById('cum_disp').innerHTML = JSON.stringify(cords2);
-    document.getElementById('disp').innerHTML = JSON.stringify(disp);
-    document.getElementById('vel').innerHTML = JSON.stringify(vel);
-    document.getElementById('bucketAcc').innerHTML = JSON.stringify(bucketAcc);
-    document.getElementById('acc').innerHTML = JSON.stringify(acc);
+    document.getElementById('dispx').innerHTML = JSON.stringify(disp['x']);
+    document.getElementById('dispy').innerHTML = JSON.stringify(disp['y']);
+    document.getElementById('vex').innerHTML = JSON.stringify(vel['x']);
+    document.getElementById('vey').innerHTML = JSON.stringify(vel['y']);
+    document.getElementById('bucketAcx').innerHTML = JSON.stringify(bucketAcc['x']);
+    document.getElementById('bucketAcy').innerHTML = JSON.stringify(bucketAcc['y']);
+    document.getElementById('acx').innerHTML = JSON.stringify(acc['x']);
+    document.getElementById('acy').innerHTML = JSON.stringify(acc['y']);
     document.getElementById('rot').innerHTML = JSON.stringify(rot);
     // populate our pre-defined chart with data
     // series.data = cords2; ///////////////////////////
@@ -238,7 +242,7 @@ function motionVars() {
     cords2 = [{  // TEMP STORE
         x: 0,
         y: 0,
-        color: 'rgba(100, 100, 100, .5)'
+        // color: 'rgba(100, 100, 100, .5)'
     }];
 }
 
