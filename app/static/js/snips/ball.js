@@ -49,29 +49,29 @@ function OrientationHandler(eventData) {
     ie left-to-right tilt in degrees, where right is positive;
     varies -90 to +90 (so doesn't know if upside down);
     */
-    captures.dir_a = round(eventData.alpha);
-    captures.dir_b = round(eventData.beta);
-    captures.dir_g = round(eventData.gamma);
-    captures.northFace = compassHeading(
-        captures.dir_a, captures.dir_b, captures.dir_g
+    dir_a = round(eventData.alpha);
+    dir_b = round(eventData.beta);
+    dir_g = round(eventData.gamma);
+    northFace = compassHeading(
+        dir_a, dir_b, dir_g
     );
     document.getElementById('raws').innerHTML = [
-        captures.dir_a, captures.dir_b, captures.dir_g
+        dir_a, dir_b, dir_g
     ]; // temp fudge
-    document.getElementById('compass').innerHTML = captures.northFace;
+    document.getElementById('compass').innerHTML = northFace;
 }
 
 function MotionHandler(eventData) {
     /* Grab acceleration results */
-    captures.interval = eventData.interval;
-    captures.acc_x = round(eventData.acceleration.x);
-    captures.acc_y = round(eventData.acceleration.y);
-    captures.acc_z = round(eventData.acceleration.z);
+    interval = eventData.interval;
+    acc_x = round(eventData.acceleration.x);
+    acc_y = round(eventData.acceleration.y);
+    acc_z = round(eventData.acceleration.z);
     document.getElementById('accs').innerHTML = [
-        captures.acc_x, captures.acc_y, captures.acc_z
+        acc_x, acc_y, acc_z
     ]; // temp fudge
     document.getElementById('ival').innerHTML = [
-        captures.interval
+        interval
     ]; // temp fudge
 }
 
@@ -182,11 +182,11 @@ var maxX = garden.clientWidth  - ball.clientWidth;
 var maxY = garden.clientHeight - ball.clientHeight;
 
 function handleOrientation(event) {
-    var x = captures.acc_x / 10; //event.beta;  // In degree in the range [-180,180]
-    var y = captures.acc_y / 10; // event.gamma; // In degree in the range [-90,90]
+    // var x = event.beta;  // In degree in the range [-180,180]
+    // var y = event.gamma; // In degree in the range [-90,90]
 
-    document.getElementById('beta').innerHTML = "beta : " + x + "\n";
-    document.getElementById('gamma').innerHTML = "gamma: " + y + "\n";
+    // document.getElementById('beta').innerHTML = "x : " + x + "\n";
+    // document.getElementById('gamma').innerHTML = "y : " + y + "\n";
     /*
     // Because we don't want to have the device upside down
     // We constrain the x value to the range [-90,90]
@@ -200,8 +200,15 @@ function handleOrientation(event) {
     */
     // 10 is half the size of the ball
     // It center the positioning point to the center of the ball
-    ball.style.left  = (maxX * (x + 0.5) ) + "px";
-    ball.style.top = (maxY* (-y + 0.5) ) + "px";
+    ball.style.left  = (maxX * (acc_x/10 + 0.5) ) + "px";
+    ball.style.top = (maxY* (-acc_y/10 + 0.5) ) + "px";
+
+    acc['x'].push(acc_x);
+    acc['y'].push(acc_y);
+    rot['theta'].push(northFace);
+    document.getElementById('acx').innerHTML = acc['x'];
+    document.getElementById('acy').innerHTML = acc['y'];
+    document.getElementById('theta').innerHTML = rot['theta'];
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
