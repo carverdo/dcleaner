@@ -194,13 +194,10 @@ function round(val) {
 
 function createBucket(val, size) {
     if (val >= 0) {
-        clean = Math.floor(val);
-        edge = Math.floor((val - clean) / size) * size;
+        return Math.floor(val / size) * size;
     } else {
-        clean = Math.ceil(val);
-        edge = Math.ceil((val - clean) / size) * size;
+        return Math.ceil(val / size) * size;
     }
-    return round(clean + edge);
 }
 
 function motionVars() {
