@@ -194,9 +194,9 @@ function round(val) {
 
 function createBucket(val, size) {
     if (val >= 0) {
-        return Math.floor(val / size) * size;
+        return round(Math.floor(val / size) * size);
     } else {
-        return Math.ceil(val / size) * size;
+        return round(Math.ceil(val / size) * size);
     }
 }
 
