@@ -193,10 +193,14 @@ function round(val) {
 }
 
 function createBucket(val, size) {
+    // handling rounding inaccuracies
+    muller = 100;
+    val *= muller;
+    size *= muller;
     if (val >= 0) {
-        return round(Math.floor(val / size) * size);
+        return round(Math.floor(val / size) * size / muller);
     } else {
-        return round(Math.ceil(val / size) * size);
+        return round(Math.ceil(val / size) * size / muller);
     }
 }
 
