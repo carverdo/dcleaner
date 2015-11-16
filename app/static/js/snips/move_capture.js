@@ -122,10 +122,19 @@ function terminal_vel(millis) {
         y: round(disp.y.slice(-1)[0] + cords2.slice(-1)[0]['y']),
         color: rescaleToColor(captures.northFace)
     });
+    cords['x'].push(
+        round(disp.x.slice(-1)[0] + cords['x'].slice(-1)[0])
+    );
+    cords['y'].push(
+        round(disp.y.slice(-1)[0] + cords['y'].slice(-1)[0])
+    );
+
+
     // populate page
     // document.getElementById('eano').innerHTML = JSON.stringify(cords2);
-    document.getElementById('cum_dispx').innerHTML = JSON.stringify(cords2['x']);
-    document.getElementById('cum_dispy').innerHTML = JSON.stringify(cords2['y']);
+    // document.getElementById('cum_disp').innerHTML = JSON.stringify(cords2);
+    document.getElementById('cum_dispx').innerHTML = JSON.stringify(cords['x']);
+    document.getElementById('cum_dispy').innerHTML = JSON.stringify(cords['y']);
     document.getElementById('dispx').innerHTML = JSON.stringify(disp['x']);
     document.getElementById('dispy').innerHTML = JSON.stringify(disp['y']);
     document.getElementById('vex').innerHTML = JSON.stringify(vel['x']);
@@ -220,11 +229,10 @@ function motionVars() {
         y: [0],
         z: [0]
     };
-    cords = [{
-        x: 0,
-        y: 0,
-        color: 'rgba(100, 100, 100, .5)'
-    }];
+    cords = {
+        x: [0],
+        y: [0]
+    };
     acc = {  // TEMP STORE
         x: [0],
         y: [0],
