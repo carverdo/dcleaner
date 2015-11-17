@@ -210,7 +210,8 @@ function handleOrientation(event) {
     acc['x'].push(acc_x);
     acc['y'].push(acc_y);
     rot['theta'].push(northFace);
-
+    rot['beta'].push(dir_b);
+    rot['gamma'].push(dir_g);
 
     if (onoff == 1) {
         document.getElementById('acx').innerHTML = acc['x'];
