@@ -217,6 +217,8 @@ function handleOrientation(event) {
         document.getElementById('acx').innerHTML = acc['x'];
         document.getElementById('acy').innerHTML = acc['y'];
         document.getElementById('theta').innerHTML = rot['theta'];
+        document.getElementById('beta').innerHTML = rot['beta'];
+        document.getElementById('gamma').innerHTML = rot['gamma'];
     } else {
         motionVars();
     }
