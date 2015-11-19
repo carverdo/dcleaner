@@ -128,7 +128,7 @@ function compassHeading(alpha, beta, gamma) {
 // CONVENIENCES
 // ============================================================
 function round(val) {
-    var amt = 1;
+    var amt = 100;
     return Math.round(val * amt) /  amt;
 }
 
