@@ -3,7 +3,7 @@ __project__ = 'Skeleton_Flask_v11'
 
 from . import devy
 from flask import render_template, request, jsonify
-from app.db_models import Visit
+from app.db_models import Visit, MotionCapture
 from app.log_auth.geodata import get_clientdata
 
 
@@ -63,6 +63,22 @@ def clientdata():
     data['longitude'] = request.args.get('long', 0, type=float)
     Visit.create(**data)
     return jsonify(result=data.values())
+
+
+@devy.route('/_balldata')
+def balldata():
+    """
+    """
+    data = {}
+    data['acx'] = request.args.get('strAcx', '[0]', type=str)
+    data['acy'] = request.args.get('strAcy', '[0]', type=str)
+    data['theta'] = request.args.get('strTheta', '[0]', type=str)
+    data['beta'] = request.args.get('strBeta', '[0]', type=str)
+    data['gamma'] = request.args.get('strGamma', '[0]', type=str)
+    MotionCapture.create(**data)
+    return jsonify(ballData=data.items())
+
+
 
 
 """

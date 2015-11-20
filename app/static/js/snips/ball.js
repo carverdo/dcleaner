@@ -16,6 +16,7 @@ var onoff = 0;
 motionVars();
 setShaker();
 getDeviceData();
+passMotionData();
 
 // MAIN FUNCTIONS
 // ============================================================
@@ -147,7 +148,7 @@ function motionVars() {
         y: [0]
     };
     acc = {  // TEMP STORE
-        x: [4,5,6],
+        x: [4,5],
         y: [0],
         z: [0]
     };
@@ -183,7 +184,6 @@ function setShaker() {
 function runShaker(tilt) {
     // When user does -+- tilt, we start capturing;
     // When user does -+-+ we stop;
-    console.log(tilt);
     if (tilt < 0) {
         gotN = 1;
         gotNPN = gotNP;
@@ -197,6 +197,22 @@ function runShaker(tilt) {
         motionVars();
     }
 }
+
+
+function passMotionData() {
+    // sends it back for database handling
+    var strData = {
+        'strAcx': JSON.stringify(acc['x']),
+        'strAcy': JSON.stringify(acc['y']),
+        'strTheta': JSON.stringify(rot['theta']),
+        'strBeta': JSON.stringify(rot['beta']),
+        'strGamma': JSON.stringify(rot['gamma'])
+    }
+    $.getJSON('./_balldata', strData, function(data) {
+        $("#result").text(data.ballData);
+    });
+};
+
 
 // ==============================================
 // NEW STUFF XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

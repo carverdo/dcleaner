@@ -8,7 +8,7 @@ RUN this script from the cmd line -
 
 1. Create migrations folder
 cd to the folder holding this file.
-    C:..> venv\scripts\activate
+    C:..> venv\scripts\activate [HAS TO BE BACKSLASH!]
     <venv> C:..> python db_create_migrate.py db init
 (it will say Please edit ... before proceding; this is not an error, just info.)
 

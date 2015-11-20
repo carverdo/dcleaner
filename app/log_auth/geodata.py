@@ -48,7 +48,7 @@ def get_clientdata():
     client_data['ip_address'] = ip
     client_data['browser'] = request.headers.get("User-Agent")
     if current_user.is_active:
-         client_data['member_id'] = current_user.get_id()
+        client_data['member_id'] = current_user.get_id()
     return client_data
 
 
@@ -76,7 +76,6 @@ def get_geodata(switched_on=False, keymod_fn=None, geo_url=GEO_URL):
 
 
 if __name__ == '__main__':
-    #get_geodata('91.85.158.49')
-    #ip = request.environ.get('REMOTE_ADDR', request.remote_addr)
+    # get_geodata('91.85.158.49')
+    # ip = request.environ.get('REMOTE_ADDR', request.remote_addr)
     cc = get_geodata(True, _key_modifier)
-
