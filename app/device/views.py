@@ -71,14 +71,12 @@ def balldata():
     """
     data = {}
     data['acx'] = request.args.get('strAcx', '[0]', type=str)
-    data['acy'] = request.args.get('strAcy', '[0]', type=str)
+    data['acy'] = request.args.get('strAcy', '[-4,5]', type=str)
     data['theta'] = request.args.get('strTheta', '[0]', type=str)
     data['beta'] = request.args.get('strBeta', '[0]', type=str)
     data['gamma'] = request.args.get('strGamma', '[0]', type=str)
     MotionCapture.create(**data)
-    return jsonify(ballData=data.items())
-
-
+    return jsonify(ballData=data.values())
 
 
 """
