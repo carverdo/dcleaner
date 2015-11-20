@@ -196,6 +196,23 @@ class MemberBucketStore(CRUDMixin, db.Model):
             self.member_id, self.user_name, self.bucket)
 
 
+class MotionCapture(CRUDMixin, db.Model):
+    __tablename__ = 'motioncapture'
+    id = Column(Integer, primary_key=True)
+    acx = Column(String, default=None)
+    acy = Column(String, default=None)
+    theta = Column(String, default=None)
+    beta = Column(String, default=None)
+    gamma = Column(String, default=None)
+    radius = Column(String, default=None)
+    angle = Column(String, default=None)
+
+    def pingCapture(self):
+        # self.last_log = datetime.utcnow()
+        # self.save(self)
+        pass
+
+
 # flask-login needs this definition
 @login_manager.user_loader
 def load_user(user_id):

@@ -2,6 +2,7 @@
 Capturing and modifying positional data for display on the phone.
 
 Some refs -
+https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
 http://stackoverflow.com/questions/18112729/calculate-compass-heading-from-deviceorientation-event-api
 http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 */
@@ -9,16 +10,11 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // DECLARATIONS AND RUN
 // some declared variables in a function as we can later reset
 // ============================================================
-var captures = {}; // point in time data captured from phone
-var nIntervId; // interval stamps for our clock
-var series = {  // default dots in graph
-    name: 'Signature',
-};
-var rem = 2;  // countdown clock, 3 seconds
 var onoff = 0;
 // AND RUN
 // ============================================================
 motionVars();
+setShaker();
 getDeviceData();
 
 // MAIN FUNCTIONS
@@ -81,7 +77,7 @@ function MotionHandler(eventData) {
 function compassHeading(alpha, beta, gamma) {
     /* This function collapses the beta and gamma into alpha;
     To explain: where alpha is rotation about the z axis (coming
-    out of the face of the phone, our new compassheading asks
+    out of the face of the phone, our new compassHeading asks
     how northerly is the plane of the phone (as it extends
     out of the back) as this is how our user operates the phone.
 
@@ -151,7 +147,7 @@ function motionVars() {
         y: [0]
     };
     acc = {  // TEMP STORE
-        x: [0],
+        x: [4,5,6],
         y: [0],
         z: [0]
     };
@@ -175,6 +171,31 @@ function motionVars() {
 function toggler() {
     onoff = 1 - onoff;
     document.getElementById('booler').innerHTML = onoff;
+}
+
+function setShaker() {
+    gotN = 0;
+    gotNP = 0;
+    gotNPN = 0;
+    gotNPNP = 0;
+}
+
+function runShaker(tilt) {
+    // When user does -+- tilt, we start capturing;
+    // When user does -+-+ we stop;
+    console.log(tilt);
+    if (tilt < 0) {
+        gotN = 1;
+        gotNPN = gotNP;
+    } else {
+        gotNP = gotN;
+        gotNPNP = gotNPN;
+    }
+    // reset our vars if NPNP
+    if (gotNPNP == 1) {
+        setShaker();
+        motionVars();
+    }
 }
 
 // ==============================================
@@ -207,12 +228,16 @@ function handleOrientation(event) {
     ball.style.left  = (maxX * (acc_x/10 + 0.5) ) + "px";
     ball.style.top = (maxY* (-acc_y/10 + 0.5) ) + "px";
 
-    acc['x'].push(acc_x);
-    acc['y'].push(acc_y);
-    rot['theta'].push(northFace);
-    rot['beta'].push(dir_b);
-    rot['gamma'].push(dir_g);
-
+    // capture if get NPN signal
+    runShaker(dir_g);
+    if (gotNPN == 1) {
+        acc['x'].push(acc_x);
+        acc['y'].push(acc_y);
+        rot['theta'].push(northFace);
+        rot['beta'].push(dir_b);
+        rot['gamma'].push(dir_g);
+    }
+    // display if we want to see
     if (onoff == 1) {
         document.getElementById('acx').innerHTML = acc['x'];
         document.getElementById('acy').innerHTML = acc['y'];
@@ -225,4 +250,3 @@ function handleOrientation(event) {
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
-
