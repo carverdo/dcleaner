@@ -219,11 +219,9 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    /*
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
     });
-    */
 };
 
 
