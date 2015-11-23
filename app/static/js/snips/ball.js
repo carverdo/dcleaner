@@ -16,7 +16,6 @@ var onoff = 0;
 motionVars();
 setShaker();
 getDeviceData();
-passMotionData();
 
 // MAIN FUNCTIONS
 // ============================================================
@@ -175,24 +174,36 @@ function toggler() {
 }
 
 function setShaker() {
-    gotN = 0;
-    gotNP = 0;
-    gotNPN = 0;
-    gotNPNP = 0;
+    prevTilt = 0;
+    tallyTilt = 0;
+    // gotN = 0;
+    // gotNP = 0;
+    // gotNPN = 0;
+    // gotNPNP = 0;
 }
 
 function runShaker(tilt) {
     // When user does -+- tilt, we start capturing;
     // When user does -+-+ we stop;
     if (tilt < 0) {
-        gotN = 1;
-        gotNPN = gotNP;
+        if (prevTilt >= 0) {
+            tallyTilt += 1;
+        }
+        prevTilt = -1;
+        // gotN = 1;
+        // gotNPN = gotNP;
     } else {
-        gotNP = gotN;
-        gotNPNP = gotNPN;
+        if (prevTilt < 0) {
+            tallyTilt += 1;
+        }
+        prevTilt = 1;
+        // gotNP = gotN;
+        // gotNPNP = gotNPN;
     }
+    document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
-    if (gotNPNP == 1) {
+    if (tallyTilt >= 6) {
+        passMotionData();
         setShaker();
         motionVars();
     }
@@ -246,15 +257,13 @@ function handleOrientation(event) {
 
     // capture if get NPN signal
     runShaker(dir_g);
-    if (gotNPN == 1) {
+    if (tallyTilt >= 4 && onoff == 1) {
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
         rot['beta'].push(dir_b);
         rot['gamma'].push(dir_g);
-    }
-    // display if we want to see
-    if (onoff == 1) {
+        // display
         document.getElementById('acx').innerHTML = acc['x'];
         document.getElementById('acy').innerHTML = acc['y'];
         document.getElementById('theta').innerHTML = rot['theta'];
