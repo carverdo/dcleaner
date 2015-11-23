@@ -202,7 +202,7 @@ function runShaker(tilt) {
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
-    if (tallyTilt >= 6) {
+    if (tallyTilt >= 9) {
         passMotionData();
         setShaker();
         motionVars();
@@ -219,9 +219,11 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
+    /*
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
     });
+    */
 };
 
 
@@ -257,7 +259,7 @@ function handleOrientation(event) {
 
     // capture if get NPN signal
     runShaker(dir_g);
-    if (tallyTilt >= 4 && onoff == 1) {
+    if (tallyTilt >= 5 && onoff == 1) {
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);

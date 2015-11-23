@@ -26,9 +26,29 @@ def motion():
 def capture():
     return render_template('./device/move_capture.html')
 
+
 @devy.route('/ball')
 def ball():
     return render_template('./device/ball.html')
+
+
+@devy.route('/balltable')
+def balltable():
+    # Presentation of group/summary data
+    all_balldata = MotionCapture.query.order_by(MotionCapture.id).all()
+    patex = current_app.config['PAHDS']['balldata']
+    tadata = current_app.config['TADATA']['balldata']
+    endpoint, kwargs = '', {}
+    return render_template('panelbuilder.html',
+                           form=all_balldata,
+                           endpoint=endpoint,
+                           panel_args=dict(
+                               patex=patex,
+                               tadata=tadata,
+                               wid=12
+                           ),
+                           kwargs=kwargs
+                           )
 
 # =================================================
 @devy.route('/test')
