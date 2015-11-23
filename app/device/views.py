@@ -2,7 +2,7 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 
 from . import devy
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, current_app
 from app.db_models import Visit, MotionCapture
 from app.log_auth.geodata import get_clientdata
 
