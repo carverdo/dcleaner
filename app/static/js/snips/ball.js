@@ -203,11 +203,12 @@ function runShaker(tilt) {
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
-    if (tallyTilt >= 9) {
+    if (tallyTilt >= 19) {
         document.getElementById('half').innerHTML = tallyTilt;
         document.getElementById('oo').innerHTML = onoff;
-        // if (onoff == 1) {
-        // document.getElementById('halfway').innerHTML = tallyTilt;
+        if (onoff == 1) {
+            document.getElementById('halfway').innerHTML = 100;
+        }
         passMotionData();
         // }
         setShaker();
