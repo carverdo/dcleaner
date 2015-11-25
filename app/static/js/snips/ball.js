@@ -203,8 +203,8 @@ function runShaker(tilt) {
     // Pass data and reset our vars
     if (tallyTilt >= 11) {
         passMotionData();
-        // setShaker();
-        // motionVars();
+        setShaker();
+        motionVars();
     }
 }
 
@@ -213,11 +213,11 @@ function passMotionData() {
     var d = new Date();
     d = d.getMinutes() + ':' + d.getSeconds();
     var strData = {
-        'strAcx': JSON.stringify(acc['x']),
-        'strAcy': JSON.stringify(acc['y']),
-        'strTheta': JSON.stringify(rot['theta']),
-        'strBeta': JSON.stringify(rot['beta']),
-        'strGamma': JSON.stringify(rot['gamma'])
+        'strAcx': JSON.stringify(acc['x'].slice(0, 5)),
+        'strAcy': JSON.stringify(acc['y'].slice(0, 5)),
+        'strTheta': JSON.stringify(rot['theta'].slice(0, 5)),
+        'strBeta': JSON.stringify(rot['beta'].slice(0, 5)),
+        'strGamma': JSON.stringify(rot['gamma'].slice(0, 5))
     }
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
