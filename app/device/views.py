@@ -105,7 +105,10 @@ def balldata():
         data['theta'] = request.args.get('strTheta', '[0]', type=str)
         data['beta'] = request.args.get('strBeta', '[0]', type=str)
         data['gamma'] = request.args.get('strGamma', '[0]', type=str)
-        MotionCapture.create(**data)
+        try:
+            MotionCapture.create(**data)
+        except:
+            flash('couldnt save')
     return jsonify(ballData=data.values())
 
 
