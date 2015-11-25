@@ -100,7 +100,7 @@ def balldata():
         except:  # if request.args.get produces gibberish
             pass
     else:
-        data['acx'] = request.args.get('strAcx', '[0]', type=str)
+        data['acx'] = request.args.get('strAcx', '[-1]', type=str)
         data['acy'] = request.args.get('strAcy', '[0]', type=str)
         data['theta'] = request.args.get('strTheta', '[0]', type=str)
         data['beta'] = request.args.get('strBeta', '[0]', type=str)
