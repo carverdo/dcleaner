@@ -206,7 +206,7 @@ function runShaker(tilt) {
     if (tallyTilt >= 19) {
         if (onoff == 1) {
             passMotionData();
-        };
+        }
         setShaker();
         motionVars();
     }
