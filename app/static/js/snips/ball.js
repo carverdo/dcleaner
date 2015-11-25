@@ -195,7 +195,7 @@ function runShaker(tilt) {
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
-    if (tallyTilt >= 0) {
+    if (tallyTilt >= 11) {
         passMotionData();
         setShaker();
         motionVars();
