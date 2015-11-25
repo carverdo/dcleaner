@@ -203,8 +203,8 @@ function runShaker(tilt) {
     // Pass data and reset our vars
     if (tallyTilt >= 11) {
         passMotionData();
-        setShaker();
-        motionVars();
+        // setShaker();
+        // motionVars();
     }
 }
 
