@@ -176,10 +176,6 @@ function toggler() {
 function setShaker() {
     prevTilt = 0;
     tallyTilt = 0;
-    // gotN = 0;
-    // gotNP = 0;
-    // gotNPN = 0;
-    // gotNPNP = 0;
 }
 
 function runShaker(tilt) {
@@ -191,31 +187,20 @@ function runShaker(tilt) {
             tallyTilt += 1;
         }
         prevTilt = -1;
-        // gotN = 1;
-        // gotNPN = gotNP;
     } else {
         if (prevTilt < 0) {
             tallyTilt += 1;
         }
         prevTilt = 1;
-        // gotNP = gotN;
-        // gotNPNP = gotNPN;
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
     if (tallyTilt >= 9) {
-        document.getElementById('half').innerHTML = tallyTilt;
-        document.getElementById('oo').innerHTML = onoff;
-        //if (onoff == 1) {
-        //    document.getElementById('halfway').innerHTML = 100;
-        //}
         passMotionData();
-        // }
         setShaker();
         motionVars();
     }
 }
-
 
 function passMotionData() {
     // sends it back for database handling
@@ -239,6 +224,7 @@ var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
 var maxY = garden.clientHeight - ball.clientHeight;
+
 
 function handleOrientation(event) {
     // var x = event.beta;  // In degree in the range [-180,180]
@@ -264,7 +250,8 @@ function handleOrientation(event) {
 
     // capture if get NPN signal
     runShaker(dir_g);
-    if (tallyTilt >= 5 && onoff == 1) {
+    // otherwise keep capturing
+    if (tallyTilt >= 5) {
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
@@ -281,4 +268,6 @@ function handleOrientation(event) {
     }
 }
 
+// AND RUN
+// ============================================================
 window.addEventListener('deviceorientation', handleOrientation);
