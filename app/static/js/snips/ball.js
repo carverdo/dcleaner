@@ -203,7 +203,7 @@ function runShaker(tilt) {
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
-    if (tallyTilt >= 19) {
+    if (tallyTilt >= 9) {
         document.getElementById('half').innerHTML = tallyTilt;
         document.getElementById('oo').innerHTML = onoff;
         if (onoff == 1) {
