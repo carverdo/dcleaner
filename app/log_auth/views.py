@@ -12,13 +12,14 @@ from datetime import datetime
 from . import log_auth
 from ..templates.flash_msg import *
 from ..db_models import Member, Visit
-## from .. import cache
+# from .. import cache
 # from .. import lg  # don't auto-delete: see below
 # from geodata import get_geodata, _key_modifier  # not used as we use javascript approach now.
 from ..gunner import SendEmail
 from functools import wraps
 from urlparse import urlparse, urljoin
 from sqlalchemy import desc
+
 
 # ========================
 # HELPER FUNCTIONS
@@ -120,6 +121,7 @@ def get_redirect_target():
         else:
             abort(400)
 
+
 def _url_is_valid(target):
     """
     :param target: potentially dangerous url
@@ -152,7 +154,7 @@ def contactus():
 
 @log_auth.route('/signout')
 @login_required
-## @cache.cached(timeout=200)
+# @cache.cached(timeout=200)
 def signout():
     logout_user()
     return redirect(url_for('.home'))
@@ -191,6 +193,7 @@ def adm_members():
                             tadata=current_app.config['TADATA']['adm_members'],
                             wid=12
                         ))
+
 
 @log_auth.route('/visits')
 def visits():

@@ -2,7 +2,7 @@ __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 
 from . import devy
-from flask import render_template, request, jsonify, current_app
+from flask import render_template, request, jsonify, current_app, flash
 from app.db_models import Visit, MotionCapture
 from app.log_auth.geodata import get_clientdata
 
@@ -32,7 +32,7 @@ def ball():
     return render_template('./device/ball.html')
 
 
-@devy.route('/balltable')
+@devy.route('/balltable', methods=['GET', 'POST'])
 def balltable():
     # Presentation of group/summary data
     all_balldata = MotionCapture.query.order_by(MotionCapture.id).all()
@@ -68,7 +68,8 @@ def test2echo():
 
 
 # =================================================
-# CALCULATION SCRIPT
+# CALCULATION SCRIPTS
+# USED FOR OUR AJAX REQUESTS
 # =================================================
 @devy.route('/_clientdata')
 def clientdata():
@@ -88,14 +89,23 @@ def clientdata():
 @devy.route('/_balldata')
 def balldata():
     """
+    Use request args to CAPTURE or DELETE row of data.
     """
     data = {}
-    data['acx'] = request.args.get('strAcx', '[0]', type=str)
-    data['acy'] = request.args.get('strAcy', '[-4,5]', type=str)
-    data['theta'] = request.args.get('strTheta', '[0]', type=str)
-    data['beta'] = request.args.get('strBeta', '[0]', type=str)
-    data['gamma'] = request.args.get('strGamma', '[0]', type=str)
-    MotionCapture.create(**data)
+    # delete vs capture
+    if 'strMemID' in request.args.keys():
+        data['memID'] = request.args.get('strMemID', 0, type=int)
+        try:
+            MotionCapture.get(data['memID']).delete()
+        except:  # if request.args.get produces gibberish
+            pass
+    else:
+        data['acx'] = request.args.get('strAcx', '[0]', type=str)
+        data['acy'] = request.args.get('strAcy', '[0]', type=str)
+        data['theta'] = request.args.get('strTheta', '[0]', type=str)
+        data['beta'] = request.args.get('strBeta', '[0]', type=str)
+        data['gamma'] = request.args.get('strGamma', '[0]', type=str)
+        MotionCapture.create(**data)
     return jsonify(ballData=data.values())
 
 

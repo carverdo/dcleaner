@@ -147,7 +147,7 @@ function motionVars() {
         y: [0]
     };
     acc = {  // TEMP STORE
-        x: [4,5],
+        x: [0],
         y: [0],
         z: [0]
     };
@@ -183,8 +183,9 @@ function setShaker() {
 }
 
 function runShaker(tilt) {
-    // When user does -+- tilt, we start capturing;
-    // When user does -+-+ we stop;
+    // When user does a -+ tilt, we increase our tally;
+    // prevTilt holds the prevailing (and then previous result);
+    // Tally has a start and a stop level;
     if (tilt < 0) {
         if (prevTilt >= 0) {
             tallyTilt += 1;
@@ -252,8 +253,8 @@ function handleOrientation(event) {
     */
     // 10 is half the size of the ball
     // It center the positioning point to the center of the ball
-    ball.style.left  = (maxX * (acc_x/10 + 0.5) ) + "px";
-    ball.style.top = (maxY* (-acc_y/10 + 0.5) ) + "px";
+    ball.style.left  = (maxX * (acc_x / 10 + 0.5) ) + "px";
+    ball.style.top = (maxY* (-acc_y / 10 + 0.5) ) + "px";
 
     // capture if get NPN signal
     runShaker(dir_g);

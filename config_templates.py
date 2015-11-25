@@ -11,7 +11,7 @@ class TemplateParameters(object):
         adm_members = 'Control Default Settings of Members',
         adm_visits = 'Member Visits (click on a row to expand)',
         adm_bucketmap = 'Allow bucket access: connect DB to S3',
-        balldata = 'Some words here',
+        balldata = 'Movement Data',
         curtasks = 'Your scheduled tasks',
         profile = 'Change your Password',
         signin = 'Log in to begin...',
