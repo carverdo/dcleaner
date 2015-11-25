@@ -195,7 +195,7 @@ function runShaker(tilt) {
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // reset our vars if NPNP
-    if (tallyTilt >= 11) {
+    if (tallyTilt >= 0) {
         passMotionData();
         setShaker();
         motionVars();
@@ -205,14 +205,16 @@ function runShaker(tilt) {
 function passMotionData() {
     // sends it back for database handling
     $("#here1").text("1");
+    var d = new Date();
+    d = d.getMinutes() + ':' + d.getSeconds();
     var strData = {
-        'strAcx': JSON.stringify(acc['x']),
+        'strAcx': JSON.stringify([d]),
         'strAcy': JSON.stringify(acc['y']),
         'strTheta': JSON.stringify(rot['theta']),
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    $("#here2").text("2");
+    $("#here2").text(d);
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
     });
