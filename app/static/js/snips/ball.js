@@ -7,15 +7,20 @@ http://stackoverflow.com/questions/18112729/calculate-compass-heading-from-devic
 http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 */
 
-// DECLARATIONS AND RUN
+// DECLARATIONS AND INSTANTIATING DEVICE
 // some declared variables in a function as we can later reset
 // ============================================================
 var onoff = 0;
+var ball = document.querySelector('.ball');
+var garden = document.querySelector('.garden');
+var maxX = garden.clientWidth  - ball.clientWidth;
+var maxY = garden.clientHeight - ball.clientHeight;
+
 motionVars();
 setShaker();
 getDeviceData();
 
-// MAIN FUNCTIONS
+// MAIN DEVICE FUNCTIONS
 // ============================================================
 function getDeviceData() {
     // call motion
@@ -176,6 +181,9 @@ function setShaker() {
     tallyTilt = 0;
 }
 
+// ==============================================
+// MAIN OPERATIVE FUNCTIONS
+// ==============================================
 function runShaker(tilt) {
     // When user does a -+ tilt, we increase our tally;
     // prevTilt holds the prevailing (and then previous result);
@@ -217,16 +225,6 @@ function passMotionData() {
     $("#here2").text(d);
 };
 
-
-// ==============================================
-// NEW STUFF XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-// ==============================================
-var ball = document.querySelector('.ball');
-var garden = document.querySelector('.garden');
-var maxX = garden.clientWidth  - ball.clientWidth;
-var maxY = garden.clientHeight - ball.clientHeight;
-
-
 function handleOrientation(event) {
     // var x = event.beta;  // In degree in the range [-180,180]
     // var y = event.gamma; // In degree in the range [-90,90]
@@ -258,7 +256,7 @@ function handleOrientation(event) {
         rot['beta'].push(dir_b);
         rot['gamma'].push(dir_g);
         // display
-        document.getElementById('acx').innerHTML = 'CAPTURING';
+        document.getElementById('acx').innerHTML = acc['x'].length;
         /*
         document.getElementById('acy').innerHTML = acc['y'];
         document.getElementById('theta').innerHTML = rot['theta'];
@@ -266,7 +264,8 @@ function handleOrientation(event) {
         document.getElementById('gamma').innerHTML = rot['gamma'];
         */
     } else {
-        motionVars();
+        // motionVars();
+        document.getElementById('acx').innerHTML = 'NOT';
     }
 }
 
