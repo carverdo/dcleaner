@@ -11,8 +11,6 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // some declared variables in a function as we can later reset
 // ============================================================
 var onoff = 0;
-// AND RUN
-// ============================================================
 motionVars();
 setShaker();
 getDeviceData();
@@ -194,7 +192,7 @@ function runShaker(tilt) {
         prevTilt = 1;
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
-    // reset our vars if NPNP
+    // Pass data and reset our vars
     if (tallyTilt >= 11) {
         passMotionData();
         setShaker();
@@ -204,21 +202,19 @@ function runShaker(tilt) {
 
 function passMotionData() {
     // sends it back for database handling
-    $("#here1").text("1");
     var d = new Date();
     d = d.getMinutes() + ':' + d.getSeconds();
     var strData = {
-        'strAcx': JSON.stringify([d]),
+        'strAcx': JSON.stringify(acc['x']),
         'strAcy': JSON.stringify(acc['y']),
         'strTheta': JSON.stringify(rot['theta']),
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    $("#here2").text(d);
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
     });
-    $("#here3").text("3");
+    $("#here2").text(d);
 };
 
 
@@ -234,7 +230,6 @@ var maxY = garden.clientHeight - ball.clientHeight;
 function handleOrientation(event) {
     // var x = event.beta;  // In degree in the range [-180,180]
     // var y = event.gamma; // In degree in the range [-90,90]
-
     // document.getElementById('beta').innerHTML = "x : " + x + "\n";
     // document.getElementById('gamma').innerHTML = "y : " + y + "\n";
     /*
@@ -253,9 +248,9 @@ function handleOrientation(event) {
     ball.style.left  = (maxX * (acc_x / 10 + 0.5) ) + "px";
     ball.style.top = (maxY* (-acc_y / 10 + 0.5) ) + "px";
 
-    // capture if get NPN signal
+    // record if we get signal
     runShaker(dir_g);
-    // otherwise keep capturing
+    // otherwise keep capturing data
     if (tallyTilt >= 5) {
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
@@ -263,11 +258,13 @@ function handleOrientation(event) {
         rot['beta'].push(dir_b);
         rot['gamma'].push(dir_g);
         // display
-        document.getElementById('acx').innerHTML = acc['x'];
+        document.getElementById('acx').innerHTML = 'CAPTURING';
+        /*
         document.getElementById('acy').innerHTML = acc['y'];
         document.getElementById('theta').innerHTML = rot['theta'];
         document.getElementById('beta').innerHTML = rot['beta'];
         document.getElementById('gamma').innerHTML = rot['gamma'];
+        */
     } else {
         motionVars();
     }
