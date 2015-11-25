@@ -11,13 +11,15 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // some declared variables in a function as we can later reset
 // ============================================================
 var onoff = 0;
+var stamp, elapse, elapseMax = 50;
+var tallyS = 5, tallyE = 11;
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
 var maxY = garden.clientHeight - ball.clientHeight;
 
 motionVars();
-setShaker();
+// setShaker();
 getDeviceData();
 
 // MAIN DEVICE FUNCTIONS
@@ -135,6 +137,20 @@ function motionVars() {
     // cumulative capture of velocity, disp;
     // co-ordinates is just disp restated for the graph;
     // set up like this allows us to reset these vars.
+    prevTilt = 0;
+    tallyTilt = 0;
+    stamp = Date.now();
+    acc = {  // TEMP STORE
+        x: [0],
+        y: [0],
+        z: [0]
+    };
+    rot = {  // TEMP STORE
+        theta: [0],
+        beta: [0],
+        gamma: [0]
+    };
+    /*
     vel = {
         x: [0],
         y: [0],
@@ -149,38 +165,28 @@ function motionVars() {
         x: [0],
         y: [0]
     };
-    acc = {  // TEMP STORE
-        x: [0],
-        y: [0],
-        z: [0]
-    };
     bucketAcc = {  // TEMP STORE
         x: [0],
         y: [0],
         z: [0]
-    };
-    rot = {  // TEMP STORE
-        theta: [0],
-        beta: [0],
-        gamma: [0]
     };
     cords2 = [{  // TEMP STORE
         x: 0,
         y: 0,
         // color: 'rgba(100, 100, 100, .5)'
     }];
+    */
 }
 
 function toggler() {
     onoff = 1 - onoff;
     document.getElementById('booler').innerHTML = onoff;
 }
-
+/*
 function setShaker() {
-    prevTilt = 0;
-    tallyTilt = 0;
+    var prevTilt = 0, tallyTilt = 0;
 }
-
+*/
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
 // ==============================================
@@ -201,28 +207,25 @@ function runShaker(tilt) {
     }
     document.getElementById('tallyTilt').innerHTML = tallyTilt;
     // Pass data and reset our vars
-    if (tallyTilt >= 11) {
+    if (tallyTilt >= tallyE) {
         passMotionData();
-        setShaker();
+        // setShaker();
         motionVars();
     }
 }
 
 function passMotionData() {
     // sends it back for database handling
-    var d = new Date();
-    d = d.getMinutes() + ':' + d.getSeconds();
     var strData = {
-        'strAcx': JSON.stringify(acc['x'].slice(0, 5)),
-        'strAcy': JSON.stringify(acc['y'].slice(0, 5)),
-        'strTheta': JSON.stringify(rot['theta'].slice(0, 5)),
-        'strBeta': JSON.stringify(rot['beta'].slice(0, 5)),
-        'strGamma': JSON.stringify(rot['gamma'].slice(0, 5))
+        'strAcx': JSON.stringify(acc['x']), //.slice(0, 5)),
+        'strAcy': JSON.stringify(acc['y']), //.slice(0, 5)),
+        'strTheta': JSON.stringify(rot['theta']), //.slice(0, 5)),
+        'strBeta': JSON.stringify(rot['beta']), //.slice(0, 5)),
+        'strGamma': JSON.stringify(rot['gamma']) //.slice(0, 5))
     }
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
     });
-    $("#here2").text(d);
 };
 
 function handleOrientation(event) {
@@ -246,16 +249,19 @@ function handleOrientation(event) {
     ball.style.left  = (maxX * (acc_x / 10 + 0.5) ) + "px";
     ball.style.top = (maxY* (-acc_y / 10 + 0.5) ) + "px";
 
-    // record if we get signal
+    // record snapshot if we get signal
     runShaker(dir_g);
     // otherwise keep capturing data
-    if (tallyTilt >= 5) {
+    elapse = Date.now() - stamp;
+    $("#here1").text(elapse);
+    if (tallyTilt >= tallyS && elapse >= elapseMax) {
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
         rot['beta'].push(dir_b);
         rot['gamma'].push(dir_g);
-        // display
+        // timestamp, display
+        stamp = Date.now();
         document.getElementById('acx').innerHTML = acc['x'].length;
         /*
         document.getElementById('acy').innerHTML = acc['y'];
