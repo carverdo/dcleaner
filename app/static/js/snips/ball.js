@@ -142,7 +142,7 @@ function motionVars() {
     tallyTilt = 0;
     stamp = Date.now();
     tiltStamp = 0;
-    prettyButtons('off', round(elapseMax / 1000));
+    prettyButtons('off', elapseMax);
 
     acc = {  // TEMP STORE
         x: [0],
@@ -184,16 +184,24 @@ function motionVars() {
 
 function toggler() {
     onoff = 1 - onoff;
-    document.getElementById('booler').innerHTML = onoff;
+    if (onoff == 1) {
+        $('#booler').attr('class', 'btn btn-success');
+        $('#booler').text('RecorderReady');
+        $('#remTime').attr('class', 'label label-warning');
+    } else {
+        $('#booler').attr('class', 'btn btn-danger');
+        $('#booler').text('RecorderOff');
+        $('#remTime').attr('class', 'label label-default');
+    }
 }
 
 function prettyButtons(power, rem) {
+    rem = round(rem / 1000);
     if (power == 'on') {
         $('#remTime').attr('class', 'label label-success');
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
     } else {
-        $('#remTime').attr('class', 'label label-danger');
         $('#remTime').text('ShakeToWake: ' + rem + ' secs');
         $('#captButton').hide();
     }
@@ -221,7 +229,6 @@ function runShaker(tilt) {
     // Pass data and reset our vars
     if (tallyTilt >= tallyE || remTime <= 0) {
         passMotionData();
-        // setShaker();
         motionVars();
     }
 }
@@ -261,30 +268,32 @@ function handleOrientation(event) {
     ball.style.left  = (maxX * (acc_x / 10 + 0.5) ) + "px";
     ball.style.top = (maxY* (-acc_y / 10 + 0.5) ) + "px";
 
-    // record snapshot if we get signal
-    runShaker(dir_g);
-    // otherwise keep capturing data
-    elapse = Date.now() - stamp;
-    if (tallyTilt >= tallyS && elapse >= elapseMin) {
-        prettyButtons('on', remTime);
-        acc['x'].push(acc_x);
-        acc['y'].push(acc_y);
-        rot['theta'].push(northFace);
-        rot['beta'].push(dir_b);
-        rot['gamma'].push(dir_g);
-        // start tilt clock
-        if (tiltStamp == 0 ) {
-            tiltStamp = Date.now();
+    if (onoff == 1) {
+        // record snapshot if we get signal
+        runShaker(dir_g);
+        // otherwise keep capturing data
+        elapse = Date.now() - stamp;
+        if (tallyTilt >= tallyS && elapse >= elapseMin) {
+            prettyButtons('on', remTime);
+            acc['x'].push(acc_x);
+            acc['y'].push(acc_y);
+            rot['theta'].push(northFace);
+            rot['beta'].push(dir_b);
+            rot['gamma'].push(dir_g);
+            // start tilt clock
+            if (tiltStamp == 0 ) {
+                tiltStamp = Date.now();
+            }
+            // timestamp, display
+            stamp = Date.now();
+            /*
+            document.getElementById('acx').innerHTML = acc['x'].length;
+            document.getElementById('acy').innerHTML = acc['y'];
+            document.getElementById('theta').innerHTML = rot['theta'];
+            document.getElementById('beta').innerHTML = rot['beta'];
+            document.getElementById('gamma').innerHTML = rot['gamma'];
+            */
         }
-        // timestamp, display
-        stamp = Date.now();
-        /*
-        document.getElementById('acx').innerHTML = acc['x'].length;
-        document.getElementById('acy').innerHTML = acc['y'];
-        document.getElementById('theta').innerHTML = rot['theta'];
-        document.getElementById('beta').innerHTML = rot['beta'];
-        document.getElementById('gamma').innerHTML = rot['gamma'];
-        */
     }
 }
 
