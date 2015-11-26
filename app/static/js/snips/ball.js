@@ -142,6 +142,7 @@ function motionVars() {
     tallyTilt = 0;
     stamp = Date.now();
     tiltStamp = 0;
+    $('#captButton').text('');
     acc = {  // TEMP STORE
         x: [0],
         y: [0],
@@ -186,8 +187,8 @@ function toggler() {
 }
 /*
 function setShaker() {
-    var prevTilt = 0, tallyTilt = 0;
-}
+    var prevTilt = 0,  = 0;
+}tallyTilt
 */
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
@@ -208,7 +209,7 @@ function runShaker(tilt) {
         prevTilt = 1;
     }
     remTime = elapseMax - ((tiltStamp == 0) ? 0 : Date.now() - tiltStamp);
-    document.getElementById('tallyTilt').innerHTML = remTime;
+    document.getElementById('remTime').innerHTML = 'Time: ' + round(remTime / 1000) + ' secs';
     // Pass data and reset our vars
     if (tallyTilt >= tallyE || remTime <= 0) {
         passMotionData();
@@ -256,8 +257,9 @@ function handleOrientation(event) {
     runShaker(dir_g);
     // otherwise keep capturing data
     elapse = Date.now() - stamp;
-    $("#here1").text(elapse);
     if (tallyTilt >= tallyS && elapse >= elapseMin) {
+        $('#captButton').text('Capturing');
+        $('#captButton').hide(1500).show(1500);
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
@@ -269,16 +271,13 @@ function handleOrientation(event) {
         }
         // timestamp, display
         stamp = Date.now();
-        document.getElementById('acx').innerHTML = acc['x'].length;
         /*
+        document.getElementById('acx').innerHTML = acc['x'].length;
         document.getElementById('acy').innerHTML = acc['y'];
         document.getElementById('theta').innerHTML = rot['theta'];
         document.getElementById('beta').innerHTML = rot['beta'];
         document.getElementById('gamma').innerHTML = rot['gamma'];
         */
-    } else {
-        // motionVars();
-        document.getElementById('acx').innerHTML = 'NOT';
     }
 }
 
