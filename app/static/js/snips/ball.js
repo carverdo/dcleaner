@@ -22,6 +22,7 @@ var maxY = garden.clientHeight - ball.clientHeight;
 motionVars();
 // setShaker();
 getDeviceData();
+
 // MAIN DEVICE FUNCTIONS
 // ============================================================
 function getDeviceData() {
@@ -141,7 +142,8 @@ function motionVars() {
     tallyTilt = 0;
     stamp = Date.now();
     tiltStamp = 0;
-    $('#captButton').hide();
+    prettyButtons('off', round(elapseMax / 1000));
+
     acc = {  // TEMP STORE
         x: [0],
         y: [0],
@@ -184,11 +186,18 @@ function toggler() {
     onoff = 1 - onoff;
     document.getElementById('booler').innerHTML = onoff;
 }
-/*
-function setShaker() {
-    var prevTilt = 0,  = 0;
-}tallyTilt
-*/
+
+function prettyButtons(power, rem) {
+    if (power == 'on') {
+        $('#remTime').attr('class', 'label label-success');
+        $('#remTime').text('Remaining: ' + rem + ' secs');
+        $('#captButton').show(1000).hide(1000);
+    } else {
+        $('#remTime').attr('class', 'label label-danger');
+        $('#remTime').text('ShakeToWake: ' + rem + ' secs');
+        $('#captButton').hide();
+    }
+}
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
 // ==============================================
@@ -208,7 +217,7 @@ function runShaker(tilt) {
         prevTilt = 1;
     }
     remTime = elapseMax - ((tiltStamp == 0) ? 0 : Date.now() - tiltStamp);
-    document.getElementById('remTime').innerHTML = 'Stopwatch: ' + round(remTime / 1000) + ' secs';
+    // document.getElementById('remTime').innerHTML = 'Stopwatch: ' + round(remTime / 1000) + ' secs';
     // Pass data and reset our vars
     if (tallyTilt >= tallyE || remTime <= 0) {
         passMotionData();
@@ -257,8 +266,7 @@ function handleOrientation(event) {
     // otherwise keep capturing data
     elapse = Date.now() - stamp;
     if (tallyTilt >= tallyS && elapse >= elapseMin) {
-        $('#remTime').attr('class', "label label-success");
-        $('#captButton').show(1000).hide(1000);
+        prettyButtons('on', remTime);
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
