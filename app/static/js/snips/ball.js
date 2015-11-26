@@ -257,8 +257,8 @@ function handleOrientation(event) {
     // otherwise keep capturing data
     elapse = Date.now() - stamp;
     if (tallyTilt >= tallyS && elapse >= elapseMin) {
-        $('#captButton').text('Capturing');
-        $('#captButton').show(1000);
+        $('#remTime').attr('class', "label label-success");
+        $('#captButton').show(1000).hide(1000);
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
