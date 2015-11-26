@@ -202,6 +202,7 @@ function prettyButtons(power, rem) {
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
     } else {
+        $('#remTime').attr('class', 'label label-warning');
         $('#remTime').text('ShakeToWake: ' + rem + ' secs');
         $('#captButton').hide();
     }

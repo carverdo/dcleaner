@@ -4,18 +4,22 @@
 {% endblock %}
 
 {% block content %}
-    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="right">
+    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
         <button type="button" class="btn btn-danger" onclick="toggler();" id="booler">SetRecorder</button>
         <!-- <button type="button" class="btn btn-warning" onclick="motionVars();">Wipe</button> -->
     </div>
-    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px">
+    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
         <span class="label" id="remTime"></span>
         <span class="label label-success" id="captButton"></span>
+        <br><br>
+        <div class="garden">
+            <div class="ball"></div>
+        </div>
     </div>
     <div id="result">Results</div>
-    <div class="garden">
-        <div class="ball"></div>
-    </div>
+
+
+
     <p id="raws">TRUE alpha, beta, gamma</p>
     <h3 id="compass">North</h3>
     <h3 id="accs">accs</h3>
