@@ -22,7 +22,6 @@ var maxY = garden.clientHeight - ball.clientHeight;
 motionVars();
 // setShaker();
 getDeviceData();
-
 // MAIN DEVICE FUNCTIONS
 // ============================================================
 function getDeviceData() {
@@ -142,7 +141,7 @@ function motionVars() {
     tallyTilt = 0;
     stamp = Date.now();
     tiltStamp = 0;
-    $('#captButton').text('');
+    $('#captButton').hide();
     acc = {  // TEMP STORE
         x: [0],
         y: [0],
@@ -209,7 +208,7 @@ function runShaker(tilt) {
         prevTilt = 1;
     }
     remTime = elapseMax - ((tiltStamp == 0) ? 0 : Date.now() - tiltStamp);
-    document.getElementById('remTime').innerHTML = 'Time: ' + round(remTime / 1000) + ' secs';
+    document.getElementById('remTime').innerHTML = 'Stopwatch: ' + round(remTime / 1000) + ' secs';
     // Pass data and reset our vars
     if (tallyTilt >= tallyE || remTime <= 0) {
         passMotionData();
@@ -259,7 +258,7 @@ function handleOrientation(event) {
     elapse = Date.now() - stamp;
     if (tallyTilt >= tallyS && elapse >= elapseMin) {
         $('#captButton').text('Capturing');
-        $('#captButton').hide(1500).show(1500);
+        $('#captButton').show(1000);
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
