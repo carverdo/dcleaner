@@ -11,7 +11,8 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // some declared variables in a function as we can later reset
 // ============================================================
 var onoff = 0;
-var stamp, elapse, elapseMax = 50;
+var stamp, elapse, elapseMin = 50;
+var tiltStamp = 0, remTime, elapseMax = 4000;
 var tallyS = 5, tallyE = 11;
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
@@ -140,6 +141,7 @@ function motionVars() {
     prevTilt = 0;
     tallyTilt = 0;
     stamp = Date.now();
+    tiltStamp = 0;
     acc = {  // TEMP STORE
         x: [0],
         y: [0],
@@ -205,9 +207,10 @@ function runShaker(tilt) {
         }
         prevTilt = 1;
     }
-    document.getElementById('tallyTilt').innerHTML = tallyTilt;
+    remTime = elapseMax - ((tiltStamp == 0) ? 0 : Date.now() - tiltStamp);
+    document.getElementById('tallyTilt').innerHTML = remTime;
     // Pass data and reset our vars
-    if (tallyTilt >= tallyE) {
+    if (tallyTilt >= tallyE || remTime <= 0) {
         passMotionData();
         // setShaker();
         motionVars();
@@ -218,10 +221,10 @@ function passMotionData() {
     // sends it back for database handling
     var strData = {
         'strAcx': JSON.stringify(acc['x']), //.slice(0, 5)),
-        'strAcy': JSON.stringify(acc['y']), //.slice(0, 5)),
-        'strTheta': JSON.stringify(rot['theta']), //.slice(0, 5)),
-        'strBeta': JSON.stringify(rot['beta']), //.slice(0, 5)),
-        'strGamma': JSON.stringify(rot['gamma']) //.slice(0, 5))
+        'strAcy': JSON.stringify(acc['y']),
+        'strTheta': JSON.stringify(rot['theta']),
+        'strBeta': JSON.stringify(rot['beta']),
+        'strGamma': JSON.stringify(rot['gamma'])
     }
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
@@ -254,12 +257,16 @@ function handleOrientation(event) {
     // otherwise keep capturing data
     elapse = Date.now() - stamp;
     $("#here1").text(elapse);
-    if (tallyTilt >= tallyS && elapse >= elapseMax) {
+    if (tallyTilt >= tallyS && elapse >= elapseMin) {
         acc['x'].push(acc_x);
         acc['y'].push(acc_y);
         rot['theta'].push(northFace);
         rot['beta'].push(dir_b);
         rot['gamma'].push(dir_g);
+        // start tilt clock
+        if (tiltStamp == 0 ) {
+            tiltStamp = Date.now();
+        }
         // timestamp, display
         stamp = Date.now();
         document.getElementById('acx').innerHTML = acc['x'].length;
