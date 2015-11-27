@@ -198,15 +198,17 @@ function toggler() {
 function prettyButtons(power, rem) {
     rem = round(rem / 1000);
     if (power == 'on') {
+        $('#beep6').get(0).play();
         $('#remTime').attr('class', 'label label-success');
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
     } else {
         $('#remTime').attr('class', 'label label-warning');
-        $('#remTime').text('ShakeToWake: ' + rem + ' secs');
+        $('#remTime').text('ShakeAndSign');
         $('#captButton').hide();
     }
 }
+
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
 // ==============================================
