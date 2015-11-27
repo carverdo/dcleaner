@@ -300,12 +300,12 @@ function handleOrientation(event) {
             document.getElementById('beta').innerHTML = rot['beta'];
             document.getElementById('gamma').innerHTML = rot['gamma'];
             */
-        }
-    } else if (tallyTilt >= tallyM && ! Boolean(playedOnce) ) {
+        } else if (tallyTilt >= tallyM && ! Boolean(playedOnce) ) {
             $('#remTime').attr('class', 'label label-warning');
             $('#beep6').get(0).play();
             playedOnce = true;
             $("#pOnce").text('just set to true');
+        }
     }
 }
 
