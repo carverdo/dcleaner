@@ -13,7 +13,7 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 var onoff = 0;
 var stamp, elapse, elapseMin = 50;
 var tiltStamp = 0, remTime, elapseMax = 4000;
-var tiltAngle = 10;
+var tiltAngle = 7;
 var tallyS = 5, tallyM = 3, tallyE = 11;
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
@@ -204,10 +204,12 @@ function prettyButtons(power, rem) {
         $('#remTime').attr('class', 'label label-success');
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
+        $("#paBody").css("background-color", "#04d70b");
     } else {
         $('#remTime').attr('class', 'label label-danger');
         $('#remTime').text('ShakeAndSign');
         $('#captButton').hide();
+        $("#paBody").css("background-color", "#ffffff");
     }
 }
 
@@ -279,8 +281,6 @@ function handleOrientation(event) {
         runShaker(dir_g);
         // otherwise keep capturing data
         elapse = Date.now() - stamp;
-        // Primed, go amber
-
         if (tallyTilt >= tallyS && elapse >= elapseMin) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
@@ -303,6 +303,7 @@ function handleOrientation(event) {
             */
         } else if (tallyTilt >= tallyM && ! Boolean(playedOnce) ) {
             $('#remTime').attr('class', 'label label-warning');
+            $("#paBody").css("background-color", "#fcaa1d");  // "#04d70b"
             $('#beep6').get(0).play();
             playedOnce = true;
         }

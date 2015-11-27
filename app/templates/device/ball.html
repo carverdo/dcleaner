@@ -6,20 +6,27 @@
 {% block content %}
     <audio id="beep6" src="./static/image/beep6.mp3"></audio>
     <p id="pOnce"></p>
-    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
-        <button type="button" class="btn btn-danger" onclick="toggler();" id="booler">SetRecorder</button>
-        <!-- <button type="button" class="btn btn-warning" onclick="motionVars();">Wipe</button> -->
-    </div>
-    <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
-        <span class="label" id="remTime"></span>
-        <span class="label label-success" id="captButton"></span>
-        <br><br>
-        <div class="garden">
-            <div class="ball"></div>
+    <div class="col-xs-12 col-md-12">
+        <div class="panel" id="paBody">
+            <div class="panel-body" align="center">
+                <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
+                    <button type="button" class="btn btn-danger" onclick="toggler();" id="booler">SetRecorder</button>
+                    <!-- <button type="button" class="btn btn-warning" onclick="motionVars();">Wipe</button> -->
+                </div>
+                <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
+                    <span class="label" id="remTime"></span>
+                    <span class="label label-success" id="captButton"></span>
+                    <br><br>
+                    <div class="garden">
+                        <div class="ball"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="result">Results</div>
 
+
+    <div id="result">Results</div>
     <p id="raws">TRUE alpha, beta, gamma</p>
     <h3 id="compass">North</h3>
     <h3 id="accs">accs</h3>
