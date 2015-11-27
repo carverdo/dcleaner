@@ -13,7 +13,7 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 var onoff = 0;
 var stamp, elapse, elapseMin = 50;
 var tiltStamp = 0, remTime, elapseMax = 4000;
-var tallyS = 5, tallyE = 11;
+var tallyS = 5, tallyM = 3, tallyE = 11;
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
@@ -187,11 +187,12 @@ function toggler() {
     if (onoff == 1) {
         $('#booler').attr('class', 'btn btn-success');
         $('#booler').text('RecorderReady');
-        $('#remTime').attr('class', 'label label-warning');
+        $('#remTime').attr('class', 'label label-danger');
     } else {
         $('#booler').attr('class', 'btn btn-danger');
         $('#booler').text('RecorderOff');
         $('#remTime').attr('class', 'label label-default');
+        $('#beep6').get(0).play();
     }
 }
 
@@ -203,7 +204,7 @@ function prettyButtons(power, rem) {
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
     } else {
-        $('#remTime').attr('class', 'label label-warning');
+        $('#remTime').attr('class', 'label label-danger');
         $('#remTime').text('ShakeAndSign');
         $('#captButton').hide();
     }
@@ -276,6 +277,10 @@ function handleOrientation(event) {
         runShaker(dir_g);
         // otherwise keep capturing data
         elapse = Date.now() - stamp;
+        // Primed, go amber
+        if (tallyTilt >= tallyM ) {
+            $('#remTime').attr('class', 'label label-warning');
+        }
         if (tallyTilt >= tallyS && elapse >= elapseMin) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
