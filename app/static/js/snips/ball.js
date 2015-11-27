@@ -304,7 +304,6 @@ function handleOrientation(event) {
             $('#remTime').attr('class', 'label label-warning');
             $('#beep6').get(0).play();
             playedOnce = true;
-        }
     }
 }
 
