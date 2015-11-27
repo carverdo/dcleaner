@@ -142,6 +142,7 @@ function motionVars() {
     tallyTilt = 0;
     stamp = Date.now();
     tiltStamp = 0;
+    playedOnce = false;
     prettyButtons('off', elapseMax);
 
     acc = {  // TEMP STORE
@@ -188,18 +189,17 @@ function toggler() {
         $('#booler').attr('class', 'btn btn-success');
         $('#booler').text('RecorderReady');
         $('#remTime').attr('class', 'label label-danger');
+        $('#beep6').get(0).play();
     } else {
         $('#booler').attr('class', 'btn btn-danger');
         $('#booler').text('RecorderOff');
         $('#remTime').attr('class', 'label label-default');
-        $('#beep6').get(0).play();
     }
 }
 
 function prettyButtons(power, rem) {
     rem = round(rem / 1000);
     if (power == 'on') {
-        $('#beep6').get(0).play();
         $('#remTime').attr('class', 'label label-success');
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
@@ -278,9 +278,7 @@ function handleOrientation(event) {
         // otherwise keep capturing data
         elapse = Date.now() - stamp;
         // Primed, go amber
-        if (tallyTilt >= tallyM ) {
-            $('#remTime').attr('class', 'label label-warning');
-        }
+
         if (tallyTilt >= tallyS && elapse >= elapseMin) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
@@ -301,6 +299,11 @@ function handleOrientation(event) {
             document.getElementById('beta').innerHTML = rot['beta'];
             document.getElementById('gamma').innerHTML = rot['gamma'];
             */
+        }
+    } else if (tallyTilt >= tallyM && ! Boolean(playedOnce) ) {
+            $('#remTime').attr('class', 'label label-warning');
+            $('#beep6').get(0).play();
+            playedOnce = true;
         }
     }
 }
