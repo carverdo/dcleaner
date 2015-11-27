@@ -143,6 +143,7 @@ function motionVars() {
     stamp = Date.now();
     tiltStamp = 0;
     playedOnce = false;
+    $("#pOnce").text('false');
     prettyButtons('off', elapseMax);
 
     acc = {  // TEMP STORE
@@ -304,6 +305,7 @@ function handleOrientation(event) {
             $('#remTime').attr('class', 'label label-warning');
             $('#beep6').get(0).play();
             playedOnce = true;
+            $("#pOnce").text('just set to true');
     }
 }
 

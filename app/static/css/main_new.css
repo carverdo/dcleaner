@@ -73,7 +73,7 @@ h1, h2 {
 
 /* to make buttons all double-width */
 .btn:hover {
-    background: #999; /* Old browsers */
+    /*  background: #999; Old browsers */
     border-width: 4px;
 }
 .btn-box{
