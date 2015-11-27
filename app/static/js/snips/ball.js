@@ -13,6 +13,7 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 var onoff = 0;
 var stamp, elapse, elapseMin = 50;
 var tiltStamp = 0, remTime, elapseMax = 4000;
+var tiltAngle = 10;
 var tallyS = 5, tallyM = 3, tallyE = 11;
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
@@ -143,7 +144,6 @@ function motionVars() {
     stamp = Date.now();
     tiltStamp = 0;
     playedOnce = false;
-    $("#pOnce").text('false');
     prettyButtons('off', elapseMax);
 
     acc = {  // TEMP STORE
@@ -218,17 +218,18 @@ function runShaker(tilt) {
     // When user does a -+ tilt, we increase our tally;
     // prevTilt holds the prevailing (and then previous result);
     // Tally has a start and a stop level;
-    if (tilt < 0) {
+    if (tilt < - tiltAngle) {
         if (prevTilt >= 0) {
             tallyTilt += 1;
         }
         prevTilt = -1;
-    } else {
+    } else if (tilt > tiltAngle) {
         if (prevTilt < 0) {
             tallyTilt += 1;
         }
         prevTilt = 1;
     }
+    $("#pOnce").text(tallyTilt);
     remTime = elapseMax - ((tiltStamp == 0) ? 0 : Date.now() - tiltStamp);
     // document.getElementById('remTime').innerHTML = 'Stopwatch: ' + round(remTime / 1000) + ' secs';
     // Pass data and reset our vars
@@ -304,7 +305,6 @@ function handleOrientation(event) {
             $('#remTime').attr('class', 'label label-warning');
             $('#beep6').get(0).play();
             playedOnce = true;
-            $("#pOnce").text('just set to true');
         }
     }
 }
