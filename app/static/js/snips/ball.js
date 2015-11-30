@@ -12,10 +12,10 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // ============================================================
 var onoff = 0;
 var stamp, elapse, elapseMin = 50; // milliseconds
-var tiltStamp = 0, remTime, elapseMax = 4000; // milliseconds
+var tiltStamp = 0, remTime, elapseMax = 6000; // milliseconds
 var tiltAngle = 7; // degrees
 var accThresh = 5; // metres per sec squared
-var tallyS = 5, tallyM = 3, tallyE = 11;  // counters
+var tallyM = 3, tallyS = 5, tallyE = 11;  // counters: middle (halfway to start), start, end
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
@@ -146,7 +146,6 @@ function motionVars() {
     tiltStamp = 0;
     playedOnce = false;
     prettyButtons('off', elapseMax);
-    $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
 
     acc = {  // TEMP STORE
         x: [0],
@@ -206,12 +205,14 @@ function prettyButtons(power, rem) {
         $('#remTime').attr('class', 'label label-success');
         $('#remTime').text('Remaining: ' + rem + ' secs');
         $('#captButton').show(1000).hide(1000);
-        $("#paBody").css("background-color", "#04d70b");
+        $("#paBody").css("background-color", "#04d70b"); // green
+        $("#paBody").css('background-image', 'none');
     } else {
         $('#remTime').attr('class', 'label label-danger');
         $('#remTime').text('ShakeAndSign');
         $('#captButton').hide();
-        $("#paBody").css("background-color", "#ffffff");
+        $("#paBody").css("background-color", "#ffffff"); // white
+        $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
     }
 }
 
@@ -276,7 +277,7 @@ function handleOrientation(event) {
     // 10 is half the size of the ball
     // It center the positioning point to the center of the ball
     ball.style.left  = (maxX * (acc_x / 10 + 0.5) ) + "px";
-    ball.style.top = (maxY* (-acc_y / 10 + 0.5) ) + "px";
+    ball.style.top = (maxY * (-acc_y / 10 + 0.5) ) + "px";
 
     if (onoff == 1) {
         // record snapshot if we get signal
@@ -305,7 +306,8 @@ function handleOrientation(event) {
             */
         } else if (tallyTilt >= tallyM && ! Boolean(playedOnce) ) {
             $('#remTime').attr('class', 'label label-warning');
-            $("#paBody").css("background-color", "#fcaa1d");  // "#04d70b"
+            $("#paBody").css("background-color", "#fcaa1d");  // amber
+            $("#paBody").css('background-image', 'none');
             $('#beep6').get(0).play();
             playedOnce = true;
         }
