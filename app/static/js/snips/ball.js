@@ -11,10 +11,11 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // some declared variables in a function as we can later reset
 // ============================================================
 var onoff = 0;
-var stamp, elapse, elapseMin = 50;
-var tiltStamp = 0, remTime, elapseMax = 4000;
-var tiltAngle = 7;
-var tallyS = 5, tallyM = 3, tallyE = 11;
+var stamp, elapse, elapseMin = 50; // milliseconds
+var tiltStamp = 0, remTime, elapseMax = 4000; // milliseconds
+var tiltAngle = 7; // degrees
+var accThresh = 5; // metres per sec squared
+var tallyS = 5, tallyM = 3, tallyE = 11;  // counters
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
@@ -145,6 +146,7 @@ function motionVars() {
     tiltStamp = 0;
     playedOnce = false;
     prettyButtons('off', elapseMax);
+    $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
 
     acc = {  // TEMP STORE
         x: [0],
@@ -216,16 +218,16 @@ function prettyButtons(power, rem) {
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
 // ==============================================
-function runShaker(tilt) {
-    // When user does a -+ tilt, we increase our tally;
+function runShaker(tilt, maxAcc) {
+    // When user does a -+ tilt at speed, we increase our tally;
     // prevTilt holds the prevailing (and then previous result);
     // Tally has a start and a stop level;
-    if (tilt < - tiltAngle) {
+    if (tilt < - tiltAngle && maxAcc > accThresh) {
         if (prevTilt >= 0) {
             tallyTilt += 1;
         }
         prevTilt = -1;
-    } else if (tilt > tiltAngle) {
+    } else if (tilt > tiltAngle && maxAcc > accThresh) {
         if (prevTilt < 0) {
             tallyTilt += 1;
         }
@@ -278,7 +280,7 @@ function handleOrientation(event) {
 
     if (onoff == 1) {
         // record snapshot if we get signal
-        runShaker(dir_g);
+        runShaker(dir_g, Math.max(Math.abs(acc_x), Math.abs(acc_y)));
         // otherwise keep capturing data
         elapse = Date.now() - stamp;
         if (tallyTilt >= tallyS && elapse >= elapseMin) {
