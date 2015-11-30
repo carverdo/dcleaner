@@ -204,13 +204,13 @@ function prettyButtons(power, rem) {
     if (power == 'on') {
         $('#remTime').attr('class', 'label label-success');
         $('#remTime').text('Remaining: ' + rem + ' secs');
-        $('#captButton').show(1000).hide(1000);
+        // $('#captButton').show(1000).hide(1000);
         $("#paBody").css("background-color", "#04d70b"); // green
         $("#paBody").css('background-image', 'none');
     } else {
         $('#remTime').attr('class', 'label label-danger');
         $('#remTime').text('ShakeAndSign');
-        $('#captButton').hide();
+        // $('#captButton').hide();
         $("#paBody").css("background-color", "#ffffff"); // white
         $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
     }
@@ -253,12 +253,9 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    $.getJSON('./_balldata', strData);
-    /*
     $.getJSON('./_balldata', strData, function(data) {
-        $("#result").text(data.ballData);
+        $("#result").text("Signature received."); // .text(data.ballData);
     });
-    */
 };
 
 function handleOrientation(event) {
