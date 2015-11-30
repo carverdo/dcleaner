@@ -253,9 +253,12 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
+    $.getJSON('./_balldata', strData);
+    /*
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").text(data.ballData);
     });
+    */
 };
 
 function handleOrientation(event) {
@@ -295,9 +298,8 @@ function handleOrientation(event) {
             if (tiltStamp == 0 ) {
                 tiltStamp = Date.now();
             }
-            // timestamp, display
             stamp = Date.now();
-            /*
+            /* , display
             document.getElementById('acx').innerHTML = acc['x'].length;
             document.getElementById('acy').innerHTML = acc['y'];
             document.getElementById('theta').innerHTML = rot['theta'];
