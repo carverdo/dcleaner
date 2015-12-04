@@ -336,7 +336,7 @@ function drawCanvas() {
         var col_2 = "rgba(255,0,0,0.5)";
         var col_3 = "rgba(255,0,0,0.1)";
         ctx.beginPath();
-        ctx.arc(cadjX + acc['x'][-1], cadjY + acc['y'][-1], 14, 0, Math.PI*2, true);
+        ctx.arc(cadjX + acc['x'].slice(-1)[0], cadjY + acc['y'].slice(-1)[0], 14, 0, Math.PI*2, true);
         ctx.fill();
         ctx.fillStyle = col_1;
     } else {
