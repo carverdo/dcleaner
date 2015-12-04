@@ -21,9 +21,6 @@ var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
 var maxY = garden.clientHeight - ball.clientHeight;
 
-motionVars();
-// setShaker();
-getDeviceData();
 
 // MAIN DEVICE FUNCTIONS
 // ============================================================
@@ -61,7 +58,7 @@ function OrientationHandler(eventData) {
     );
     document.getElementById('raws').innerHTML = [
         dir_a, dir_b, dir_g
-    ]; // temp fudge
+    ];
     document.getElementById('compass').innerHTML = northFace;
 }
 
@@ -73,10 +70,29 @@ function MotionHandler(eventData) {
     acc_z = round(eventData.acceleration.z);
     document.getElementById('accs').innerHTML = [
         acc_x, acc_y, acc_z
-    ]; // temp fudge
+    ];
     document.getElementById('ival').innerHTML = [
         interval
     ]; // temp fudge
+}
+
+function _getHiddenProp() {
+    var prefixes = ['webkit', 'moz', 'ms', 'o'];
+    // if 'hidden' is natively supported just return it
+    if ('hidden' in document) return 'hidden';
+    // otherwise loop over all the known prefixes until we find one
+    for (var i = 0; i < prefixes.length; i++) {
+        if ((prefixes[i] + 'Hidden') in document)
+            return prefixes[i] + 'Hidden';
+    }
+    // otherwise it's not supported
+    return null;
+}
+
+function isHidden() {
+    var prop = _getHiddenProp();
+    if (!prop) return false;
+    return document[prop];
 }
 
 
@@ -191,7 +207,7 @@ function toggler() {
         $('#booler').text('RecorderReady');
         $('#booler').css('color', 'White');
         $('#remTime').attr('class', 'label label-danger');
-        $('#remTime').text('ShakeAndSign');
+        $('#remTime').text('ShakeToSign');
         $('#beep6').get(0).play();
     } else {
         $('#booler').text('RecorderOff');
@@ -210,8 +226,10 @@ function prettyButtons(power, rem) {
         $("#paBody").css('background-image', 'none');
     } else {
         // $('#remTime').attr('class', 'label label-default');
-        $('#remTime').attr('class', 'label label-danger');
-        $('#remTime').text('ShakeToSign');
+        if (onoff == 1) {
+            $('#remTime').attr('class', 'label label-danger');
+            $('#remTime').text('ShakeToSign');
+        }
         // $('#captButton').hide();
         $("#paBody").css("background-color", "#ffffff"); // white
         $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
@@ -238,7 +256,6 @@ function runShaker(tilt, maxAcc) {
     }
     $("#pOnce").text(tallyTilt);
     remTime = elapseMax - ((tiltStamp == 0) ? 0 : Date.now() - tiltStamp);
-    // document.getElementById('remTime').innerHTML = 'Stopwatch: ' + round(remTime / 1000) + ' secs';
     // Pass data and reset our vars
     if (tallyTilt >= tallyE || remTime <= 0) {
         passMotionData();
@@ -249,7 +266,7 @@ function runShaker(tilt, maxAcc) {
 function passMotionData() {
     // sends it back for database handling
     var strData = {
-        'strAcx': JSON.stringify(acc['x']), //.slice(0, 5)),
+        'strAcx': JSON.stringify(acc['x']),
         'strAcy': JSON.stringify(acc['y']),
         'strTheta': JSON.stringify(rot['theta']),
         'strBeta': JSON.stringify(rot['beta']),
@@ -263,14 +280,11 @@ function passMotionData() {
 function handleOrientation(event) {
     // var x = event.beta;  // In degree in the range [-180,180]
     // var y = event.gamma; // In degree in the range [-90,90]
-    // document.getElementById('beta').innerHTML = "x : " + x + "\n";
-    // document.getElementById('gamma').innerHTML = "y : " + y + "\n";
     /*
     // Because we don't want to have the device upside down
     // We constrain the x value to the range [-90,90]
     if (x >  90) { x =  90};
     if (x < -90) { x = -90};
-
     // To make computation easier we shift the range of
     // x and y to [0,180]
     x += 90;
@@ -298,13 +312,6 @@ function handleOrientation(event) {
                 tiltStamp = Date.now();
             }
             stamp = Date.now();
-            /* , display
-            document.getElementById('acx').innerHTML = acc['x'].length;
-            document.getElementById('acy').innerHTML = acc['y'];
-            document.getElementById('theta').innerHTML = rot['theta'];
-            document.getElementById('beta').innerHTML = rot['beta'];
-            document.getElementById('gamma').innerHTML = rot['gamma'];
-            */
         } else if (tallyTilt >= tallyM && ! Boolean(playedOnce) ) {
             $('#remTime').attr('class', 'label label-warning');
             $("#paBody").css("background-color", "#fcaa1d");  // amber
@@ -317,9 +324,14 @@ function handleOrientation(event) {
 
 // AND RUN
 // ============================================================
-window.addEventListener('deviceorientation', handleOrientation);
-
 $(document).on('click', '.toggle-button', function() {
     $(this).toggleClass('toggle-button-selected');
     toggler();
 });
+
+if (!isHidden()) {
+    motionVars();
+    getDeviceData();
+    $("#ghp").text(isHidden());
+    window.addEventListener('deviceorientation', handleOrientation);
+}
