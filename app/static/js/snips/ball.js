@@ -304,7 +304,7 @@ function handleOrientation(event) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
             acc['y'].push(acc_y);
-            drawCanvas();
+            // drawCanvas();
             rot['theta'].push(northFace);
             rot['beta'].push(dir_b);
             rot['gamma'].push(dir_g);
