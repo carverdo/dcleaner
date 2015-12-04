@@ -304,7 +304,7 @@ function handleOrientation(event) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
             acc['y'].push(acc_y);
-            // drawCanvas();
+            drawCanvas();
             rot['theta'].push(northFace);
             rot['beta'].push(dir_b);
             rot['gamma'].push(dir_g);
@@ -323,28 +323,34 @@ function handleOrientation(event) {
     }
 }
 
+// TINKERING
+// ============================================================
+/*
+var canvas, cadjX, cadjY;
 
 function blankCanvas() {
-    var canvas = document.getElementById('tutorial');
-    var cadjX = canvas.width / 2, cadjY = canvas.height / 2;
+    canvas = document.getElementById('tutorial');
+    cadjX = canvas.width / 2, cadjY = canvas.height / 2;
 }
 
 function drawCanvas() {
     if (canvas.getContext){
         var ctx = canvas.getContext('2d');
+        co_x =  cadjX + acc['x'].slice(-1)[0];
+        co_y =  cadjY + acc['y'].slice(-1)[0];
+        $('#coxy').text(co_x + '_' + co_y);
         var col_1 = "rgba(255,0,0,0.9)";
         var col_2 = "rgba(255,0,0,0.5)";
         var col_3 = "rgba(255,0,0,0.1)";
         ctx.beginPath();
-        ctx.arc(cadjX + acc['x'].slice(-1)[0], cadjY + acc['y'].slice(-1)[0], 14, 0, Math.PI*2, true);
-        ctx.fill();
+        ctx.arc(co_x, co_y, 4, 0, Math.PI*2, true);
         ctx.fillStyle = col_1;
+        ctx.fill();
     } else {
       // canvas-unsupported code here
     }
 }
-
-
+*/
 
 // AND RUN
 // ============================================================
@@ -355,7 +361,8 @@ $(document).on('click', '.toggle-button', function() {
 
 if (!isHidden()) {
     motionVars();
-    blankCanvas();
+    // blankCanvas();
     getDeviceData();
+    // drawCanvas();
     window.addEventListener('deviceorientation', handleOrientation);
 }
