@@ -209,10 +209,9 @@ function prettyButtons(power, rem) {
         $("#paBody").css("background-color", "#04d70b"); // green
         $("#paBody").css('background-image', 'none');
     } else {
-        /*
-        $('#remTime').attr('class', 'label label-default');
+        // $('#remTime').attr('class', 'label label-default');
+        $('#remTime').attr('class', 'label label-danger');
         $('#remTime').text('ShakeToSign');
-        */
         // $('#captButton').hide();
         $("#paBody").css("background-color", "#ffffff"); // white
         $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
