@@ -239,3 +239,51 @@ div .imgFit {
   background: green;
   border-radius: 100%;
 }
+
+/* TOGGLE BUTTON */
+.toggle-button {
+    background-color: orange;
+    margin: 5px 0;
+    border-radius: 20px;
+    border: 1px solid #FF8C00;
+    height: 20px;
+    cursor: pointer;
+    width: 50px;
+    position: relative;
+    display: inline-block;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+}
+.toggle-button button {
+    cursor: pointer;
+    outline: 0;
+    display:block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 100%;
+    width: 24px;
+    height: 24px;
+    background-color: LightGrey;
+    float: left;
+    margin: -3px 0 0 -3px;
+    border: 1px solid Gray;
+    transition: left 0.3s;
+}
+.toggle-button-selected {
+    background-color: Green; /*#83B152 *green*/
+    border: 1px solid White;
+}
+.toggle-button-selected button {
+    left: 26px;
+    top: 0;
+    margin: 0;
+    border: none;
+    width: 24px;
+    height: 24px;
+    background-color: LightGrey;
+    border: 1px solid Gray;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}

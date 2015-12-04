@@ -188,14 +188,15 @@ function motionVars() {
 function toggler() {
     onoff = 1 - onoff;
     if (onoff == 1) {
-        $('#booler').attr('class', 'btn btn-success');
         $('#booler').text('RecorderReady');
+        $('#booler').css('color', 'White');
         $('#remTime').attr('class', 'label label-danger');
+        $('#remTime').text('ShakeAndSign');
         $('#beep6').get(0).play();
     } else {
-        $('#booler').attr('class', 'btn btn-danger');
         $('#booler').text('RecorderOff');
-        $('#remTime').attr('class', 'label label-default');
+        $('#booler').css('color', 'Orange');
+        $('#remTime').text('');
     }
 }
 
@@ -208,8 +209,10 @@ function prettyButtons(power, rem) {
         $("#paBody").css("background-color", "#04d70b"); // green
         $("#paBody").css('background-image', 'none');
     } else {
-        $('#remTime').attr('class', 'label label-danger');
-        $('#remTime').text('ShakeAndSign');
+        /*
+        $('#remTime').attr('class', 'label label-default');
+        $('#remTime').text('ShakeToSign');
+        */
         // $('#captButton').hide();
         $("#paBody").css("background-color", "#ffffff"); // white
         $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
@@ -254,7 +257,7 @@ function passMotionData() {
         'strGamma': JSON.stringify(rot['gamma'])
     }
     $.getJSON('./_balldata', strData, function(data) {
-        $("#result").text("Signature received."); // .text(data.ballData);
+        $("#result").text("Signature received.").fadeOut(8000); // .text(data.ballData);
     });
 };
 
@@ -316,3 +319,8 @@ function handleOrientation(event) {
 // AND RUN
 // ============================================================
 window.addEventListener('deviceorientation', handleOrientation);
+
+$(document).on('click', '.toggle-button', function() {
+    $(this).toggleClass('toggle-button-selected');
+    toggler();
+});

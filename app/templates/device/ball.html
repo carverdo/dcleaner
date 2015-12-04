@@ -5,11 +5,17 @@
 
 {% block content %}
     <div class="col-xs-12 col-md-12">
-        <div class="panel" id="paBody" align="center">
+        <div class="panel panel-primary" id="paBody" align="center">
             <div class="panel-heading">
-                <button type="button" class="btn btn-danger" onclick="toggler();" id="booler">RecorderOff</button>
+                <table class="table" valign="middle">
+                    <tr>
+                        <td><p id="booler" style="color:Orange;">RecorderOff</p></td>
+                        <td><div class="toggle-button"><button></button></div></td>
+                    </tr>
+                </table>
+                <p style="font-size:16px"><span class="label" id="remTime"></span></p>
+                <!-- <button type="button" class="btn btn-danger" onclick="toggler();" id="booler">RecorderOff</button> -->
                 <!-- <button type="button" class="btn btn-warning" onclick="motionVars();">Wipe</button> -->
-                <br><div class="label" id="remTime"></div>
             </div>
             <div class="panel-body">
                 <div class="btn-toolbar" role="toolbar" aria-label="..." style="font-size: 16px;" align="center">
