@@ -304,6 +304,7 @@ function handleOrientation(event) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
             acc['y'].push(acc_y);
+            drawCanvas();
             rot['theta'].push(northFace);
             rot['beta'].push(dir_b);
             rot['gamma'].push(dir_g);
@@ -322,6 +323,29 @@ function handleOrientation(event) {
     }
 }
 
+
+function blankCanvas() {
+    var canvas = document.getElementById('tutorial');
+    var cadjX = canvas.width / 2, cadjY = canvas.height / 2;
+}
+
+function drawCanvas() {
+    if (canvas.getContext){
+        var ctx = canvas.getContext('2d');
+        var col_1 = "rgba(255,0,0,0.9)";
+        var col_2 = "rgba(255,0,0,0.5)";
+        var col_3 = "rgba(255,0,0,0.1)";
+        ctx.beginPath();
+        ctx.arc(cadjX + acc['x'][-1], cadjY + acc['y'][-1], 14, 0, Math.PI*2, true);
+        ctx.fill();
+        ctx.fillStyle = col_1;
+    } else {
+      // canvas-unsupported code here
+    }
+}
+
+
+
 // AND RUN
 // ============================================================
 $(document).on('click', '.toggle-button', function() {
@@ -331,7 +355,7 @@ $(document).on('click', '.toggle-button', function() {
 
 if (!isHidden()) {
     motionVars();
+    blankCanvas();
     getDeviceData();
-    $("#ghp").text(isHidden());
     window.addEventListener('deviceorientation', handleOrientation);
 }
