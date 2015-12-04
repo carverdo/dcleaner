@@ -272,8 +272,8 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    $.getJSON('./_balldata', strData, function(data) {
-        $("#result").text("Signature received.").fadeOut(8000); // .text(data.ballData);
+    $.getJSON('./_balldata', strData, function() { // data
+        $("#result").text("Signature received.").fadeIn().fadeOut(8000); // .text(data.ballData);
     });
 };
 
@@ -304,7 +304,7 @@ function handleOrientation(event) {
             prettyButtons('on', remTime);
             acc['x'].push(acc_x);
             acc['y'].push(acc_y);
-            // drawCanvas();
+            drawCanvas();
             rot['theta'].push(northFace);
             rot['beta'].push(dir_b);
             rot['gamma'].push(dir_g);
