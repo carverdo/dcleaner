@@ -57,7 +57,7 @@ function OrientationHandler(eventData) {
         dir_a, dir_b, dir_g
     );
     document.getElementById('raws').innerHTML = [
-        dir_a, dir_b, dir_g
+        Math.round(dir_a), Math.round(dir_b), Math.round(dir_g)
     ];
     document.getElementById('compass').innerHTML = northFace;
 }
@@ -69,7 +69,7 @@ function MotionHandler(eventData) {
     acc_y = round(eventData.acceleration.y);
     acc_z = round(eventData.acceleration.z);
     document.getElementById('accs').innerHTML = [
-        acc_x, acc_y, acc_z
+        Math.round(acc_x), Math.round(acc_y), Math.round(acc_z)
     ];
     document.getElementById('ival').innerHTML = [
         interval
@@ -207,7 +207,7 @@ function toggler() {
         $('#booler').text('RecorderReady');
         $('#booler').css('color', 'White');
         $('#remTime').attr('class', 'label label-danger');
-        $('#remTime').text('ShakeToSign');
+        $('#remTime').text('x3 shakes and sign');
         $('#beep6').get(0).play();
     } else {
         $('#booler').text('RecorderOff');
@@ -228,7 +228,7 @@ function prettyButtons(power, rem) {
         // $('#remTime').attr('class', 'label label-default');
         if (onoff == 1) {
             $('#remTime').attr('class', 'label label-danger');
-            $('#remTime').text('ShakeToSign');
+            $('#remTime').text('x3 shakes and sign');
         }
         // $('#captButton').hide();
         $("#paBody").css("background-color", "#ffffff"); // white
