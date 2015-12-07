@@ -11,7 +11,7 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // some declared variables in a function as we can later reset
 // ============================================================
 var onoff = 0;
-var stamp, elapse, elapseMin = 25; // milliseconds
+var stamp, elapse, elapseMin = 40; // milliseconds
 var tiltStamp = 0, remTime, elapseMax = 6000; // milliseconds
 var tiltAngle = 7; // degrees
 var accThresh = 5; // metres per sec squared
