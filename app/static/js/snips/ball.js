@@ -12,7 +12,7 @@ http://w3c.github.io/deviceorientation/spec-source-orientation.html#introduction
 // ============================================================
 var onoff = 0;
 var stamp, elapse, elapseMin = 40; // milliseconds
-var tiltStamp = 0, remTime, elapseMax = 6000; // milliseconds
+var tiltStamp = 0, remTime, elapseMax = 5000; // milliseconds
 var tiltAngle = 7; // degrees
 var accThresh = 5; // metres per sec squared
 var tallyM = 3, tallyS = 5, tallyE = 11;  // counters: middle (halfway to start), start, end
