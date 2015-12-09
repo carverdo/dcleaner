@@ -2,21 +2,29 @@
     <div id="deletedRow"></div>
     <table class="table table-hover table-condensed">
         <thead style="color:green">
-            <td width="5%"> Delete? </td>
-            <td> id </td>
-            <td> acx </td>
-            <td> acy </td>
-            <td> theta </td>
-            <td> beta </td>
-            <td> gamma </td>
-            <td> radius </td>
-            <td> angle </td>
+            <tr>
+                <th width="5%"> Delete? </th>
+                <th> id </th>
+                <th> tag </th>
+                <th> m_id </th>
+                <th> last_log </th>
+                <th> acx </th>
+                <th> acy </th>
+                <th> theta </th>
+                <th> beta </th>
+                <th> gamma </th>
+                <th> radius </th>
+                <th> angle </th>
+            </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
             {% for ro in form %}
                 <tr id="prof_row_style">
                     <td> <button style="background-color:rgba(255, 0, 0, 0.7);; color:rgb(255, 255, 255);" id={{ro.id}}>delete</button> </td>
                     <td> <a href="#"></a> {{ ro.id }} </td>
+                    <td> {{ ro.tag }} </td>
+                    <td> {{ ro.member_id }} </td>
+                    <td> {{ ro.last_log }} </td>
                     <td> {{ ro.acx }} </td>
                     <td> {{ ro.acy }} </td>
                     <td> {{ ro.theta }} </td>

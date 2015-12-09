@@ -15,7 +15,6 @@
                 </table>
                 <p style="font-size:16px"><span class="label" id="remTime"></span></p>
                 <p><span class="label label-default" id="result"></span></p>
-                <p id="coxy"></p>
                 <!-- <button type="button" class="btn btn-danger" onclick="toggler();" id="booler">RecorderOff</button> -->
                 <!-- <button type="button" class="btn btn-warning" onclick="motionVars();">Wipe</button> -->
             </div>
@@ -26,6 +25,8 @@
                 <div class="garden">
                     <div class="ball"></div>
                 </div>
+                <input type="text" id="tagVal" style="width:80px">
+                <button type="button" class="btn btn-info" id="setTag">setTag</button>
             </div>
         </div>
     </div>
@@ -38,5 +39,5 @@
     <p id="ival">ival</p>
     <p id="dmEvent">Motion ok</p>
     <p id="dmEvent2">Orientation ok</p>
-    <script src="static/js/snips/ball.js"></script>
+    <script src="static/js/snips/ball_static.js"></script>
 {% endblock %}

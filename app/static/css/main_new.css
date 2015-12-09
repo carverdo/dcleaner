@@ -224,7 +224,7 @@ div .imgFit {
 
 .garden {
   position: relative;
-  width : 200px;
+  width : 100%;
   height: 200px;
   border: 2px solid #CCC;
   border-radius: 15px;
@@ -232,8 +232,8 @@ div .imgFit {
 
 .ball {
   position: absolute;
-  top   : 90px;
-  left  : 0px;
+  top   : 45%;
+  left  : 45%;
   width : 20px;
   height: 20px;
   background: green;

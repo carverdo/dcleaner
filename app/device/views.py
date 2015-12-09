@@ -5,6 +5,8 @@ from . import devy
 from flask import render_template, request, jsonify, current_app, flash
 from app.db_models import Visit, MotionCapture
 from app.log_auth.geodata import get_clientdata
+from ..log_auth.views import login_confirmed, admin_required  # COULD NOT GET WORKING; HHMM
+from flask.ext.login import current_user
 
 
 @devy.route('/locn')
@@ -16,11 +18,11 @@ def locn():
 def orientn():
     return render_template('./device/orientn.html')
 
-
+"""
 @devy.route('/motion')
 def motion():
     return render_template('./device/motion.html')
-
+"""
 
 @devy.route('/capture')
 def capture():
@@ -28,11 +30,13 @@ def capture():
 
 
 @devy.route('/ball')
+@login_confirmed
 def ball():
     return render_template('./device/ball.html')
 
 
 @devy.route('/balltable', methods=['GET', 'POST'])
+@login_confirmed
 def balltable():
     # Presentation of group/summary data
     all_balldata = MotionCapture.query.order_by(MotionCapture.id).all()
@@ -87,6 +91,7 @@ def clientdata():
 
 
 @devy.route('/_balldata')
+@login_confirmed
 def balldata():
     """
     Use request args to CAPTURE or DELETE row of data.
@@ -100,6 +105,8 @@ def balldata():
         except:  # if request.args.get produces gibberish
             pass
     else:
+        data['tag'] = request.args.get('tag', '[None]', type=str)
+        data['member_id'] = current_user.id
         data['acx'] = request.args.get('strAcx', '[-1]', type=str)
         data['acy'] = request.args.get('strAcy', '[-1]', type=str)
         data['theta'] = request.args.get('strTheta', '[0]', type=str)

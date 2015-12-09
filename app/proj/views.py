@@ -7,7 +7,7 @@ Use this area to build out the particular project.
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 from . import proj
-from flask import render_template, current_app, flash, redirect, url_for,  request
+from flask import render_template, current_app, flash, redirect, url_for, request
 from ..log_auth.views import login_confirmed
 from forms import TimerForm, Form
 from ..templates.flash_msg import *
