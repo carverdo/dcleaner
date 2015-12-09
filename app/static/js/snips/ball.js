@@ -373,7 +373,7 @@ $(document).on('click', '.toggle-button', function() {
 });
 
 if (!isHidden()) {
-    setTagVal();
+    // setTagVal();
     motionVars();
     // blankCanvas();
     getDeviceData();
