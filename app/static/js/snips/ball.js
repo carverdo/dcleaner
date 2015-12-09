@@ -278,7 +278,7 @@ function runShaker(tilt, maxAcc) {
 function passMotionData() {
     // sends it back for database handling
     var strData = {
-        'tag': JSON.stringify('text'),
+        'tag': JSON.stringify(input.value),
         'strAcx': JSON.stringify(acc['x']),
         'strAcy': JSON.stringify(acc['y']),
         'strTheta': JSON.stringify(rot['theta']),
