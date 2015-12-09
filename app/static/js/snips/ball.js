@@ -279,7 +279,7 @@ function passMotionData() {
     // sends it back for database handling
     var input = document.getElementById("tagVal");
     var strData = {
-        'tag': input.value,
+        'tag': JSON.stringify(input.value),
         'strAcx': JSON.stringify(acc['x']),
         'strAcy': JSON.stringify(acc['y']),
         'strTheta': JSON.stringify(rot['theta']),
