@@ -236,6 +236,18 @@ function prettyButtons(power, rem) {
     }
 }
 
+function setTagVal() {
+    // Input box shows current value and
+    // allows user to set a new one
+    var input = document.getElementById("tagVal");
+    if (localStorage && 'tagVal' in localStorage) {
+        input.value = localStorage.tagVal;
+    }
+    document.getElementById("setTag").onclick = function () {
+        localStorage && (localStorage.tagVal = input.value);
+    };
+}
+
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
 // ==============================================
@@ -266,6 +278,7 @@ function runShaker(tilt, maxAcc) {
 function passMotionData() {
     // sends it back for database handling
     var strData = {
+        'tag': input.value,
         'strAcx': JSON.stringify(acc['x']),
         'strAcy': JSON.stringify(acc['y']),
         'strTheta': JSON.stringify(rot['theta']),
@@ -360,6 +373,7 @@ $(document).on('click', '.toggle-button', function() {
 });
 
 if (!isHidden()) {
+    setTagVal();
     motionVars();
     // blankCanvas();
     getDeviceData();
