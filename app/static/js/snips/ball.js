@@ -235,7 +235,7 @@ function prettyButtons(power, rem) {
         $("#paBody").css('background-image', 'url(' + './static/image/shakephone3.png' +')');
     }
 }
-
+/*
 function setTagVal() {
     // Input box shows current value and
     // allows user to set a new one
@@ -247,7 +247,7 @@ function setTagVal() {
         localStorage && (localStorage.tagVal = input.value);
     };
 }
-
+*/
 // ==============================================
 // MAIN OPERATIVE FUNCTIONS
 // ==============================================
