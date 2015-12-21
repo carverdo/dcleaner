@@ -114,8 +114,9 @@ function passMotionData() {
     }
     $.getJSON('./_balldata', strData, function(data) {
         $("#result").html("Signature received.").fadeIn().fadeOut(8000); // .text(data.ballData);
+        $("#simResults").empty();
         for (var key in data) {
-            var $tmp_txt = $("<td></td>");
+            var $tmp_txt = $("<tr></tr>");
             $tmp_txt.html(key + ": " + data[key]);
             var col = setCol(data[key]);
             $tmp_txt.css("background-color", col);
