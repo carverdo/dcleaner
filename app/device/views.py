@@ -7,7 +7,7 @@ from app.db_models import Visit, MotionCapture
 from app.log_auth.geodata import get_clientdata
 from ..log_auth.views import login_confirmed, admin_required  # COULD NOT GET WORKING; HHMM
 from flask.ext.login import current_user
-
+from process_sigs import Digitize, RunCompare
 
 @devy.route('/locn')
 def locn():
@@ -30,13 +30,11 @@ def capture():
 
 
 @devy.route('/ball')
-@login_confirmed
 def ball():
     return render_template('./device/ball.html')
 
 
 @devy.route('/balltable', methods=['GET', 'POST'])
-@login_confirmed
 def balltable():
     # Presentation of group/summary data
     all_balldata = MotionCapture.query.order_by(MotionCapture.id).all()
@@ -91,12 +89,11 @@ def clientdata():
 
 
 @devy.route('/_balldata')
-@login_confirmed
 def balldata():
     """
     Use request args to CAPTURE or DELETE row of data.
     """
-    data = {}
+    data, comp_data = {}, {}
     # delete vs capture
     if 'strMemID' in request.args.keys():
         data['memID'] = request.args.get('strMemID', 0, type=int)
@@ -113,7 +110,29 @@ def balldata():
         data['beta'] = request.args.get('strBeta', '[0]', type=str)
         data['gamma'] = request.args.get('strGamma', '[0]', type=str)
         MotionCapture.create(**data)
-    return jsonify(ballData=data.values())
+        comp_data = run_comp()
+    return jsonify(**comp_data)  # , ballData=data.values())
+
+
+@devy.route('/similars')
+def similars():
+    return str(run_comp())
+
+def run_comp():
+    all_sigs = MotionCapture.query.filter_by(member_id=current_user.id).\
+        order_by(MotionCapture.id)  #.all()  # [-1]  # order_by reverse?
+    all_sigs = MotionCapture.query.\
+        order_by(MotionCapture.id)  # XXXXXXXXXXXXXXXXXXXXXXXXXX
+    train = all_sigs.filter_by(tag='Train')
+    dg = Digitize(train)
+    sig = Digitize([all_sigs.all()[-1]])
+    sig = sig.symRows[0]
+    comp = {}
+    for key in dg.keys + dg.ckeys:
+        rc = RunCompare(sig, key)
+        comp[key] = max([rc.run_comparison(row) for row in dg.symRows])
+    return comp
+
 
 
 """

@@ -286,10 +286,25 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    $.getJSON('./_balldata', strData, function() { // data
+    $.getJSON('./_balldata', strData, function(data) {
         $("#result").text("Signature received.").fadeIn().fadeOut(8000); // .text(data.ballData);
+        for (var key in data) {
+            var $tmp_txt = $("<td></td>");
+            $tmp_txt.html(key + ": " + data[key]);
+            var col = setCol(data[key]);
+            $tmp_txt.css("background-color", col);
+            $("#simResults").append($tmp_txt);
+        }
     });
 };
+
+function setCol(simRes) {
+    r = Math.round((1 - simRes) * 255);
+    g = Math.round(simRes * 255);
+    b = 0;
+    a = 0.9;
+    return "rgba(" + r + "," + g + "," + b + "," + a +")"
+}
 
 function handleOrientation(event) {
     // var x = event.beta;  // In degree in the range [-180,180]

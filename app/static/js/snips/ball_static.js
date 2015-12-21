@@ -96,7 +96,6 @@ function runShaker(tilt, maxAcc) {
     remTime -= 1;
     // Pass data and reset our vars
     if (tallyTilt >= tallyE) {
-        console.log(tallyTilt);
         passMotionData();
         motionVars();
     }
@@ -113,10 +112,25 @@ function passMotionData() {
         'strBeta': JSON.stringify(rot['beta']),
         'strGamma': JSON.stringify(rot['gamma'])
     }
-    $.getJSON('./_balldata', strData, function() { // data
-        $("#result").text("Signature received.").fadeIn().fadeOut(8000); // .text(data.ballData);
+    $.getJSON('./_balldata', strData, function(data) {
+        $("#result").html("Signature received.").fadeIn().fadeOut(8000); // .text(data.ballData);
+        for (var key in data) {
+            var $tmp_txt = $("<td></td>");
+            $tmp_txt.html(key + ": " + data[key]);
+            var col = setCol(data[key]);
+            $tmp_txt.css("background-color", col);
+            $("#simResults").append($tmp_txt);
+        }
     });
 };
+
+function setCol(simRes) {
+    r = Math.round((1 - simRes) * 255);
+    g = Math.round(simRes * 255);
+    b = 0;
+    a = 0.9;
+    return "rgba(" + r + "," + g + "," + b + "," + a +")"
+}
 
 function handleOrientation() {
     dir_a = 1;
@@ -135,7 +149,6 @@ function handleOrientation() {
     for (i=0; i<5; i++) {
         ball.style.left  = 30 + "px"; //(maxX * (acc_x / 10 + 0.5) ) + "px";
         ball.style.top = 70 + "px"; //(maxY * (-acc_y / 10 + 0.5) ) + "px";
-        console.log(ball.style);
         // record snapshot if we get signal
         runShaker(dir_g, Math.max(Math.abs(acc_x), Math.abs(acc_y)));
         // otherwise keep capturing data

@@ -210,6 +210,10 @@ class MotionCapture(CRUDMixin, db.Model):
     last_log = Column(DateTime(), default=datetime.utcnow)
     tag = Column(String, default=None)
 
+    def __repr__(self):
+        return '<Motion(m_id, tag, acx) {}, {}, {}>'.format(
+            self.member_id, self.tag, self.acx)
+
 
 # flask-login needs this definition
 @login_manager.user_loader
