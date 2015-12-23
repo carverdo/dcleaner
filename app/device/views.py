@@ -121,10 +121,18 @@ def similars():
 def run_comp():
     all_sigs = MotionCapture.query.filter_by(member_id=current_user.id).\
         order_by(MotionCapture.id)  #.all()  # [-1]  # order_by reverse?
-    train = all_sigs.filter_by(tag='Train')
-    dg = Digitize(train)
-    sig = Digitize([all_sigs.all()[-1]])
-    sig = sig.symRows[0]
+    train_raw = all_sigs.filter_by(tag='Train')
+    # safety check (in case no 'Train')
+    if not train_raw:
+        dg = Digitize(all_sigs)
+    else:
+        dg = Digitize(train_raw)
+    # compare the last one only (to our trained object)
+    test_raw = all_sigs.all()[-1:]
+    test_digiRows, test_symRows = dg.build_test(test_raw)
+    # sig = Digitize([all_sigs.all()[-1]])
+    # sig = sig.symRows[0]
+    sig = test_symRows[-1]
     comp = {}
     for key in dg.keys + dg.ckeys:
         rc = RunCompare(sig, key)

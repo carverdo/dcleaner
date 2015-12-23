@@ -23,7 +23,9 @@ function success(pos) {
 }
 
 function popEle(name, val) {
-    x = document.getElementById(name);
-    x.innerHTML = val;
+    myElem = document.getElementById(name);
+    if (myElem !== null) {
+        myElem.innerHTML = val;
+    }
 }
 
