@@ -143,8 +143,9 @@ class Digitize(object):
     def _bin_limits(data):
         """Find maxmax and minmin of the training featureset"""
         bin_mn = min(min(ar) for ar in data)
-        bin_mx = max(max(ar) for ar in data) + 0.01  # adjust for half-open
+        bin_mx = max(max(ar) for ar in data)
         bin_size = (bin_mx - bin_mn) / NO_BUCKETS
+        bin_mx += bin_size  # adjust for half-open; capture the last bin
         return bin_mn, bin_mx, bin_size
 
 
@@ -167,8 +168,8 @@ class RunCompare(object):
 
 
 if __name__ == '__main__':
+    ## NEED TO FUDGE LINE 79
     import os
-
     os.chdir('..')
     os.chdir('..')
     fileObj = open('tests/raw.txt').readlines()
@@ -196,7 +197,7 @@ if __name__ == '__main__':
     # for obj in bb: print obj['angle']
     # see if matches excel
     # repeat with all keys
-
+    """
     test_data_rows = (6, 11)
     test_data = []
     for d in range(*test_data_rows):
@@ -216,3 +217,19 @@ if __name__ == '__main__':
     for obj in dd: print obj['acy']
     # see if matches excel
     # repeat with all keys
+    """
+    """
+    test_fileObj = open('tests/raw_test.txt').readlines()
+    test_fileObj = [ro.strip() for ro in test_fileObj]
+    test_raw = {}
+    for idx in range(0, len(test_fileObj), 2):
+        test_raw[test_fileObj[idx]] = test_fileObj[idx + 1]
+    test_digiRows, test_symRows = dg.build_test([test_raw])
+    sig = test_symRows[-1]
+    comp = {}
+    for key in dg.keys + dg.ckeys:
+        rc = RunCompare(sig, key)
+        comp[key] = max([rc.run_comparison(row) for row in dg.symRows])
+    print comp
+    """
+
