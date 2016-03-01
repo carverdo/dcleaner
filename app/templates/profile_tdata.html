@@ -1,6 +1,14 @@
 {% import 'macros.html' as macros %}
-{{ macros.row_pres("fa fa-envelope-o fa-border btn-info", form.email, "Your email") }}
-{{ macros.row_pres("fa fa-lock fa-border btn-warning", form.old_password, "Your old Password") }}
-{{ macros.row_pres("fa fa-lock fa-border btn-danger", form.new_password, "Your new Password") }}
-{{ macros.row_pres("fa fa-lock fa-border btn-danger", form.new_password2, "Confirm your new Password") }}
+{{ macros.row_pres(
+    "fa fa-envelope-o fa-border btn-info", form.email, "Your email"
+    )}}
+{{ macros.row_pres(
+    "fa fa-lock fa-border btn-warning", form.old_password, "Your old Password"
+    )}}
+{{ macros.row_pres(
+    "fa fa-lock fa-border btn-danger", form.new_password, "Your new Password"
+    )}}
+{{ macros.row_pres(
+    "fa fa-lock fa-border btn-danger", form.new_password2, "Confirm your new Password"
+    )}}
 <button type="submit" class="btn btn-primary btn-block">changePassword</button>

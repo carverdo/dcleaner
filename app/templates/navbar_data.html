@@ -1,0 +1,57 @@
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse">
+<!-- TAILOR THE NAVBAR BELOW -->
+<ul class="nav navbar-nav">
+    {% if current_user.is_authenticated() %}
+        {{ macros.buildLink('log_auth.signout', 'signOut') }}
+        {% if not current_user.confirmed %}
+            {{ macros.buildLink('log_auth.resend_token', 'resendToken') }}
+        {% else %}
+            <li class="dropdown">
+                {{ macros.buildDropper('profile') }}
+                <ul class="dropdown-menu" id="navstyle_dropdown">
+                    {{ macros.buildLink('log_auth.profile', 'myLogin') }}
+                    {% if current_user.adminr %}
+                        {{ macros.buildLink('log_auth.adm_members',
+                            'manageUsers') }}
+                    {% endif %}
+                </ul>
+            </li>
+            <li class="dropdown">
+                {{ macros.buildDropper('Tasks') }}
+                <ul class="dropdown-menu" id="navstyle_dropdown">
+                    {{ macros.buildLink('proj.addtasks', 'addTasks') }}
+                    {{ macros.buildLink('proj.curtasks', 'manageTasks') }}
+                </ul>
+            </li>
+            <li class="dropdown">
+                {{ macros.buildDropper('fileManager') }}
+                <ul class="dropdown-menu" id="navstyle_dropdown">
+                    {{ macros.buildLink('updown.upload', 'upload') }}
+                    {{ macros.buildLink('updown.download', 'download') }}
+                    {% if current_user.adminr %}
+                        {{ macros.buildLink('updown.keyrotate', 'rotate') }}
+                        {{ macros.buildLink('updown.keyremove', 'remove') }}
+                        {{ macros.buildLink('updown.adm_bucketmap', 'bucketmap') }}
+                    {% endif %}
+                </ul>
+            </li>
+            <li class="dropdown">
+                {{ macros.buildDropper('device') }}
+                <ul class="dropdown-menu" id="navstyle_dropdown">
+                    {{ macros.buildLink('device.locn', 'locn') }}
+                    {{ macros.buildLink('device.orientn', 'orientn') }}
+                </ul>
+            </li>
+            {{ macros.buildLink('paym.stramount', 'payment') }}
+        {% endif %}
+    {% else %}
+        <!-- The following will only show when the nav menu is collapsed -->
+        <li class="visible-xs">
+        <a href="{{ url_for('log_auth.signin') }}">signIn</a>
+        </li>
+    {% endif %}
+</ul>
+<!--<ul class="nav navbar-nav-right"> </ul>-->
+<!-- END OF TAILORING -->
+</div>

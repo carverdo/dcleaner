@@ -15,7 +15,8 @@ var stamp, elapse, elapseMin = 40; // milliseconds
 var tiltStamp = 0, remTime, elapseMax = 5000; // milliseconds
 var tiltAngle = 7; // degrees
 var accThresh = 5; // metres per sec squared
-var tallyM = 3, tallyS = 5, tallyE = 11;  // counters: middle (halfway to start), start, end
+// counters: middle (1/2way to start), start, end
+var tallyM = 3, tallyS = 5, tallyE = 11;
 var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var maxX = garden.clientWidth  - ball.clientWidth;
@@ -29,13 +30,13 @@ function getDeviceData() {
     if (window.DeviceMotionEvent) {
         window.addEventListener('devicemotion', MotionHandler, false);
     } else {
-        document.getElementById("dmEvent").innerHTML = "Motion not supported."
+        document.getElementById("dmEvent").innerHTML = "Motion unsupported."
     }
     // call orientation
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', OrientationHandler, false);
     } else {
-        document.getElementById("dmEvent2").innerHTML = "Orientation not supported."
+        document.getElementById("dmEvent2").innerHTML = "Orientation unsupported."
     }
 }
 
@@ -138,7 +139,7 @@ function compassHeading(alpha, beta, gamma) {
         } else if(rA < 0) {
             compassHeading += 2 * Math.PI;
         }
-        return Math.round(compassHeading * (180 / Math.PI)); // Compass Heading (in degrees)
+        return Math.round(compassHeading * (180 / Math.PI));
     } else {
         revAlpha = 360 - alpha;
         return Math.round(revAlpha);

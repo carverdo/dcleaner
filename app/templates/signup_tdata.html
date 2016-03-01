@@ -1,30 +1,46 @@
 {% import 'macros.html' as macros %}
-{{ macros.row_pres("fa fa-user fa-border btn-info", form.firstname, "Your account name") }}
-{{ macros.row_pres("fa fa-user fa-border btn-info", form.surname, "Your phone number") }}
-{{ macros.row_pres("fa fa-envelope-o fa-border btn-info", form.email, "Your email") }}
-{{ macros.row_pres("fa fa-lock fa-border btn-warning", form.password, "Password") }}
-{{ macros.row_pres("fa fa-lock fa-border btn-warning", form.password2, "Confirm Password") }}
+{{ macros.row_pres(
+    "fa fa-user fa-border btn-info", form.firstname, "Your account name"
+    )}}
+{{ macros.row_pres(
+    "fa fa-user fa-border btn-info", form.surname, "Your phone number"
+    )}}
+{{ macros.row_pres(
+    "fa fa-envelope-o fa-border btn-info", form.email, "Your email"
+    )}}
+{{ macros.row_pres(
+    "fa fa-lock fa-border btn-warning", form.password, "Password"
+    )}}
+{{ macros.row_pres(
+    "fa fa-lock fa-border btn-warning", form.password2, "Confirm Password"
+    )}}
 
 
 <p align="justify">
-    We link your UK mobile number and the bank account so you can receive your payments.
-    <a href="https://wra.secure.barclays.com/registration/pingitregntermsandcond.action">Read the Terms and Conditions.</a>
+    We link your UK mobile number and the bank account so you can
+    receive your payments.
+    <a href="https://wra.secure.barclays.com/registration/pingitregntermsandcond.action">
+        Read the Terms and Conditions.
+    </a>
 </p>
 
 <div class="form-group">
     <div class="input-group">
         <span class="input-group-addon">{{form.remember}}</span>
-        <input type="text" class="form-control" placeholder="I accept Terms and Conditions">
+        <input type="text" class="form-control"
+            placeholder="I accept Terms and Conditions">
     </div>
 </div>
-<button type="submit" class="btn btn-primary btn-block">Register to receive payments</button>
+<button type="submit" class="btn btn-primary btn-block">
+    Register to receive payments
+</button>
 <br>
 
 <div class="jumbotron" id="small-logo">
     <h3 align="justify"><small>
         As you can already tell, the form mimics the pingit registration form.
         <br><br>
-        We can capture any other data as required e.g sort, account, name, dob, etc.
-        and finally via SMS authentication also generate a penny payment.
+        We can capture any other data as required e.g sort, account, name, dob,
+        etc. and finally via SMS authentication also generate a penny payment.
     </small></h3>
 </div>

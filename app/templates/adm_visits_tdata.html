@@ -8,8 +8,9 @@
         </thead>
         <tbody data-link="row" class="rowlink">
         {% for ro in form %}
-            <tr id="prof_row_style">
-                <td> <a href="?m={{ro.id.default}}"></a> {{ ro.id.default }} </td>
+            <tr class="prof_row_style">
+                <td> <a href="?m={{ro.id.default}}"></a>
+                    {{ ro.id.default }} </td>
                 <td> {{ ro.num_visits.default }} </td>
                 <td> {{ ro.num_ips.default }} </td>
                 <td> {{ ro.lastdate.default }} </td>
@@ -21,7 +22,8 @@
 &nbsp;
 <ul class="nav nav-pills nav-justified">
     <li role="presentation">
-        <a class="btn btn-default btn-block" href="{{ url_for('log_auth.adm_members') }}">
+        <a class="btn btn-default btn-block"
+            href="{{ url_for('log_auth.adm_members') }}">
             Back to Members
         </a>
     </li>

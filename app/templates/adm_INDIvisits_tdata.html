@@ -1,12 +1,13 @@
 <ul class="nav nav-pills nav-justified">
     <li role="presentation">
-        <a class="btn btn-default btn-block" href="{{ url_for('log_auth.visits') }}">
+        <a class="btn btn-default btn-block"
+            href="{{ url_for('log_auth.visits') }}">
             Back to All Visits
         </a>
     </li>
 </ul>
 &nbsp;
-<div class="table-responsive" id="scroller">
+<div class="table-responsive"> <!-- id="scroller"> -->
     <table class="table table-hover table-condensed">
         <thead style="color:green">
             <td> IP Address </td>
@@ -16,7 +17,7 @@
         </thead>
         <tbody data-link="row" class="rowlink">
         {% for ro in form %}
-            <tr id="prof_row_style">
+            <tr class="prof_row_style">
                 <td> <a href="#"></a> {{ ro.ip_address }} </td>
                 <td> {{ ro.date }} </td>
                 <td> {{ ro.latitude }} </td>

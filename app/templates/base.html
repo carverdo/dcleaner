@@ -1,29 +1,22 @@
 {% import 'macros.html' as macros %}
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Project Title</title>
     <!-- Browser rendering at width of screen -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- FONT AWESOME -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- GOOGLE FONTS -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600|Oswald:700' rel='stylesheet' type='text/css'>
-    <!-- BOOTSTRAP: Latest compiled and minified CCS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <!-- optional theme -->
-    <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
-    <!-- FAVICON -->
+    <!-- STYLESHEETS -->
     <!-- <link rel="shortcut icon" href="http://faviconist.com/icons/135fe75b1f4053c28c33602a6050b70f/favicon.ico"> -->
-    <!-- TOOLTIPS -->
-    <link rel="stylesheet" type="text/css" href="static/css/tooltipster.css" />
-    <!-- BOOTSTRAP JASNY (for mobile?) -->
     <!--<link href="static/css/jasny-bootstrap.min.css" rel="stylesheet"> -->
-    <!-- OTHER -->
     <!--<link href="/static/css/rangeslider.css" rel="stylesheet"> -->
-    <!-- MY STYLING OVER-RIDES -->
-    <link href="/static/css/main_new.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600|Oswald:700' rel='stylesheet'>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="static/css/tooltipster.css" rel="stylesheet">
+    <link href="/static/css/main_new.css" rel="stylesheet"> <!-- my styles -->
+    <!-- JAVASCRIPT, JQUERY ADD-INS -->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <!-- For animation & scrollmagic; needs to go at top-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
@@ -35,114 +28,54 @@
     {% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid"> <!-- keeps collapse working -->
-        <div class="navbar navbar-box navbar-fixed-top" role="navigation">
-            <div class="container"><!-- keeps presentation neat -->
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">  <!--# "bs-example-navbar-collapse-1">-->
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ url_for('log_auth.home') }}" title="splashPageProject">
-                        <h1><font color="white">splash<br><small><font color="linen">Page.</font></small></font></h1>
-                        <!--<img id="logo" src="/static/image/logo.png">-->
-                    </a>
-                </div><!--navbar-header-->
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        {% if current_user.is_authenticated() %}
-                            {{ macros.navbar_titles('log_auth.signout', 'signOut', shape='label') }}
-                            {% if not current_user.confirmed %}
-                                {{ macros.navbar_titles('log_auth.resend_token', 'resendToken', 'warning', shape='label') }}
-                            {% else %}
-                                <li class="dropdown">
-                                    {{ macros.navbar_drops('profile') }}
-                                    <ul class="dropdown-menu"><li>
-                                        {{ macros.navbar_titles2('log_auth.profile', 'myLogin', 'p') }}
-                                        {% if current_user.adminr %}
-                                            {{ macros.navbar_titles2('log_auth.adm_members', 'manageUsers', 'p') }}
-                                        {% endif %}
-                                    </li></ul>
-                                <li class="dropdown">
-                                    {{ macros.navbar_drops('Tasks', 'info') }}
-                                    <ul class="dropdown-menu"><li>
-                                        {{ macros.navbar_titles2('proj.addtasks', 'addTasks', 'p') }}
-                                        {{ macros.navbar_titles2('proj.curtasks', 'manageTasks', 'p') }}
-                                    </li></ul>
-                                </li>
-                                <li class="dropdown">
-                                    {{ macros.navbar_drops('fileManager', 'info') }}
-                                    <ul class="dropdown-menu"><li>
-                                        {{ macros.navbar_titles2('updown.upload', 'upload', 'p') }}
-                                        {{ macros.navbar_titles2('updown.download', 'download', 'p') }}
-                                        {% if current_user.adminr %}
-                                            {{ macros.navbar_titles2('updown.keyrotate', 'rotate', 'p') }}
-                                            {{ macros.navbar_titles2('updown.keyremove', 'remove', 'p') }}
-                                            {{ macros.navbar_titles2('updown.adm_bucketmap', 'bucketmap', 'p') }}
-                                        {% endif %}
-                                    </li></ul>
-                                </li>
-                                <li class="dropdown">
-                                    {{ macros.navbar_drops('device', 'info') }}
-                                    <ul class="dropdown-menu"><li>
-                                        {{ macros.navbar_titles2('device.locn', 'locn', 'p') }}
-                                        {{ macros.navbar_titles2('device.orientn', 'orientn', 'p') }}
-                                    </li></ul>
-                                </li>
-                                {{ macros.navbar_titles('paym.stramount', 'payment', 'primary', shape='label') }}
-                            {% endif %}
-                        {% else %}
-                            <!-- The following span will only show when the nav menu is collapsed -->
-                            <span class="visible-xs-inline">
-                                <li class="dropdown"><a href="#" data-toggle="dropdown">
-                                    {{ macros.navbar_titles('log_auth.signin', 'signIn', col='info', shape='label') }}
-                                </a></li>
-                            </span>
-                        {% endif %}
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /container -->
-        </div>
-    </div><!-- /.container-fluid -->
-    </nav>
-    <br><br><br>
-
+    <!-- NAVBAR -->
+    <!-- These first wrappers (nav, div)
+    lock our styled navbar onto the top
+    of the page in a centred fashion.
+    Conversely, this object is stretched full-page -->
+    <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-        <div class="col-xs-12">
-            <!-- JUST BUILD FLASHES DIRECTLY HERE; REDDER AND CONTENT ARE BLANK -->
-            {% block flashes %}
-                {% for msg in get_flashed_messages() %}
-                    <div class="alert alert-warning">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      {{ msg }}
-                    </div>
-                {% endfor %}
+    <!-- This is what we work with for visuals and data -->
+    <br>
+    <nav class="navbar navbar-default">
+    <div class="container-fluid" id="navbarLeftRightFull">
+        {% include 'navbar_header.html' %}
+        {% include 'navbar_data.html' %}
+    </div></nav>
+    </div></nav>
+    <br><br>
+    <!-- MAIN BODY SECTION
+    We build flash msgs here; redder and content are blank -->
+    <div class="container">
+    <div class="col-xs-12">
+        {% block flashes %}
+            {% for msg in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close"
+                    data-dismiss="alert">&times;</button>
+                    {{ msg }}
+                </div>
+            {% endfor %}
+        {% endblock %}
+        <span class="redder">
+            {% block redder %}
             {% endblock %}
-            <span class="redder">
-                {% block redder %}
-                {% endblock %}
-            </span>
-            {% block content %}
-            {% endblock %}
-        </div>
+        </span>
+        {% block content %}
+        {% endblock %}
     </div>
-    <!-- Latest javascript -->
-    <script src="/static/js/bootstrap.min.js"></script>
+    </div>
+    <!-- JAVASCRIPT -->
     <!-- <script src="/static/js/moment.min.js"></script> -->
     <!-- double curly moment.include_moment() double curly -->
+    <!-- <script src="/static/js/rangeslider.min.js"></script> -->
+    <!-- <script type="text/javascript" src="static/js/jquery.scrolly.js"></script>  -->
+    <script src="/static/js/bootstrap.min.js"></script>
     {% if pageType == 'graph' %}
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="/static/js/graph.js"></script>
     {% endif %}
     <script src="static/js/jasny-bootstrap.min.js"></script>
-    <!-- <script src="/static/js/rangeslider.min.js"></script> -->
-    <script type="text/javascript" src="static/js/jquery.tooltipster.min.js"></script>
-    <!-- <script type="text/javascript" src="static/js/jquery.scrolly.js"></script>  -->
+    <script src="static/js/jquery.tooltipster.min.js"></script>
 </body>
 </html>

@@ -1,218 +1,188 @@
-/* main styling over-rides    background: url("../image/live.png") no-repeat; */
+/*
+commas mean multiple separate items;
+the dot selects classes, hashes the ids;
+second elements (no comma between) sit inside the first;
+> symbols indicate immediate parenting;
++ symbol means immediately subsequent (non-greedy);
+~ is greedy.
+*/
 
+/* =================
+   MAIN
+================= */
 html, body {
+    /* ordering: colour image repeat attach(x,y) position attachment */
     background: url("../image/live.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
-
+/*xbrowser consistency */
 body {
+    font-size: 100%;
     font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-top: 70px;
 }
+h1, h2, .navbar-nav .label {font-family: 'Oswald', sans-serif;}
 
-/* TINKERING WITH IDEA OF BACKGROUND IMAGE ON HOME PAGE ONLY
-body{
-    background-color: #F0F8FF;
-}
-*/
-
-h1, h2 {
-    font-family: 'Oswald', sans-serif;
-}
-
-/* navbar styling */
-.navbar-box{
-    background: none;
-    filter: none;
-    border: none;
-    box-shadow: none;
+/* =================
+   NAVBAR
+================= */
+/* Central banner, logo on left,
+boxes round text, text position */
+#navbarLeftRightFull {
     background-color: #DD9933;
-    height: 20px;
-
-    padding-top: 0px;
-    padding-bottom: 0px;
+    min-height: 65px;
+    border-radius: 3px;
 }
-
-.navbar-box .navbar-brand {
+.navbar-brand {
     margin-top: -34px;
 }
-.navbar-box .navbar-nav {
-    margin-top: -6px;
+.navbar-nav > li {
+    min-height: 65px;
+    font-size: 1.5em;
+    border-right: 1px solid white;
 }
-.navbar-box .navbar-right{
-    margin-top: 0px;
+.navbar-nav > li:last-child {
+    border-right: none;
+}
+.navbar-default .navbar-nav > li > a { /* needs full address */
+    padding-top: 22px;
+    color: linen;
+}
+/* DROPDOWN BOX */
+#navstyle_dropdown {
+    margin: 0px;
+    padding: 0px;
+    background-color: #e3ad5b; /*pale orange */
+    border-radius: 4px;
+}
+/* borders inside dropdown */
+#navstyle_dropdown > li {
+    border-bottom: 1px solid white;
+}
+/* NAVBAR HOVERS
+ keep hypertext within Navbar unchanged on action */
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:active,
+.navbar-default .navbar-nav > .open > a:focus {
+    color: linen;
+}
+/* NAVBAR DROPDOWN HEADER
+ give a background */
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: CadetBlue;
+}
+/* DROPDOWN CONTENT Hypertext */
+#navstyle_dropdown > li > a {
+    padding: 14px 0px 14px 36px;
+    border-radius: 2px;
+    color: linen;
+}
+/* HOVERS
+in the navbar and in the dropdowns */
+.navbar-nav li:hover,
+#navstyle_dropdown > li > a:hover {
+    background-image: none; /* the default has something in there */
+    background-color: #b07a28; /*darker orange */
 }
 
-.navbar-brand{
-    padding-left: 42px;
-}
-
-.navbar-nav .label{
-    font-family:Oswald;
-}
-
-/* selecting our buttons: background on hover & dropdown */
-.navbar-default .navbar-nav>.open>a,
-.navbar-default .navbar-nav>.open>a:hover,
-.navbar-default .navbar-nav>.open>a:focus {
-    color: #555;
-    background-color: rgba(255, 255, 255, 0.50);
-}
-
-.navbar-nav > li > .dropdown-menu {
-    background-color: rgba(255, 255, 255, 0.50);
-}
-
-/* for messages */
-.redder{
-    color: red;
-    font-weight: bold;
-}
-
-/* to make buttons all double-width */
-/*
-.btn:hover {
-    background: #999; Old browsers
-    border-width: 4px;
-}
-*/
-.btn-box{
-    width: 40px;
-    height: 40px;
-}
-
-/* Making sure forms don't overlap panels
-​.my-input{
-    width: 100%;
-    padding: 4px 0 4px 0 !important;
-}​
- */
-
-/* to make table wrap/scroll for us */
+/* ===============================
+   MAKE THE TABLE SCROLL AND WRAP
+================================== */
 .table-responsive {
     width: 100%;
     margin-bottom: 15px;
-    overflow-y: auto;
+    overflow-y: auto; /* h-centre within element */
     overflow-x: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; /* order: width style color */
     -webkit-overflow-scrolling: touch;
 }
-
-.table-responsive>.table {
-    margin-bottom: 0;
-}
-
-.table-responsive>.table>thead>tr>th,
-.table-responsive>.table>tbody>tr>th,
-.table-responsive>.table>tfoot>tr>th,
-.table-responsive>.table>thead>tr>td,
-.table-responsive>.table>tbody>tr>td,
-.table-responsive>.table>tfoot>tr>td {
-    white-space: nowrap;
-}
-
-
-.table-responsive>.table>tbody {
+/* #scroller {overflow-y: scroll;} */
+.table-responsive > .table {margin-bottom: 0;}
+.table-responsive > .table > tbody {
     display: in-line;
     height: 300px;
     overflow-y: scroll;
     overflow-x: hidden;
-    }
-
-
-.texvert {
-  -webkit-transform: rotate(-45deg);
-     -moz-transform: rotate(-45deg);
-      -ms-transform: rotate(-45deg);
-       -o-transform: rotate(-45deg);
-          transform: rotate(-45deg);
-    float: left;
-    vertical-align:top;
 }
+.table-responsive > .table > thead > tr > th,
+.table-responsive > .table > tbody > tr > th,
+.table-responsive > .table > tfoot > tr > th,
+.table-responsive > .table > thead > tr > td,
+.table-responsive > .table > tbody > tr > td,
+.table-responsive > .table > tfoot > tr > td {white-space: nowrap;}
 
-/* some specific styling */
-#logo {
-    height: 100%;
-    margin-top: -65px;
-    margin-left: 100px
+.prof_row_style {
+    color: white;
+    background: #282832;
+    opacity: 0.85;
 }
-
-#big-logo{
-   color: white;
-   background: black;
-   text-align: center;
-   font-size: 48px;
-   opacity: 0.7;
-}
-
-#small-logo{
-   color: white;
-   background: black;
-   text-align: left;
-   font-size: 13px;
-   opacity: 0.45;
-   padding-top: 5px;
-   padding: 5px;
-}
-
-
-#prof_row_style{
-   color: white;
-   background: #282832;
-   opacity: 0.85;
-}
-#prof_row_style:hover {
+.prof_row_style:hover {
     background: #999; /*################ Old browsers */
     color:#FF793E;
 }
 
-#scroller {
-    overflow-y: scroll;
+/* =================
+   SPECIFIC STYLING
+================= */
+/*
+.texvert {  /* NO IDEA, vertical text?
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    float: left;
+    vertical-align:top;
 }
-#panel-transparent {
-    background: none;
+#panel-transparent {background: none; text-align: center;}
+*/
+.redder {color: red; font-weight: bold;} /* for messages */
+.btn-box {width: 40px; height: 40px;} /* to make buttons all double-width */
+#logo {height: 100%; margin-top: -65px; margin-left: 100px;}
+#big-logo {
+    color: white;
+    background: black;
     text-align: center;
+    font-size: 48px;
+    opacity: 0.7;
+}
+#small-logo {
+    color: white;
+    background: black;
+    text-align: left;
+    font-size: 13px;
+    opacity: 0.45;
+    padding-top: 5px;
+    padding: 5px;
 }
 
-/* settings for parallax style background image */
-#roper {
-    background: url(../image/shoelaces2.png);
-    height:750px;
-}
-
+/* PARALLAX =================
+ settings for background image
+ =================*/
+#roper {background: url(../image/shoelaces2.png); height: 750px;}
 /* main holder for parallax */
-section {
-  text-align: center;
-}
-
-.full-screen {
-  min-height: 400px; /* makes panels the entire window height; DOES IT? */
-}
-
+section {text-align: center;}
+/* makes panels the entire window height; DOES IT? */
+.full-screen {min-height: 400px;}
 .blue {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.blue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #3883d8;
 }
-.red {
-    background-color: #cf3535;
-}
-
-
+.red {background-color: #cf3535;}
 div .imgFit {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
-
 #boxer {
     background: url(../image/cube.png);
     -webkit-background-size: cover;
@@ -221,29 +191,29 @@ div .imgFit {
     background-size: cover;
     min-height: 300px; /* makes panels the entire window height; DOES IT? */
 }
-
 .garden {
-  position: relative;
-  width : 100%;
-  height: 200px;
-  border: 2px solid #CCC;
-  border-radius: 15px;
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border: 2px solid #CCC;
+    border-radius: 15px;
 }
-
 .ball {
-  position: absolute;
-  top   : 45%;
-  left  : 45%;
-  width : 20px;
-  height: 20px;
-  background: green;
-  border-radius: 100%;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 20px;
+    height: 20px;
+    background: green;
+    border-radius: 100%;
 }
 
-/* TOGGLE BUTTON */
+/* =================
+   TOGGLE BUTTON
+================= */
 .toggle-button {
     background-color: orange;
-    margin: 5px 0;
+    margin: 5px 0; /* order: top+bottom left+right*/
     border-radius: 20px;
     border: 1px solid #FF8C00;
     height: 20px;

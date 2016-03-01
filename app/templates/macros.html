@@ -1,15 +1,22 @@
 <!-- HEADERS FOR NAVBAR -->
+<!--
 {% macro navbar_drops(title, col="default", size="h3") %}
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-        <{{size}}><span class="label label-{{col}}"> {{ title }} <span class="caret"></span></span></{{size}}>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+        role="button" aria-haspopup="true" aria-expanded="true">
+        <{{size}}><span class="label label-{{col}}">
+            {{ title }}
+        <span class="caret"></span></span></{{size}}>
     </a>
 {% endmacro %}
 
-{% macro navbar_titles(u_title, title, col="default", size="h3", shape="badge") %}
-    <li><a href="{{ url_for(u_title) }}"><{{size}}><span class="{{shape}} {{shape}}-{{col}}">{{ title }}</span></{{size}}></a></li>
+{% macro navbar_titles(u_title, title, col="default",
+                       size="h3", shape="badge") %}
+    <li><a href="{{ url_for(u_title) }}" style="text-decoration:none"><{{size}}>
+        <span class="{{shape}} {{shape}}-{{col}}">{{ title }}</span>
+    </{{size}}></a></li>
 {% endmacro %}
 {% macro navbar_titles2(u_title, title, size="h3") %}
-    <a href="{{ url_for(u_title) }}">
+    <li><a href="{{ url_for(u_title) }}">
         <{{size}}>
             <div class="panel panel-info">
                 <div class="panel-heading">
@@ -17,6 +24,18 @@
                 </div>
             </div>
         </{{size}}>
+    </a></li>
+{% endmacro %}
+-->
+{% macro buildLink(u_title, title) %}
+    <li><a href="{{ url_for(u_title) }}">{{ title }}</a></li>
+{% endmacro %}
+
+{% macro buildDropper(title) %}
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+        aria-haspopup="true" aria-expanded="false">
+        {{title}}
+        <span class="caret"></span>
     </a>
 {% endmacro %}
 
@@ -39,7 +58,8 @@
                              stripedata=None) %}
 <div class="col-xs-12 col-md-{{wid}}">
     <div class="panel">
-        <div class="panel-heading btn-success"><h2 style="font-size:18px"> {{ patex }} </h2></div>
+        <div class="panel-heading btn-success"><h2 style="font-size:18px">
+            {{ patex }} </h2></div>
         <div class="panel-body" align="center">
             {% include tadata %}
         </div>
@@ -81,7 +101,7 @@
                 <td> kwargs </td>
             </tr>
             {% for ro in obj %}
-                <tr id="prof_row_style">
+                <tr class="prof_row_style">
                     <td> {{ro.id}} </td>
                     <td> {{ro.name}} </td>
                     <td> {{ro.next_run_time}} </td>

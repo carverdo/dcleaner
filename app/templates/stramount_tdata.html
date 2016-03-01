@@ -1,8 +1,12 @@
 {% import 'macros.html' as macros %}
 
-{{ macros.row_pres("fa fa-commenting fa-lg", form.d_description, "testDescription") }}
+{{ macros.row_pres(
+    "fa fa-commenting fa-lg", form.d_description, "testDescription"
+    )}}
 {{ macros.row_pres("fa fa-money fa-lg", form.d_currency, "gbp") }}
-{{ macros.row_pres("fa fa-battery-half fa-lg", form.d_pounds, "Does not matter") }}
+{{ macros.row_pres(
+    "fa fa-battery-half fa-lg", form.d_pounds, "Does not matter"
+    )}}
 
 <script
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"

@@ -2,16 +2,20 @@
     <div class="table-responsive" id="scroller">
         <table class="table table-hover table-condensed">
             <thead style="color:green">
-                <td> member_id </td>
-                <td> Bucket </td>
-                <td> s3 user_name </td>
+                <tr>
+                    <th> member_id </th>
+                    <th> Bucket </th>
+                    <th> s3 user_name </th>
+                </tr>
             </thead>
             <tbody data-link="row" class="rowlink">
                 {% for ro in form[0] %}
                     <tr>
                         <div class="input-group">
                             <span style="color:grey">
-                                <td> <a href=#></a> {{ ro.member_id(size=5) }} </td>
+                                <td> <a href=#></a>
+                                    {{ ro.member_id(size=5) }}
+                                </td>
                                 <td> {{ ro.bucket }} </td>
                                 <td> {{ ro.user_name }} </td>
                             </span>
@@ -23,24 +27,28 @@
     </div>
 
 </div>
-<button type="submit" class="btn btn-primary btn-block">Submit all Changes</button>
+<button type="submit" class="btn btn-primary btn-block">
+    Submit all Changes
+</button>
 <br><br><br>
 <h3><span class="label label-default">Existing member data guide</span></h3>
 <div class="table-responsive" id="scroller">
     <table class="table table-hover table-condensed">
         <thead style="color:green">
-            <td> member_id </td>
-            <td> FirstName </td>
-            <td> Surname </td>
+            <tr>
+                <th> member_id </th>
+                <th> FirstName </th>
+                <th> Surname </th>
+            </tr>
         </thead>
         <tbody data-link="row" class="rowlink">
-        {% for ro in form[1] %}
-            <tr id="prof_row_style">
-                <td> <a href="#"></a> {{ ro.id }} </td>
-                <td> {{ ro.firstname }} </td>
-                <td> {{ ro.surname }} </td>
-            </tr>
-        {% endfor %}
-    </tbody>
+            {% for ro in form[1] %}
+                <tr class="prof_row_style">
+                    <td> <a href="#"></a> {{ ro.id }} </td>
+                    <td> {{ ro.firstname }} </td>
+                    <td> {{ ro.surname }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </div>

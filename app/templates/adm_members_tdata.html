@@ -1,7 +1,7 @@
 <div class="form-group">
     {% for ro in form %}
         <div class="input-group">
-            <span style="color:grey">
+            <span style="color:grey;">
                 {{ ro.id(size=5) }}
                 {{ ro.firstname }}
                 {{ ro.surname }}
@@ -11,16 +11,19 @@
                 {{ ro.adminr }}
                 {{ ro.active }}
                 {{ ro.confirmed }}
-                <span style="color:red">{{ ro.markfordeletion }}</span>
+                <span style="color:red;">{{ ro.markfordeletion }}</span>
             </span>
         </div>
     {% endfor %}
 </div>
-<button type="submit" class="btn btn-primary btn-block">Submit all Changes</button>
+<button type="submit" class="btn btn-primary btn-block">
+    Submit all Changes
+</button>
 &nbsp;
 <ul class="nav nav-pills nav-justified">
     <li role="presentation">
-        <a class="btn btn-default btn-block" href="{{ url_for('log_auth.visits') }}">
+        <a class="btn btn-default btn-block"
+           href="{{ url_for('log_auth.visits') }}">
             See member visits
         </a>
     </li>

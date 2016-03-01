@@ -18,20 +18,29 @@ from ..templates. flash_msg import *
 # LOGINS
 # ==========================
 class SignupForm(Form):
-    firstname = StringField("First name",
-                           [validators.length(min=1, max=MAX_COL_WIDTHS, message='First name too short/long.')])
-    surname = StringField("Surname",
-                        [validators.length(min=2, max=MAX_COL_WIDTHS, message='Surname too short/long.')])
-    email = StringField("Email",
-                        [validators.Email("Please enter a valid email address."),
-                         validators.length(max=MAX_COL_WIDTHS, message='email too long.')
-                       ])
-    password = PasswordField('Password',
-                             [validators.length(min=MIN_PASS_LEN,
-                                                message='{} characters needed in password.'.format(MIN_PASS_LEN)
-                                                ),
-                              validators.EqualTo('password2', message='Your passwords must match')
-                              ])
+    firstname = StringField(
+            "First name",
+            [validators.length(min=1, max=MAX_COL_WIDTHS,
+                               message='First name too short/long.')]
+    )
+    surname = StringField(
+            "Surname",
+            [validators.length(min=2, max=MAX_COL_WIDTHS,
+                               message='Surname too short/long.')]
+    )
+    email = StringField(
+            "Email",
+            [validators.Email("Please enter a valid email address."),
+             validators.length(max=MAX_COL_WIDTHS, message='email too long.')]
+    )
+    password = PasswordField(
+            'Password',
+            [validators.length(
+                    min=MIN_PASS_LEN,
+                    message='{} characters needed in password.'.format(MIN_PASS_LEN)),
+             validators.EqualTo('password2',
+                                message='Your passwords must match')]
+    )
     password2 = PasswordField('Confirm Password', [validators.InputRequired()])
     # submit = SubmitField("Submit")
 
@@ -53,14 +62,17 @@ class SignupForm(Form):
 
 
 class SigninForm(Form):
-    email = StringField("Email",
-                        [validators.Email("Please enter a valid email address."),
-                         validators.length(max=MAX_COL_WIDTHS, message='email too long.')
-                       ])
-    password = PasswordField('Password',
-                             [validators.length(min=MIN_PASS_LEN,
-                                                message='{} characters needed in password.'.format(MIN_PASS_LEN))
-                              ])
+    email = StringField(
+            "Email",
+            [validators.Email("Please enter a valid email address."),
+             validators.length(max=MAX_COL_WIDTHS, message='email too long.')]
+    )
+    password = PasswordField(
+            'Password',
+            [validators.length(
+                    min=MIN_PASS_LEN,
+                    message='{} characters needed in password.'.format(MIN_PASS_LEN))]
+    )
     remember = BooleanField('Remember me?')
     # submit = SubmitField("Sign In")
 
@@ -74,27 +86,36 @@ class SigninForm(Form):
         if member and member.check_password(self.password.data):
             return True
         else:
-            self.email.errors.append("Oops. Either you need to signUp "
-                                     "or that's an invalid e-mail password combo.")
+            self.email.errors.append(
+                "Oops. Either you need to signUp "
+                "or that's an invalid e-mail password combo.")
             return False
 
 
 class ChangePass(Form):
-    email = StringField("Email",
-                        [validators.Email("Please enter a valid email address."),
-                         validators.length(max=MAX_COL_WIDTHS, message='email too long.')
-                       ])
-    old_password = PasswordField('old_Password',
-                             [validators.length(min=MIN_PASS_LEN,
-                                                message='{} characters needed in password.'.format(MIN_PASS_LEN))
-                              ])
-    new_password = PasswordField('new_Password',
-                             [validators.length(min=MIN_PASS_LEN,
-                                                message='{} characters needed in password.'.format(MIN_PASS_LEN)
-                                                ),
-                              validators.EqualTo('new_password2', message='Your passwords must match')
-                              ])
-    new_password2 = PasswordField('Confirm new_Password', [validators.InputRequired()])
+    email = StringField(
+        "Email",
+        [validators.Email("Please enter a valid email address."),
+         validators.length(max=MAX_COL_WIDTHS, message='email too long.')]
+    )
+    old_password = PasswordField(
+            'old_Password',
+            [validators.length(
+                    min=MIN_PASS_LEN,
+                    message='{} characters needed in password.'.format(MIN_PASS_LEN))]
+    )
+    new_password = PasswordField(
+        'new_Password',
+        [validators.length(
+            min=MIN_PASS_LEN,
+            message='{} characters needed in password.'.format(MIN_PASS_LEN)),
+         validators.EqualTo(
+                 'new_password2', message='Your passwords must match')]
+    )
+    new_password2 = PasswordField(
+            'Confirm new_Password',
+            [validators.InputRequired()]
+    )
     # submit = SubmitField("Change Password")
 
     def __init__(self, *args, **kwargs):
@@ -108,11 +129,13 @@ class ChangePass(Form):
             if member.confirmed:
                 return True
             else:
-                self.old_password.errors.append("You cannot change your password until your login"
-                                                "has been Activated.")
+                self.old_password.errors.append(
+                    "You cannot change your password until your login"
+                    "has been Activated.")
         else:
-            self.email.errors.append("Oops. Either you need to signUp "
-                                     "or that's an invalid e-mail password combo.")
+            self.email.errors.append(
+                    "Oops. Either you need to signUp "
+                    "or that's an invalid e-mail password combo.")
             return False
 
 
@@ -125,10 +148,25 @@ class adminMember(SignupForm):
     and auto-present the pre-populated forms data.
     """
     id = IntegerField()
-    adminr = SelectField('Admin', choices=[('True', 'Admin'), ('False', 'NotAdmin')])
-    active = SelectField('Active', choices=[('True', 'Active'), ('False', 'NotActive')], default='False',)
-    confirmed = SelectField('Confirmed', choices=[('True', 'Confirmed'), ('False', 'NotConfirmed')], default='',)
-    markfordeletion = SelectField('MFD', choices=[(True, 'DELETE'), (False, '')], default='',)
+    adminr = SelectField(
+            'Admin',
+            choices=[('True', 'Admin'), ('False', 'NotAdmin')]
+    )
+    active = SelectField(
+            'Active',
+            choices=[('True', 'Active'), ('False', 'NotActive')],
+            default='False',
+    )
+    confirmed = SelectField(
+            'Confirmed',
+            choices=[('True', 'Confirmed'), ('False', 'NotConfirmed')],
+            default='',
+    )
+    markfordeletion = SelectField(
+            'MFD',
+            choices=[(True, 'DELETE'), (False, '')],
+            default='',
+    )
 
     def get_existing_data(self, member):
         # user-entry data

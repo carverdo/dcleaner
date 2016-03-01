@@ -1,7 +1,11 @@
 {% import 'macros.html' as macros %}
 
-{{ macros.row_pres("fa fa-envelope-o fa-border btn-info", form.email, "Your email") }}
-{{ macros.row_pres("fa fa-lock fa-border btn-warning", form.password, "Your Password") }}
+{{ macros.row_pres(
+    "fa fa-envelope-o fa-border btn-info", form.email, "Your email"
+    )}}
+{{ macros.row_pres(
+    "fa fa-lock fa-border btn-warning", form.password, "Your Password"
+    )}}
 <!-- ONE OFF FOR REMEMBER ME FUNCTION -->
 <div class="form-group">
     <div class="input-group">
@@ -14,7 +18,8 @@
 &nbsp;
 <ul class="nav nav-pills nav-justified">
     <li role="presentation">
-        <a class="btn btn-default btn-block" href="{{ url_for('log_auth.signup') }}">
+        <a class="btn btn-default btn-block"
+            href="{{ url_for('log_auth.signup') }}">
             Not signed up? Click here.
         </a>
     </li>
