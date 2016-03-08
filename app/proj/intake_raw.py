@@ -76,9 +76,11 @@ class DataHandler(object):
     def build_bridge_to_file(self, file_name):
         # just make sure that there is a download directory in place
         # move to it, find our file
+        """
         if not os.path.exists(DL_DIR):
             os.makedirs(DL_DIR)
         os.chdir(DL_DIR)
+        """
         try:
             tail = filter(lambda f: f.startswith(file_name) and
                                     os.path.splitext(f)[1] == EXCEL_SUFFIX,
