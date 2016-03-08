@@ -46,16 +46,15 @@ def prim_view2():
                            usr_data='{} | {}_v{}'.format(
                                    current_user.firstname,
                                    PROJECT_NAME, VERSION),
-                           summary=dh.dl_dir
+                           summary=dh.file_name
                            )
-
 
 
 @proj.route('/prim_view')
 @login_confirmed
 def prim_view():
     dh = DataHandler(header_rows=2, label_row=1)
-    dh.package_for_html()
+    if dh.file_name: dh.package_for_html()
     return render_template('./proj/prim_view.html',
                            usr_data='{} | {}_v{}'.format(
                                    current_user.firstname,

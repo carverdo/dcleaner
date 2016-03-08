@@ -1,6 +1,7 @@
 __author__ = 'donal'
 __project__ = 'dataHoover'
 import os
+# todo Ugly ugly DL_DIR bodge
 
 # ============
 # LOGGING VARIABLES
@@ -11,7 +12,7 @@ PROJECT_NAME = 'BetaTest'
 # S3 Bucket
 EXCEL_BASE_DIR = 'dataclean'
 # Downloads dir
-DL_DIR = os.path.join(os.path.expanduser('~'), 'downloads')
+DL_DIR = "C:\Magic"  # os.path.join(os.path.expanduser('~'), 'downloads')
 # Starting letter in name of excel file to be used once in the Downloads dir
 EXCEL_SOURCE = "RawData"
 EXCEL_SUFFIX = '.xls'
