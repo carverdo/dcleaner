@@ -32,9 +32,9 @@ class DataHandler2(object):
         # move to it, find our file
         if not os.path.exists(DL_DIR): os.makedirs(DL_DIR)
         self.dl_dir = DL_DIR
-        self.file_name = self.build_name()
+        self.file_name = self.build_name(file_name)
 
-    def build_name(self):
+    def build_name(self, file_name):
         try:
             tail = filter(lambda f: f.startswith(file_name) and
                                     os.path.splitext(f)[1] == EXCEL_SUFFIX,
@@ -70,13 +70,14 @@ class DataHandler(object):
         # for later, raw_data generation
         self.raw_data, self.html_pack = {}, {}
         # operations
-        self.file_name = self.build_bridge_to_file()
+        self.file_name = self.build_bridge_to_file(file_name)
         if self.file_name: self.file_processing()
 
-    def build_bridge_to_file(self):
+    def build_bridge_to_file(self, file_name):
         # just make sure that there is a download directory in place
         # move to it, find our file
-        if not os.path.exists(DL_DIR): os.makedirs(DL_DIR)
+        if not os.path.exists(DL_DIR):
+            os.makedirs(DL_DIR)
         os.chdir(DL_DIR)
         try:
             tail = filter(lambda f: f.startswith(file_name) and
@@ -89,9 +90,9 @@ class DataHandler(object):
 
     def file_processing(self):
         # stores of data
-        self.p_summ = os.path.splitext(file_name)[0] + '_summ.p'
-        self.p_data = os.path.splitext(file_name)[0] + '_data.p'
-        self.p_html = os.path.splitext(file_name)[0] + '_html.p'
+        self.p_summ = os.path.splitext(self.file_name)[0] + '_summ.p'
+        self.p_data = os.path.splitext(self.file_name)[0] + '_data.p'
+        self.p_html = os.path.splitext(self.file_name)[0] + '_html.p'
         # snapshot of basic data (only snapshot for now; speed)
         self.build_summary()
 

@@ -46,7 +46,7 @@ def prim_view2():
                            usr_data='{} | {}_v{}'.format(
                                    current_user.firstname,
                                    PROJECT_NAME, VERSION),
-                           summary=dh.file_name
+                           summary=dh.dl_dir
                            )
 
 
