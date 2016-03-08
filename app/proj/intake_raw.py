@@ -42,7 +42,7 @@ class DataHandler2(object):
                           )[0]
             return os.path.join(DL_DIR, tail)
         except:
-            return 'BOSH'
+            return '{} {}'.format(DL_DIR, file_name)
 
 class DataHandler(object):
     """
