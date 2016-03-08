@@ -3,11 +3,14 @@ KEY ROTATION
 As a safety device you want to be able to kill all existing keys and replace with new ones.
 
 TO DO:
-1. Crude on the Donal exclude (as mainuser); better if any S3 with admin rights is auto-excluded.
+
 """
+# todo 1. Crude on the Donal exclude (as mainuser); better if any S3 with admin rights is auto-excluded.
+# todo Look at wrapping with s3Handler - much repitition
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
 import boto
+
 
 class KeyRotation(object):
     """
@@ -46,17 +49,18 @@ class KeyRotation(object):
         Assumes one statement per bucket (which may have multi-user_names;
         add also then, that any user_name shows up in only one bucket.
         """
-        for bucket in boto.connect_s3(self.S3_KEY, self.S3_SECRET).get_all_buckets():
+        for bucket in boto.connect_s3(self.S3_KEY,
+                                      self.S3_SECRET).get_all_buckets():
             try:
                 aws_strings = eval(bucket.get_policy())['Statement'][0]['Principal']['AWS']
                 if isinstance(aws_strings, list):
                     for aws_string in aws_strings:
-                        print aws_string.split('/')[-1]
-                        print bucket.name
+                        # print aws_string.split('/')[-1]
+                        # print bucket.name
                         self.bucket_map[aws_string.split('/')[-1]] = bucket.name
                 else:
-                    print aws_strings.split('/')[-1]
-                    print bucket.name
+                    # print aws_strings.split('/')[-1]
+                    # print bucket.name
                     self.bucket_map[aws_strings.split('/')[-1]] = bucket.name
             except:
                 pass
@@ -86,7 +90,8 @@ class KeyRotation(object):
     @staticmethod
     def _strike_mainuser(all_users, mainuser='Donal'):
         """
-        For convenience don't change the credentials of the original authorising party of the class itself.
+        For convenience don't change the credentials of the original
+        authorising party of the class itself.
         Do this manually.
         """
         return filter(lambda x: x != mainuser, all_users)

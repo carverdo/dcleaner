@@ -7,7 +7,7 @@ function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success);
     } else {
-    popEle("lalo", "Geolcation switched off or not supported.");
+        popEle("lalo", "Geolcation switched off or not supported.");
     }
 }
 

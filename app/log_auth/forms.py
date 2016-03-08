@@ -3,6 +3,7 @@
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
+from flask import flash
 from flask.ext.wtf import Form  # Seems odd (this line not next) but correct: wtf Form is slightly different
 from wtforms import StringField, PasswordField, BooleanField, \
     SelectField, validators, IntegerField
@@ -10,7 +11,6 @@ from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
 from ..db_models import Member, Visit
 from pass_stren import PasswordCalc
 pc = PasswordCalc()
-from flask import flash
 from ..templates. flash_msg import *
 
 
@@ -37,7 +37,8 @@ class SignupForm(Form):
             'Password',
             [validators.length(
                     min=MIN_PASS_LEN,
-                    message='{} characters needed in password.'.format(MIN_PASS_LEN)),
+                    message='{} characters needed in password.'.format(
+                            MIN_PASS_LEN)),
              validators.EqualTo('password2',
                                 message='Your passwords must match')]
     )
@@ -71,7 +72,8 @@ class SigninForm(Form):
             'Password',
             [validators.length(
                     min=MIN_PASS_LEN,
-                    message='{} characters needed in password.'.format(MIN_PASS_LEN))]
+                    message='{} characters needed in password.'.format(
+                            MIN_PASS_LEN))]
     )
     remember = BooleanField('Remember me?')
     # submit = SubmitField("Sign In")
@@ -102,7 +104,8 @@ class ChangePass(Form):
             'old_Password',
             [validators.length(
                     min=MIN_PASS_LEN,
-                    message='{} characters needed in password.'.format(MIN_PASS_LEN))]
+                    message='{} characters needed in password.'.format(
+                            MIN_PASS_LEN))]
     )
     new_password = PasswordField(
         'new_Password',

@@ -2,16 +2,16 @@
 Kept separate as Imports into forms and db_models.
 """
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
+#todo do we need geography ip addresses?
 import os
-from re import compile, VERBOSE
-
+import re
 
 # ====================
 # POPULATE POSTGRES_KEYS AND #1-3 BLANKS AS REQUIRED
 # ====================
 PK = os.environ.get('POSTGRES_KEYS', 'BLANK BLANK').split()
-DBNAME = 'skeleton_1'
+DBNAME = 'dcleaner'
 
 # ====================
 # links db_models.py and forms.py
@@ -27,14 +27,14 @@ LOGOUT = 'Devel_logs.log'
 # ====================
 GEO_URL_0 = "http://freegeoip.net/json/{}"
 GEO_URL ='http://www.geoplugin.net/json.gp?ip={}'
-VALID_IP = compile(r"""
+VALID_IP = re.compile(r"""
 \b
 (25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
 \.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
 \.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
 \.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)
 \b
-""", VERBOSE)
+""", re.VERBOSE)
 
 # ====================
 # MAILGUN VARIABLES
@@ -42,18 +42,6 @@ VALID_IP = compile(r"""
 MAILGUN_URL = 'https://api.mailgun.net/v3/{}/messages'
 SANDBOX = 'sandbox26a6aabbd3e946feba81293c4b4d9dcc.mailgun.org'
 MAILGUN_KEY = os.environ.get('MAILGUN_KEY')
-
-# ====================
-# STRIPE VARIABLES
-# ====================
-STRIPE_KEYS = os.environ.get('STRIPE_KEYS')
-if STRIPE_KEYS is not None:
-    tmp = STRIPE_KEYS.split(' ')
-else: tmp = [None, None]
-STRIPE_KEYS = {
-    'secret_key': tmp[0],
-    'publishable_key': tmp[1]
-    }
 
 # ====================
 # AWS VARIABLES
@@ -67,10 +55,7 @@ AWS_KEYS = {
     'S3_SECRET': tmp[1]
     }
 
-
 # ========================
 if __name__ == '__main__':
     print PK
-    print MAILGUN_KEY
-    print STRIPE_KEYS
     print AWS_KEYS

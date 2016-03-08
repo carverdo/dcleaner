@@ -6,7 +6,7 @@ Shortly after we will apply db initialisation, modelling and data population.
 See db_create_migrate for more.
 """
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
 import os
 from config_templates import *
 from config_vars import PK, DBNAME
@@ -25,9 +25,9 @@ class Config(TemplateParameters):
     # For form protection
     WTF_CSRF_ENABLED = True
     ## WTF_CSRF_SECRET_KEY = SECRET_KEY
-    DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
+    DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
         format(PK[0], PK[1], DBNAME)
-    PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/Backup_{2}'.\
+    PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
         format(PK[0], PK[1], DBNAME)
 
     @staticmethod
@@ -59,33 +59,6 @@ config = {
     'production': ProdConfig,
     'default': DevelConfig
 }
-
-
-# ====================
-# 2. CONFIG OUR SCHEDULER
-# ====================
-def kickstart_scheduler(scheduler, config_name):
-    """
-    simple call to jobstore;
-    add any other features that you wish.
-    """
-    jobstores = {
-        'sqlalchemy': SQLAlchemyJobStore(
-            url=config[config_name].SQLALCHEMY_DATABASE_URI)
-    }
-    scheduler.configure(jobstores=jobstores)
-    scheduler.start()
-
-
-# ====================
-# 3. CONFIG STRIPE
-# ====================
-def setup_stripe(stripe, stripe_keys):
-    """
-    helper
-    """
-    stripe.api_key = stripe_keys['secret_key']
-    return stripe
 
 
 # =====================================

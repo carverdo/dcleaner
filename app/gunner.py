@@ -1,20 +1,22 @@
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
 
-from config_vars import MAILGUN_URL, SANDBOX, MAILGUN_KEY
 import requests
 from threading import Thread
 from flask import render_template
+from config_vars import MAILGUN_URL, SANDBOX, MAILGUN_KEY
 
 
 class SendEmail(object):
     fr = "Circadian Activate <postmaster@{}>".format(SANDBOX)
 
     def __init__(self, *args, **kwargs):
+        self.data = {}
         self.build_message(*args, **kwargs)
         self.send_email()
 
-    def build_message(self, recip, subject, msgtype=None, template=None, **kwargs):
+    def build_message(self, recip, subject, msgtype=None, template=None,
+                      **kwargs):
         self.data = {
             "from": self.fr,
             "to": recip,
@@ -24,11 +26,13 @@ class SendEmail(object):
         if msgtype is not None:
             try:
                 # our preference: building real html pages
-                temp_text = render_template('./guns/{}.html'.format(template), **kwargs)
+                temp_text = render_template('./guns/{}.html'.format(
+                        template), **kwargs)
             except:
                 # fallback: string populating with html formatting
                 # needed with the scheduler
-                temp_text = open('./app/templates/guns/{}.txt'.format(template)).read()
+                temp_text = open('./app/templates/guns/{}.txt'.format(
+                        template)).read()
                 temp_text = temp_text.format(**kwargs)
             self.data["html"] = temp_text
         else:

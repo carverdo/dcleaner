@@ -12,7 +12,7 @@ second elements (no comma between) sit inside the first;
 ================= */
 html, body {
     /* ordering: colour image repeat attach(x,y) position attachment */
-    background: url("../image/live.png") no-repeat center center fixed;
+    /* background: url("../image/live.png") no-repeat center center fixed; */
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -142,7 +142,8 @@ in the navbar and in the dropdowns */
 }
 #panel-transparent {background: none; text-align: center;}
 */
-.redder {color: red; font-weight: bold;} /* for messages */
+.redder {color: red; font-weight: bold; font-size: 1.4em} /* for messages */
+.alert {font-size: 1.4em} /* for messages */
 .btn-box {width: 40px; height: 40px;} /* to make buttons all double-width */
 #logo {height: 100%; margin-top: -65px; margin-left: 100px;}
 #big-logo {
@@ -256,4 +257,60 @@ div .imgFit {
     background-color: LightGrey;
     border: 1px solid Gray;
     box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+
+
+/* FOR OUR TYPING EFFECT */
+.css-typing {
+    width: 80em;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-animation: type 5s steps(100, end);
+    animation: type 5s steps(100, end);
+}
+@keyframes type {
+    from {width: 0;}
+}
+@-webkit-keyframes type {
+    from {width: 0;}
+}
+.myButton {
+    background-color: transparent;
+    border: 1px solid #eb675e;
+    padding: 6px 15px;
+    margin: 6px 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.myButton:hover {
+    background-color: #eb675e;
+    color: white;
+}
+.stampLoaderButton {
+    .myButton;
+}
+.floating-box {
+    vertical-align: top;
+    display: inline-block;
+    max-width: 780px;
+    margin: 10px;
+}
+.flippee, .flip, .res_container, .headerStats {
+    padding: 5px;
+    word-wrap: break-word;
+    background-color: darkseagreen;
+    font-weight: normal;
+    border: solid 1px #c3c3c3;
+}
+.cellRun {
+    color: white;
+    border: none;
+}
+table {
+   border: 1px solid black;
+}
+td {
+    vertical-align: top;
+    text-align: center;
 }

@@ -8,7 +8,7 @@ Essentially, if missing gunicorn ends up running some other stuff it shouldn't.
 Moved all the debug stuff to config.
 """
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
 
 from app import create_app
 # app = create_app('development')

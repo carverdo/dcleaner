@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+    <button class="myButton" id="stamper">RecordChanges</button>
+    <button class="myButton" id="stampee">LoadPreviousChanges</button>
+    <div id="labers"></div>
+    <!-- <input type="file" class="myButton" id="stampLoader" name="result"> -->
+    <p id="stamped"></p>
+    <br>
+    {% for key, data in data_dict.items() %}
+        <div class="floating-box">
+        <table>
+        <thead>
+            <tr>
+                <th>{{data['tab']}}</th>
+                {% for header in data['headers'] %}
+                    <th class="expander">
+                        <div class="tooltip" title={{header[1]}}>{{header[0]}}</div>
+                        <div class="headerStats"></div>
+                    </th>
+                    <!-- <th><div class="flip">{{header[0]}}</div>
+                        <div>{{header[1]}}</div></th> -->
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for k, val in data['data'].items() %}
+            <tr class="rowCont">
+                <td><button class="rowRun" value=1>{{k}}</button></td>
+                {% for col in val %}
+                    <td><button class="cellRun" value={{col}}></button></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        </div>
+        <div class="floating-box">
+            <div class="flip">Summary Data</div>
+            <div class="flippee">{{ summary[key] }}</div>
+        </div>
+        <br>
+    {% endfor %}
+
+    <div class="floating-box"><div class="res_container">
+        <form id="form_container"></form>
+    </div></div>
+    <div class="floating-box"><div class="res_container">
+        <p>Logging Cache</p>
+        <button class="myButton" id="crystallise">MakeRecord</button>
+        <p id="stamped2"></p>
+        <p id="cur_val3"></p>
+    </div></div>
+    <p id="usr_data">{{usr_data}}</p>
+    <div><p id="meta">{{summary['meta']}}</p></div>
+    <script src="static/js/snips/bigFile.js"></script>
+{% endblock %}

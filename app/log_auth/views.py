@@ -3,22 +3,24 @@ This module is a template and explains as it goes down the page.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
+from datetime import datetime
+from functools import wraps
+from urlparse import urlparse, urljoin
+from sqlalchemy import desc
 from flask import render_template, redirect, url_for, flash, \
-    current_app, request, abort
-from forms import SignupForm, SigninForm, ChangePass, adminMember, adminVisits
+    current_app, request, abort, jsonify
 from flask.ext.login import login_user, logout_user, \
     login_required, current_user
-from datetime import datetime
+from forms import SignupForm, SigninForm, ChangePass, adminMember, adminVisits
 from . import log_auth
 from ..templates.flash_msg import *
 from ..db_models import Member, Visit
 # from .. import cache
 # from .. import lg  # don't auto-delete: see below
-# from geodata import get_geodata, _key_modifier  # not used as we use javascript approach now.
+#  not used as we use javascript approach now -
+# from geodata import get_geodata, _key_modifier
 from ..gunner import SendEmail
-from functools import wraps
-from urlparse import urlparse, urljoin
-from sqlalchemy import desc
+from .geodata import get_clientdata
 
 
 # ========================
@@ -129,8 +131,7 @@ def _url_is_valid(target):
     """
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and \
-           ref_url.netloc == test_url.netloc
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
 # ========================
@@ -147,7 +148,7 @@ def home():
 
 
 @log_auth.route('/contactus')
-## @cache.cached(timeout=200)
+# @cache.cached(timeout=200)
 def contactus():
     return render_template('./log_auth/contactus.html')
 
@@ -208,7 +209,8 @@ def visits():
     if request.args:
         try: m_id = int(request.args.get('m'))
         except: m_id = None
-        all_data = Visit.query.filter_by(member_id=m_id).order_by(desc(Visit.date))
+        all_data = Visit.query.filter_by(
+                member_id=m_id).order_by(desc(Visit.date))
         tadata = current_app.config['TADATA']['adm_INDIvisits']
     else:
         tadata = current_app.config['TADATA']['adm_visits'],
@@ -302,25 +304,20 @@ def profile():
                         ))
 
 
-# ========================
-# UNDER TESTING
-# just tinkering with formatting; not quite right
-# ========================
-########################################
-@log_auth.route('/sendsms')
-@login_required
-def sendsms():
-    token, SMS = ' TEST TOKEN ', '+447831196739@mmail.co.uk'
-    SendEmail(SMS, 'Activate your Signin',
-              msgtype='on', template='confirm_bodySMS',
-              newuser=current_user, token=token)
-    return redirect(url_for('.home'))
-
-"""
-could not get this working properly; see template for more
-from pass_stren import PasswordCalc
-pc = PasswordCalc()
-@log_auth.route('/test')
-def test():
-    return render_template('./log_auth/test.html', pc=pc)
-"""
+# =================================================
+# CALCULATION SCRIPTS
+# USED FOR OUR AJAX REQUESTS
+# =================================================
+@log_auth.route('/_clientdata')
+def clientdata():
+    """
+    This function is called by locn_script as it determines client data.
+    That data is processed here, and, if desired, sent back.
+    """
+    # basic client data
+    data = get_clientdata()
+    # plus, better geographically generated client data (more accurate)
+    data['latitude'] = request.args.get('lat', 0, type=float)
+    data['longitude'] = request.args.get('long', 0, type=float)
+    Visit.create(**data)
+    return jsonify(result=data.values())

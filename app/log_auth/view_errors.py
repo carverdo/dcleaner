@@ -6,8 +6,8 @@ Handles only the errors.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-from . import log_auth
 from flask import render_template
+from . import log_auth
 
 
 # ========================

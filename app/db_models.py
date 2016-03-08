@@ -4,7 +4,7 @@ We import our empty db and write our model changes to it.
 NOTE: scheduler creates an additional table not captured in this model.
 """
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
 from . import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Float, ForeignKey
@@ -159,21 +159,6 @@ class Visit(CRUDMixin, db.Model):
             .format(self.ip_address, self.city, self.date)
 
 
-class MemberSchedule(CRUDMixin, db.Model):
-    __tablename__ = 'memberschedule'
-    id = Column(Integer, primary_key=True)
-    member_id = Column(Integer, ForeignKey('member.id', ondelete='CASCADE'))
-    task_id = Column(Integer)
-
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-    def __repr__(self):
-        return '<Member_id {} vs Task_id {}>'\
-            .format(self.member_id, self.task_id)
-
-
 class MemberBucketStore(CRUDMixin, db.Model):
     __tablename__ = 'memberbucketstore'
     id = Column(Integer, primary_key=True)
@@ -194,25 +179,6 @@ class MemberBucketStore(CRUDMixin, db.Model):
     def __repr__(self):
         return '<S3_access ({}, {}) to {}>'.format(
             self.member_id, self.user_name, self.bucket)
-
-
-class MotionCapture(CRUDMixin, db.Model):
-    __tablename__ = 'motioncapture'
-    id = Column(Integer, primary_key=True)
-    member_id = Column(Integer, ForeignKey('member.id', ondelete='CASCADE'))
-    acx = Column(String, default=None)
-    acy = Column(String, default=None)
-    theta = Column(String, default=None)
-    beta = Column(String, default=None)
-    gamma = Column(String, default=None)
-    radius = Column(String, default=None)
-    angle = Column(String, default=None)
-    last_log = Column(DateTime(), default=datetime.utcnow)
-    tag = Column(String, default=None)
-
-    def __repr__(self):
-        return '<Motion(m_id, tag, acx) {}, {}, {}>'.format(
-            self.member_id, self.tag, self.acx)
 
 
 # flask-login needs this definition

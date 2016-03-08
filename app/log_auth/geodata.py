@@ -4,7 +4,8 @@ HAVE NOT TESTED FOR SPEED (but second one seems better)
 Decent link here about ip spoofing -
 http://esd.io/blog/flask-apps-heroku-real-ip-spoofing.html
 
-I think it has already been incorporated and my code works on his committed change.
+I think it has already been incorporated
+and my code works on his committed change.
 """
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
@@ -16,26 +17,8 @@ from config_vars import GEO_URL, VALID_IP
 
 
 # ========================
-# HELPER FUNCTIONS
+# PRIMARY CALL
 # ========================
-def _key_modifier(data):
-    """Change geo labels"""
-    for k in data.keys(): data[k.replace('geoplugin_', '')] = data.pop(k)
-    data['zip_code'] = data.pop('areaCode')
-    return data
-
-
-def _gen_shortdata(data):
-    """Truncate the data provided"""
-    if data:
-        short_data = {k: data[k] for k in ['city', 'zip_code',
-                                           'latitude', 'longitude']}
-    else:
-        short_data = {'city': 'CITY', 'zip_code': 'ZIP',
-                      'latitude': '13', 'longitude': '14'}
-    return short_data
-
-
 def get_clientdata():
     # DO NOT UNDERSTAND DISTINCTIONS
     # ip = request.access_route[0] or request.remote_addr
@@ -52,6 +35,9 @@ def get_clientdata():
     return client_data
 
 
+# ========================
+# UNUSED / NOW ALL DONE CLIENT-SIDE
+# ========================
 def get_geodata(switched_on=False, keymod_fn=None, geo_url=GEO_URL):
     """
     Search for geolocation information;
@@ -73,6 +59,27 @@ def get_geodata(switched_on=False, keymod_fn=None, geo_url=GEO_URL):
         except Exception:
             pass
     return data
+
+
+# ========================
+# HELPER FUNCTIONS
+# ========================
+def _key_modifier(data):
+    """Change geo labels"""
+    for k in data.keys(): data[k.replace('geoplugin_', '')] = data.pop(k)
+    data['zip_code'] = data.pop('areaCode')
+    return data
+
+
+def _gen_shortdata(data):
+    """Truncate the data provided"""
+    if data:
+        short_data = {k: data[k] for k in ['city', 'zip_code',
+                                           'latitude', 'longitude']}
+    else:
+        short_data = {'city': 'CITY', 'zip_code': 'ZIP',
+                      'latitude': '13', 'longitude': '14'}
+    return short_data
 
 
 if __name__ == '__main__':

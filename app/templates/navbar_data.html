@@ -18,13 +18,6 @@
                 </ul>
             </li>
             <li class="dropdown">
-                {{ macros.buildDropper('Tasks') }}
-                <ul class="dropdown-menu" id="navstyle_dropdown">
-                    {{ macros.buildLink('proj.addtasks', 'addTasks') }}
-                    {{ macros.buildLink('proj.curtasks', 'manageTasks') }}
-                </ul>
-            </li>
-            <li class="dropdown">
                 {{ macros.buildDropper('fileManager') }}
                 <ul class="dropdown-menu" id="navstyle_dropdown">
                     {{ macros.buildLink('updown.upload', 'upload') }}
@@ -36,14 +29,7 @@
                     {% endif %}
                 </ul>
             </li>
-            <li class="dropdown">
-                {{ macros.buildDropper('device') }}
-                <ul class="dropdown-menu" id="navstyle_dropdown">
-                    {{ macros.buildLink('device.locn', 'locn') }}
-                    {{ macros.buildLink('device.orientn', 'orientn') }}
-                </ul>
-            </li>
-            {{ macros.buildLink('paym.stramount', 'payment') }}
+            {{ macros.buildLink('proj.prim_view', 'dataView') }}
         {% endif %}
     {% else %}
         <!-- The following will only show when the nav menu is collapsed -->

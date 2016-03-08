@@ -31,12 +31,14 @@ class PasswordCalc(object):
     sym = set(range(33, 128)) - upp - low - dig
 
     def __init__(self, password=None):
+        self.h, self.password, self.variety = None, "", 0
+        self.strength = None
         if password:
             self.get_entropy(password)
 
     def get_entropy(self, password):
         self.get_entropy_val(password)
-        return self.table_conversion(self.h)
+        return self.table_conversion()
 
     def get_entropy_val(self, password):
         self.password = password
@@ -45,22 +47,29 @@ class PasswordCalc(object):
             if set.intersection(o_password, group): self.variety += len(group)
         # convert choices into bits to determine variety
         self.h = log(pow(self.variety, len(password)), 2)
-        return self.h
 
-    def table_conversion(self, h):
-        """fairly arbitrary breakpoints"""
-        if h < 50: self.strength = 'weak'
-        elif h < 90: self.strength = 'medium'
+    def table_conversion(self):
+        """
+        :param h: fairly arbitrary breakpoints
+        :return: strength proxy
+        """
+        if self.h < 50: self.strength = 'weak'
+        elif self.h < 90: self.strength = 'medium'
         else: self.strength = 'strong'
         return self.strength
 
     def remedials(self):
         """
-        Not used: just figuring out the remedial fixes needed to make medium strength
+        Not used: just figuring out the remedial fixes
+        needed to make medium strength.
         """
         targ = pow(2, 50)
-        print 'same characters required:', ceil(log(targ, self.variety)) - len(self.password)
-        print 'char points required:', pow(targ, 1.0 / len(self.password)) - self.variety
+        print 'same characters required: {}'.format(
+           ceil(log(targ, self.variety)) - len(self.password)
+        ),
+        print 'char points required: {}'.format(
+                pow(targ, 1.0 / len(self.password)) - self.variety
+        )
 
 
 if __name__ == '__main__':

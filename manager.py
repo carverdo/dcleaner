@@ -21,7 +21,7 @@ NB Sometimes it doesn't like the flask.ext.package; just comment out.
 Get rid of manager.run() and you can play around in the gui.
 """
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Shell
