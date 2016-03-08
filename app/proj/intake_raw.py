@@ -19,6 +19,20 @@ from config_project import *
 from functools import wraps
 
 
+class DataHandler2(object):
+    allowable_types = EXCEL_ALLOWABLE_TYPES
+    type_codes = dict(enumerate(allowable_types))
+    pickle_e_msg = 'WARNING: method <{}> not run. ' \
+                   'You need to reload class with use_pickle=False'
+
+    def __init__(self, file_name=EXCEL_SOURCE,
+                 header_rows=1, label_row=0,
+                 use_pickle=True):
+        # just make sure that there is a download directory in place
+        # move to it, find our file
+        if not os.path.exists(DL_DIR): os.makedirs(DL_DIR)
+        self.dl_dir = DL_DIR
+
 class DataHandler(object):
     """
     *** NOTE: the ASSUMPTION that IDs map to allowable_types ***

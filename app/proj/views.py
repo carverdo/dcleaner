@@ -36,6 +36,21 @@ def home2():
 # =================================================
 # SIMPLE STUFF
 # =================================================
+from intake_raw import DataHandler2
+
+@proj.route('/prim_view2')
+@login_confirmed
+def prim_view2():
+    dh = DataHandler2(header_rows=2, label_row=1)
+    return render_template('./proj/prim_view2.html',
+                           usr_data='{} | {}_v{}'.format(
+                                   current_user.firstname,
+                                   PROJECT_NAME, VERSION),
+                           summary=dh.dl_dir
+                           )
+
+
+
 @proj.route('/prim_view')
 @login_confirmed
 def prim_view():

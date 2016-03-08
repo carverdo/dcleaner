@@ -8,7 +8,7 @@ See db_create_migrate for more.
 __author__ = 'donal'
 __project__ = 'dcleaner'
 import os
-from config_templates import *
+from config_templates import TemplateParameters
 from config_vars import PK, DBNAME
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
