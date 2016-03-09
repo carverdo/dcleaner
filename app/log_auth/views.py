@@ -276,7 +276,7 @@ def confirm(token):
 def resend_token():
     token = current_user.generate_confirm_token()
     SendEmail(current_user.email, 'Activate your Signin',
-              msgtype='on', template='./log_auth/confirm_body',
+              msgtype='on', template='confirm_body',
               newuser=current_user, token=token)
     flash(f21)
     return redirect(url_for('.home'))
