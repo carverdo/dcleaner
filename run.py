@@ -11,7 +11,7 @@ __author__ = 'donal'
 __project__ = 'dcleaner'
 
 from app import create_app
-app = create_app('development')
-# app = create_app('production')
+# app = create_app('development')
+app = create_app('production')
 if __name__ == '__main__':
     app.run()
