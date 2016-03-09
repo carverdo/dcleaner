@@ -26,12 +26,12 @@ class SendEmail(object):
         if msgtype is not None:
             try:
                 # our preference: building real html pages
-                temp_text = render_template('./guns/{}.html'.format(
+                temp_text = render_template('{}.html'.format(
                         template), **kwargs)
             except:
                 # fallback: string populating with html formatting
                 # needed with the scheduler
-                temp_text = open('./app/templates/guns/{}.txt'.format(
+                temp_text = open('./app/templates/{}.txt'.format(
                         template)).read()
                 temp_text = temp_text.format(**kwargs)
             self.data["html"] = temp_text
