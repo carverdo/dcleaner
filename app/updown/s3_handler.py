@@ -51,7 +51,7 @@ class s3Handler(object):
         :param upload_dir: subdireotory
         :return: address of endpoint
         """
-        if isinstance(src_address, str):
+        if isinstance(src_address, basestring):
             src_name = os.path.split(src_address)[1]
         else:
             src_name = secure_filename(src_address.filename)

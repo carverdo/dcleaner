@@ -12,7 +12,8 @@ from . import proj, DataHandler
 # helper functions -
 from view_defs import get_nonfailed_cells_by_col, ppack_em_up, pack_em_up
 from app.updown.views import user_driven_connect
-
+from app.proj.data_handler2 import DataHandler2
+from app.templates.flash_msg import *
 
 # ========================
 # FUNCTIONS
@@ -24,44 +25,13 @@ def name_stamp(filename):
 
 
 # ========================
-# Simple Page
+# SIMPLE STUFF
 # ========================
 @proj.route('/')
 @proj.route('/home2')
 @login_confirmed
 def home2():
     return render_template('./proj/dummy.html')
-
-
-# =================================================
-# SIMPLE STUFF
-# =================================================
-from intake_raw import DataHandler2
-
-@proj.route('/prim_view2')
-@login_confirmed
-def prim_view2():
-    dh = DataHandler2(header_rows=2, label_row=1)
-    return render_template('./proj/prim_view2.html',
-                           usr_data='{} | {}_v{}'.format(
-                                   current_user.firstname,
-                                   PROJECT_NAME, VERSION),
-                           summary=dh.file_name
-                           )
-
-
-@proj.route('/prim_view')
-@login_confirmed
-def prim_view():
-    dh = DataHandler(header_rows=2, label_row=1)
-    if dh.file_name: dh.package_for_html()
-    return render_template('./proj/prim_view.html',
-                           usr_data='{} | {}_v{}'.format(
-                                   current_user.firstname,
-                                   PROJECT_NAME, VERSION),
-                           summary=dh.summary,
-                           data_dict=dh.html_pack
-                           )
 
 
 @proj.route('/getting_started')
@@ -74,6 +44,34 @@ def getting_started():
 @login_confirmed
 def picture():
     return render_template('./proj/picture.html')
+
+
+# =================================================
+# TRICKIER / MAIN PAGE
+# =================================================
+@proj.route('/prim_view')
+@login_confirmed
+def prim_view():
+    sh = user_driven_connect()
+    dh = DataHandler2(sh.keys, header_rows=2, label_row=1)
+    if not dh.find_key(dh.p_summ):
+        sh.s3_upload(dh.p_summ, upload_fn='string', str_data=dh.tmp_s)
+        flash(f72.format(dh.p_summ))
+    if not dh.find_key(dh.p_data):
+        dh.package_for_html()
+        sh.s3_upload(dh.p_data, upload_fn='string', str_data=dh.tmp_d)
+        flash(f72.format(dh.p_data))
+        sh.s3_upload(dh.p_html, upload_fn='string', str_data=dh.tmp_h)
+        flash(f72.format(dh.p_html))
+    else:
+        dh.package_for_html()
+    return render_template('./proj/prim_view.html',
+                           usr_data='{} | {}_v{}'.format(
+                                   current_user.firstname,
+                                   PROJECT_NAME, VERSION),
+                           summary=dh.summary,
+                           data_dict=dh.html_pack
+                           )
 
 
 # =================================================
@@ -193,4 +191,19 @@ def _load_stamp():
     if sh:
         print sh.keys
     return jsonify(result=TypeStamper().load_choices(data.split("\\")[-1]))
+"""
+
+"""
+@proj.route('/prim_view')
+@login_confirmed
+def prim_view():
+    dh = DataHandler(header_rows=2, label_row=1)
+    if dh.file_name: dh.package_for_html()
+    return render_template('./proj/prim_view.html',
+                           usr_data='{} | {}_v{}'.format(
+                                   current_user.firstname,
+                                   PROJECT_NAME, VERSION),
+                           summary=dh.summary,
+                           data_dict=dh.html_pack
+                           )
 """

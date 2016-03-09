@@ -1,94 +1,55 @@
-"""
-Imports raw excel data from a given source.
-
-The handler automatically pickles the result into two similarly named
-pickle files (one for summary; one for raw_data).
-
-The original data file is no longer used UNLESS explicitly instructed.
-In other words, as long as those pickles are present, the xls is no longer
-needed.
-"""
-__author__ = 'donal'
-__project__ = 'dataHoover'
-# todo xlrd only looks to xls files; need to investigate other readers.
-# todo namedTuples simplified things in tiab_processing/parse_exTab
 import pickle
 import string
 from functools import wraps
+import os
 import xlrd
-from config_project import *
+from config_project import EXCEL_ALLOWABLE_TYPES, EXCEL_SOURCE
+
+# todo xlrd only looks to xls files; need to investigate other readers.
+# todo namedTuples simplified things in tiab_processing/parse_exTab
+
+__author__ = 'donal'
+__project__ = 'dcleaner'
 
 
-class DataHandler(object):
-    """
-    *** NOTE: the ASSUMPTION that IDs map to allowable_types ***
-
-    header_rows is like length, ie the number of rows that are headers;
-    label_row is a counter, starting at zero.
-    """
+class DataHandler2(object):
     allowable_types = EXCEL_ALLOWABLE_TYPES
     type_codes = dict(enumerate(allowable_types))
     pickle_e_msg = 'WARNING: method <{}> not run. ' \
                    'You need to reload class with use_pickle=False'
 
-    def __init__(self, file_name=EXCEL_SOURCE,
+    def __init__(self, keys, file_name=EXCEL_SOURCE,
                  header_rows=1, label_row=0,
                  use_pickle=True):
         # classic inits
-        self.header_rows = header_rows
-        self.label_row = label_row
+        self.keys = keys
+        self.header_rows,  self.label_row = header_rows, label_row
         self.use_pickle = use_pickle
-        # stores of data
+        # s3 stores of keys and their data
         self.p_summ, self.p_data, self.p_html = None, None, None
-        # basic data
+        self.tmp_s, self.tmp_d, self.tmp_h = None, None, None
+        # local vars
         self.book, self.summary = None, {}
-        # for later, raw_data generation
         self.raw_data, self.html_pack = {}, {}
-        # operations
-        self.file_name = self.build_bridge_to_file(file_name)
-        if self.file_name: self.file_processing()
-
-    def build_bridge_to_file(self, file_name):
-        # just make sure that there is a download directory in place
-        # move to it, find our file
-        """
-        if not os.path.exists(DL_DIR):
-            os.makedirs(DL_DIR)
-        os.chdir(DL_DIR)
-        """
-        try:
-            tail = filter(lambda f: f.startswith(file_name) and
-                                    os.path.splitext(f)[1] == EXCEL_SUFFIX,
-                          os.listdir(DL_DIR)
-                          )[0]
-            return os.path.join(DL_DIR, tail)
-        except:
-            return None
-
-    def file_processing(self):
-        # stores of data
-        self.p_summ = os.path.splitext(self.file_name)[0] + '_summ.p'
-        self.p_data = os.path.splitext(self.file_name)[0] + '_data.p'
-        self.p_html = os.path.splitext(self.file_name)[0] + '_html.p'
         # snapshot of basic data (only snapshot for now; speed)
-        self.build_summary()
+        self.key = self.find_key(file_name)
+        if self.key:
+            self.build_subkeys()
+            self.build_summary()
 
-    # ============================
-    # A. GENERATING SUMMARY DATA
-    # part 1 for pickle; part 2 if doing for first time
-    # ============================
+    def build_subkeys(self):
+        """
+        keys: stores of data
+        """
+        self.p_summ = os.path.splitext(self.key.name)[0] + '_SUMM.p'
+        self.p_data = os.path.splitext(self.key.name)[0] + '_DATA.p'
+        self.p_html = os.path.splitext(self.key.name)[0] + '_HTML.p'
+
     def build_summary(self):
         """
         optionally chooses from the pickle of the same name;
         """
-        if self.use_pickle:
-            try:
-                self.summary = pickle.load(open(self.p_summ, 'rb'))
-            except:
-                self._build_summary()
-                self.use_pickle = False
-        else:
-            self._build_summary()
+        self.divert_on_pickle('summary', self.p_summ, '_build_summary')
 
     def _build_summary(self):
         """
@@ -96,8 +57,10 @@ class DataHandler(object):
         pickles the object afterwards.
         """
         # first, grab file metadata; then inspect
-        self.summary['meta'] = os.stat(self.file_name)
-        self.book = xlrd.open_workbook(self.file_name)
+        self.summary['meta'] = self.key.etag[1:-1], self.key.last_modified
+        print '.'
+        self.book = xlrd.open_workbook(file_contents=
+                                       self.key.get_contents_as_string())
         self.summary['WorkBook'] = {
             'COLUMNS assumed/HEADER DEPTH': 'x{} ROW'.format(self.header_rows),
             '# tabs': self.book.nsheets,
@@ -114,7 +77,8 @@ class DataHandler(object):
             else:
                 self.summary[tab.name] = {'cols by rows': 'EMPTY'}
         self.summary['active_tabs'] = active_tabs
-        pickle.dump(self.summary, open(self.p_summ, 'wb'), -1)
+        print '_b_summ'
+        self.tmp_s = pickle.dumps(self.summary, -1)
 
     # ============================
     # B. HTML OUTPUT
@@ -124,19 +88,15 @@ class DataHandler(object):
         """
         optionally chooses from the pickle of the same name;
         """
-        if self.use_pickle:
-            try:
-                self.raw_data = pickle.load(open(self.p_data, 'rb'))
-                self.html_pack = pickle.load(open(self.p_html, 'rb'))
-            except:
-                self._package_for_html()
-                self.use_pickle = False
-        else:
-            self._package_for_html()
+        self.divert_on_pickle('raw_data', self.p_data, '_build_raw')
+        self.divert_on_pickle('html_pack', self.p_html, '_package_for_html')
 
     def _package_for_html(self):
+        """
+        pickles the object afterwards.
+        """
         if not self.raw_data:
-            self.build_raw_data()
+            self._build_raw()
         for tab_name in self.summary['active_tabs']:
             transpose = map(list, zip(*self.get_ctype_bins(tab_name)))
             data = dict(zip(self.type_codes.values(), transpose))
@@ -150,25 +110,13 @@ class DataHandler(object):
                 ),
                 'data': data
             }
-        pickle.dump(self.html_pack, open(self.p_html, 'wb'), -1)
+        print '_b_pfhtml'
+        self.tmp_h = pickle.dumps(self.html_pack, -1)
 
     # ============================
     # C. GENERATING RAW DATA
     # part 1 for pickle; part 2 if doing for first time
     # ============================
-    def build_raw_data(self):
-        """
-        optionally chooses from the pickle of the same name;
-        """
-        if self.use_pickle:
-            try:
-                self.raw_data = pickle.load(open(self.p_data, 'rb'))
-            except:
-                self._build_raw()
-                self.use_pickle = False
-        else:
-            self._build_raw()
-
     def _build_raw(self):
         """
         only builds from sheets where data present.
@@ -177,13 +125,41 @@ class DataHandler(object):
         for tab in self.book.sheets():
             if tab.nrows >= self.header_rows:
                 self.raw_data[tab.name] = self.absorb_data_columns(tab.name)
-            else:
-                pass
-        pickle.dump(self.raw_data, open(self.p_data, 'wb'), -1)
+            else: pass
+        print '_b_raw'
+        self.tmp_d = pickle.dumps(self.raw_data, -1)
 
     # ============================
     # USEFUL FUNCTIONS
     # ============================
+    def find_key(self, file_name):
+        try:
+            return [k for k in self.keys if k.name.startswith(
+                    os.path.splitext(file_name)[0])][0]
+        except: return None
+
+    def divert_on_pickle(self, res, key, failfn):
+        """
+        :param res: the instance attribute you want to set
+        :param key: the s3 key / file
+        :param failfn: fn to operate if no key
+        :return: run of failfn
+        """
+        if self.use_pickle:
+            try:
+                setattr(self, res, pickle.loads(
+                        self.find_key(key).get_contents_as_string())
+                        )
+                print 'laded', key
+            except:
+                print 'ee'
+                getattr(self, failfn)()
+                self.use_pickle = False
+                print 'exc didnt load'
+        else:
+            print 'else pickleoff'
+            getattr(self, failfn)()
+
     def absorb_data_columns(self, tab_name):
         """
         NB ignores headers.
@@ -269,36 +245,3 @@ class DataHandler(object):
     @_deco_p_test
     def print_cytpes(self, tab_name):
         return zip(string.ascii_uppercase, self.get_ctypes_by_name(tab_name))
-
-
-if __name__ == '__main__':
-    from pprint import pprint
-    dh = DataHandler('../static/data/RawData.xls', header_rows=2,
-                     use_pickle=False)
-    dh.package_for_html()
-    print """
-    We have: dh.raw_data for the data section of every tab;
-    We can address any cell;
-    We can summarise data-types per column.
-    """
-    # make sure to pick a real tab!
-    tab_name = 'CM'
-    # because we load without pickle...
-    # ie certain functions (decorated) only to be run in live case
-    # where we have a true xlrd object in memory
-    tmp_ok = dh.get_ctypes_by_ID(tab_name)
-    tmp_ok2 = dh.get_ctypes_by_name(tab_name)
-    print tmp_ok
-    print tmp_ok2
-    tab = dh.book.sheet_by_name(tab_name)
-    pprint(dh.print_cytpes(tab_name))
-    tmp = dh.absorb_data_columns(tab_name)
-    print tmp[2]
-    tamp = dh.absorb_data_rows(tab_name)
-    print tamp[0]
-    print '===='
-    # instead, load without pickle...
-    dh2 = DataHandler('../static/data/RawData.xls', header_rows=2)
-    dh2.package_for_html()
-    # because we used the pickle...
-    tmp_fail = dh2.get_ctypes_by_ID(tab_name)
