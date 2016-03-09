@@ -88,7 +88,9 @@ def _bosh():
     data_dict = json.loads(request.get_data())
     # test emptiness of first value
     if bool(data_dict.values()[0]):
-        dh = DataHandler(header_rows=2)  # 'app/static/data/{}.xls'.format(EXCEL_SOURCE),
+        sh = user_driven_connect()
+        dh = DataHandler2(sh.keys, header_rows=2, label_row=1)
+        # dh = DataHandler(header_rows=2)  # 'app/static/data/{}.xls'.format(EXCEL_SOURCE),
         dh.package_for_html()
         # datapacks = []
         nonfail_packs, ffail_packs = [], []
