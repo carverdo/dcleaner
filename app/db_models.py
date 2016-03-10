@@ -113,9 +113,9 @@ class Member(UserMixin, CRUDMixin, db.Model):
     def get_id(self):
         return unicode(self.id)
     # ===========================
-    def ping(self):
+    def ping(self, increment=True):
         self.last_log = datetime.utcnow()
-        self.logins += 1
+        if increment: self.logins += 1
         self.save(self)
     # ===========================
     # ACTIVATION

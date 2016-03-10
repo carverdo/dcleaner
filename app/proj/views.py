@@ -4,9 +4,10 @@ __project__ = 'dcleaner'
 # todo rows and columns hardwired
 
 import ast
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import render_template, request, jsonify, json, flash
 from flask.ext.login import current_user, login_required
+from ..db_models import Member
 from ..log_auth.views import login_confirmed
 from config_project import VERSION, PROJECT_NAME
 from . import proj, DataHandler
@@ -23,6 +24,12 @@ def name_stamp(filename):
     return '{}_{}_{}_{}_{}.txt'.format(
             filename, current_user.firstname, PROJECT_NAME, VERSION,
             datetime.now().strftime('%Y%m%d_%H%M%S'))
+
+def curr_logins():
+    an_hour_ago = datetime.utcnow() - timedelta(seconds=3600)
+    most_recents = [m.email for m in Member.query.filter(
+            Member.last_log>an_hour_ago).all()]
+    return ' | '.join(most_recents)
 
 
 # ========================
@@ -53,6 +60,7 @@ def picture():
 @proj.route('/prim_view')
 @login_confirmed
 def prim_view():
+    current_user.ping(increment=False)
     sh = user_driven_connect()
     dh = DataHandler2(sh.keys, header_rows=2, label_row=1)
     if dh.key:
@@ -72,7 +80,8 @@ def prim_view():
                                    current_user.firstname,
                                    PROJECT_NAME, VERSION),
                            summary=dh.summary,
-                           data_dict=dh.html_pack
+                           data_dict=dh.html_pack,
+                           curr_logins=curr_logins()
                            )
 
 

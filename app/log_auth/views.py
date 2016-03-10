@@ -161,6 +161,9 @@ def signout():
     return redirect(url_for('.home'))
 
 
+# ========================
+# ADMIN PAGES
+# ========================
 @log_auth.route('/adm_members', methods=['GET', 'POST'])
 @admin_required
 def adm_members():
@@ -197,6 +200,7 @@ def adm_members():
 
 
 @log_auth.route('/visits')
+@admin_required
 def visits():
     # Presentation of group/summary data
     memids = set(v.member_id for v in Visit.query)
