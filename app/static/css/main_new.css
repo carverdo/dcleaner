@@ -106,7 +106,6 @@ in the navbar and in the dropdowns */
 .table-responsive > .table {margin-bottom: 0;}
 .table-responsive > .table > tbody {
     display: in-line;
-    height: 300px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -116,6 +115,8 @@ in the navbar and in the dropdowns */
 .table-responsive > .table > thead > tr > td,
 .table-responsive > .table > tbody > tr > td,
 .table-responsive > .table > tfoot > tr > td {white-space: nowrap;}
+
+th {text-align: center;}
 
 .prof_row_style {
     color: white;
