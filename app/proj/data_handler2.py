@@ -7,6 +7,7 @@ from config_project import EXCEL_ALLOWABLE_TYPES, EXCEL_SOURCE
 
 # todo xlrd only looks to xls files; need to investigate other readers.
 # todo namedTuples simplified things in tiab_processing/parse_exTab
+# todo cant delete the original excel file, linked to the try/except loop.
 
 __author__ = 'donal'
 __project__ = 'dcleaner'
@@ -58,7 +59,6 @@ class DataHandler2(object):
         """
         # first, grab file metadata; then inspect
         self.summary['meta'] = self.key.etag[1:-1], self.key.last_modified
-        print '.'
         self.book = xlrd.open_workbook(file_contents=
                                        self.key.get_contents_as_string())
         self.summary['WorkBook'] = {
@@ -77,7 +77,6 @@ class DataHandler2(object):
             else:
                 self.summary[tab.name] = {'cols by rows': 'EMPTY'}
         self.summary['active_tabs'] = active_tabs
-        print '_b_summ'
         self.tmp_s = pickle.dumps(self.summary, -1)
 
     # ============================
@@ -110,7 +109,6 @@ class DataHandler2(object):
                 ),
                 'data': data
             }
-        print '_b_pfhtml'
         self.tmp_h = pickle.dumps(self.html_pack, -1)
 
     # ============================
@@ -126,7 +124,6 @@ class DataHandler2(object):
             if tab.nrows >= self.header_rows:
                 self.raw_data[tab.name] = self.absorb_data_columns(tab.name)
             else: pass
-        print '_b_raw'
         self.tmp_d = pickle.dumps(self.raw_data, -1)
 
     # ============================
@@ -150,14 +147,10 @@ class DataHandler2(object):
                 setattr(self, res, pickle.loads(
                         self.find_key(key).get_contents_as_string())
                         )
-                print 'laded', key
             except:
-                print 'ee'
                 getattr(self, failfn)()
                 self.use_pickle = False
-                print 'exc didnt load'
         else:
-            print 'else pickleoff'
             getattr(self, failfn)()
 
     def absorb_data_columns(self, tab_name):

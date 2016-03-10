@@ -4,7 +4,10 @@ __project__ = 'Skeleton_Flask_v11'
 
 f15 = 'Your password was weak, you might want to make stronger at a later date.'
 f20 = 'You\'ve successfully created your login.'
-f21 = 'We just sent you an email; click on the link to activate your account'
+f21 = """
+We just sent an email to {}; click on the link inside to activate your account.
+If you don\'t see the email shortly, check your spam.
+"""
 f120 = 'You\'re already logged in. No harm done.'
 
 f30 = 'You are logged in and Activated.'

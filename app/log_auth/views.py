@@ -58,7 +58,7 @@ def process_forms_and_redir(form):
             SendEmail(newuser.email, 'Activate your Signin',
                       msgtype='on', template='confirm_body',
                       newuser=newuser, token=token)
-            flash(f20 + ' ' + f21)
+            flash(f20 + ' ' + f21.format(newuser.email))
             return '.home'
         # Existing (/active) members
         else:
@@ -278,7 +278,7 @@ def resend_token():
     SendEmail(current_user.email, 'Activate your Signin',
               msgtype='on', template='confirm_body',
               newuser=current_user, token=token)
-    flash(f21)
+    flash(f21.format(current_user.email))
     return redirect(url_for('.home'))
 
 
