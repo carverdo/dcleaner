@@ -1,6 +1,7 @@
 __author__ = 'donal'
 __project__ = 'dcleaner'
 # todo Datahandler init is hardwired
+# todo rows and columns hardwired
 
 import ast
 from datetime import datetime
@@ -54,17 +55,18 @@ def picture():
 def prim_view():
     sh = user_driven_connect()
     dh = DataHandler2(sh.keys, header_rows=2, label_row=1)
-    if not dh.find_key(dh.p_summ):
-        sh.s3_upload(dh.p_summ, upload_fn='string', str_data=dh.tmp_s)
-        flash(f72.format(dh.p_summ))
-    if not dh.find_key(dh.p_data):
-        dh.package_for_html()
-        sh.s3_upload(dh.p_data, upload_fn='string', str_data=dh.tmp_d)
-        flash(f72.format(dh.p_data))
-        sh.s3_upload(dh.p_html, upload_fn='string', str_data=dh.tmp_h)
-        flash(f72.format(dh.p_html))
-    else:
-        dh.package_for_html()
+    if dh.key:
+        if not dh.find_key(dh.p_summ):
+            sh.s3_upload(dh.p_summ, upload_fn='string', str_data=dh.tmp_s)
+            flash(f72.format(dh.p_summ))
+        if not dh.find_key(dh.p_data):
+            dh.package_for_html()
+            sh.s3_upload(dh.p_data, upload_fn='string', str_data=dh.tmp_d)
+            flash(f72.format(dh.p_data))
+            sh.s3_upload(dh.p_html, upload_fn='string', str_data=dh.tmp_h)
+            flash(f72.format(dh.p_html))
+        else:
+            dh.package_for_html()
     return render_template('./proj/prim_view.html',
                            usr_data='{} | {}_v{}'.format(
                                    current_user.firstname,

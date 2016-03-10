@@ -14,7 +14,7 @@ from datetime import datetime
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from config_vars import MAX_COL_WIDTHS, ADMIN_USER, INITIALLY_ACTIVE
-
+from . import lg
 
 # ==============================
 # DATABASE STRUCTURE
@@ -126,9 +126,12 @@ class Member(UserMixin, CRUDMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
+            lg.logger.info('try data: {}'.format(data))
         except:
+            lg.logger.info('failed try')
             return False
         if data.get('confirm') != self.id:
+            lg.logger.info('failed confirm: {} {}'.format(data.get('confirm'), self.id))
             return False
         self.confirmed = True
         self.save(self)

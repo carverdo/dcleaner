@@ -1,2 +1,18 @@
 2016-Mar-08 10:52:02.000000000184 - Skeleton_Flask_v11 - views.py - INFO - Text words 1
 2016-Mar-08 10:53:34.000000000117 - Skeleton_Flask_v11 - views.py - INFO - Text words 1
+2016-Mar-10 11:55:48.000000000822 - Skeleton_Flask_v11 - gunner.py - INFO - v_txt_<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <div id="rcorners1" style="border-radius: 12px; background-color: #FFBA66; width: 400px; height: 170px; padding: 10px;">
+        <h2 style="color: #545454">Welcome Donal.</h2>
+        <p style="font-weight:bold">
+            To confirm your login please click
+            <a href="http://127.0.0.1:5000/confirm/eyJhbGciOiJIUzI1NiIsImV4cCI6MTQ1NzYxNDU0OCwiaWF0IjoxNDU3NjEwOTQ4fQ.eyJjb25maXJtIjoxNH0.qF9mIINo0j6EgRwUlXkoumta8ol0PhnWFkSNHweXeis">here</a>
+        </p>
+        &nbsp;
+        <p style="color:DimGray; font-weight:bold">Please note: we do not monitor this email address.</p>
+    </div>
+</body>
+</html>
+2016-Mar-10 12:03:09.000000000448 - Skeleton_Flask_v11 - db_models.py - INFO - try data: {u'confirm': 14}

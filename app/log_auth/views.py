@@ -161,6 +161,13 @@ def signout():
     return redirect(url_for('.home'))
 
 
+@log_auth.route('/logs')
+@login_required
+def logs():
+    txt = open('logs/devel_logs.log').readlines()
+    return str(txt)
+
+
 @log_auth.route('/adm_members', methods=['GET', 'POST'])
 @admin_required
 def adm_members():

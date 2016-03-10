@@ -5,6 +5,7 @@ import requests
 from threading import Thread
 from flask import render_template
 from config_vars import MAILGUN_URL, SANDBOX, MAILGUN_KEY
+from . import lg
 
 
 class SendEmail(object):
@@ -28,12 +29,14 @@ class SendEmail(object):
                 # our preference: building real html pages
                 temp_text = render_template('{}.html'.format(
                         template), **kwargs)
+                lg.logger.info('v_txt_{}'.format(temp_text))
             except:
                 # fallback: string populating with html formatting
                 # needed with the scheduler
                 temp_text = open('./app/templates/{}.txt'.format(
                         template)).read()
                 temp_text = temp_text.format(**kwargs)
+                lg.logger.info('v_html_{}'.format(temp_text))
             self.data["html"] = temp_text
         else:
             self.data["text"] = template

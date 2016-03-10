@@ -1,6 +1,6 @@
 __author__ = 'donal'
 __project__ = 'Skeleton_Flask_v11'
-
+# todo make all these flash msgs jquery driven
 
 f15 = 'Your password was weak, you might want to make stronger at a later date.'
 f20 = 'You\'ve successfully created your login.'
