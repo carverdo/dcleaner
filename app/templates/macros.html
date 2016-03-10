@@ -48,8 +48,8 @@
     {% else %}
         <form action="{{ url_for(endpoint, **kwargs) }}" method="post">
     {% endif %}
-        {{ form.csrf_token }}
-        {{ create_masterpanel2(form, **panel_args) }}
+    {{ form.csrf_token }}
+    {{ create_masterpanel2(form, **panel_args) }}
     </form>
 {% endmacro %}
 

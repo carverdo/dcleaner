@@ -55,4 +55,6 @@ def create_app(config_name):
     from .updown import updo as updo_blueprint
     app.register_blueprint(updo_blueprint)
 
+    from .log_records import log_recs as recs_blueprint
+    app.register_blueprint(recs_blueprint)
     return app
