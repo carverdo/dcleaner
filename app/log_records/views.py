@@ -1,6 +1,6 @@
 __author__ = 'donal'
 __project__ = 'dcleaner'
-
+#todo dont forget to add to navbar
 from . import log_recs
 from ..log_auth.views import admin_required, set_template
 

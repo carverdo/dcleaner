@@ -8,7 +8,8 @@ __project__ = 'dcleaner'
 from flask import Blueprint
 proj = Blueprint('proj', __name__)
 # same, and for relative addressing -
-from intake_raw import DataHandler
+# from intake_raw import DataHandler
+from data_handler2 import DataHandler2
 # from xx_type_stamp import TypeStamper
 from se_corrects import FromStrTo
 fst = FromStrTo()

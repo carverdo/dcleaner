@@ -15,6 +15,7 @@ var usr_data = $("#usr_data").text(), usr_data_RT = "", tmp = "";
 var newScore = 0;
 /* Handling our columns and rows */
 var datapack, row_labs = [], onoff = 0, c_idx = [];
+var LOG_TITLE = "LOGGED";
 /* =========================
 RUN OUR FUNCTION
 ========================= */
@@ -125,7 +126,7 @@ function cleanLog(obj) {
     /* separator */
     newLog = $("<div>");
     /* headers */
-    usr_data_RT = usr_data + ' | ' + $.now();
+    usr_data_RT = '|| ' + usr_data + ' | ' + $.now() + ' ||' +'\n';
     newRow = $("<h4>").text(usr_data_RT);
     newRow.attr("class", "log_row");
     /* main body */
@@ -139,12 +140,16 @@ function cleanLog(obj) {
         boxes = $(this).children("input");
         tmp = "";
         tmp += labs.first().text();
+        if (labs.last().text() != LOG_TITLE) {
+            return true
+        }
         tmp += " | " + labs.last().text();
         $.each(boxes, function() {
             tmp += " | " + $(this).attr("type");
             tmp += " | " + $(this).val();
         });
-        tmp += " | ";
+        tmp += " | \n";
+        console.log(tmp);
         newRow.text(tmp);
         newLog.append(newRow);
     })
@@ -157,7 +162,7 @@ function cleanLog(obj) {
     newSery = $("<p>");
     newSery.text("\n" + obj.serialize());
     newSery.attr("class", "log_row");
-    newLog.append(newSery);
+    /* newLog.append(newSery); */
     return newLog
 }
 /* OPERATIVE FUNCTIONS ON CLICK */
@@ -279,7 +284,7 @@ function form_ele_builder(datapack, labelpack) {
         curbg = cur.css("backgroundColor");
         curbg == "rgba(0, 0, 0, 0)" ? cur.css("backgroundColor", "darkseagreen"):
         cur.css("backgroundColor", "rgba(0, 0, 0, 0)");
-        $(this).text() == "LOGGED" ? $(this).text("E"): $(this).text("LOGGED");
+        $(this).text() == LOG_TITLE ? $(this).text("E"): $(this).text(LOG_TITLE);
     })
     /* Append em all */
     newDiv.append(newLabel);

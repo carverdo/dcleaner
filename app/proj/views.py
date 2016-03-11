@@ -5,17 +5,18 @@ __project__ = 'dcleaner'
 
 import ast
 from datetime import datetime, timedelta
+from operator import itemgetter
 from flask import render_template, request, jsonify, json, flash
 from flask.ext.login import current_user, login_required
 from ..db_models import Member
 from ..log_auth.views import login_confirmed
 from config_project import VERSION, PROJECT_NAME
-from . import proj, DataHandler
+from . import proj, DataHandler2
 # helper functions -
 from view_defs import get_nonfailed_cells_by_col, ppack_em_up, pack_em_up
 from app.updown.views import user_driven_connect
-from app.proj.data_handler2 import DataHandler2
 from app.templates.flash_msg import *
+
 
 # ========================
 # FUNCTIONS
@@ -25,11 +26,24 @@ def name_stamp(filename):
             filename, current_user.firstname, PROJECT_NAME, VERSION,
             datetime.now().strftime('%Y%m%d_%H%M%S'))
 
+
 def curr_logins():
     an_hour_ago = datetime.utcnow() - timedelta(seconds=3600)
     most_recents = [m.email for m in Member.query.filter(
             Member.last_log>an_hour_ago).all()]
     return ' | '.join(most_recents)
+
+
+def find_last_log(sh, variant_1='%Y-%m-%dT%H:%M:%S.000Z'):  # variant_2 = '%a, %d %b %Y %H:%M:%S GMT'
+    logs = filter(lambda k: k.name.startswith('Logged'), sh.keys)
+    if not logs: return None
+    last_logs = [k.last_modified for k in logs]
+    try:
+        last_logs = [datetime.strptime(lalo, variant_1) for lalo in last_logs]
+        return max(zip(last_logs, logs), key=itemgetter(0)
+                   )[1].get_contents_as_string()
+    except:
+        return None
 
 
 # ========================
@@ -178,6 +192,8 @@ def _logcache():
     data = json.loads(request.get_data())
     sh = user_driven_connect()
     if sh:
+        tmp = find_last_log(sh)
+        if tmp: data = tmp + '\n\n' + data
         msg = sh.s3_upload(name_stamp('Logged_Data'),
                            upload_fn='string', str_data=str(data))
         flash(msg)

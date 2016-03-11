@@ -6,7 +6,8 @@ from werkzeug import secure_filename
 from uuid import uuid4
 from config_vars import AWS_KEYS
 from app.templates.flash_msg import *
-
+from datetime import datetime
+from operator import itemgetter
 
 class s3Handler(object):
     """
@@ -96,6 +97,13 @@ if __name__ == '__main__':
     sh.s3_upload(src_address, 'smaller2', 'string', tmp)
     # load by 'file'
     # hard to do here
+    # download last log_file
+    logs = filter(lambda k: k.name.startswith('Logged'), sh.keys)
+    last_logs = [datetime.strptime(k.last_modified, '%Y-%m-%dT%H:%M:%S.000Z')
+                 for k in logs]
+    last_log = max(zip(last_logs, logs), key=itemgetter(0))[1].get_contents_as_string()
+    print last_log
+
 
     """
     def s3_upload_by_filename(self, src_address, upload_dir=None,
