@@ -2,7 +2,7 @@
 <div class="collapse navbar-collapse">
 <!-- TAILOR THE NAVBAR BELOW -->
 <ul class="nav navbar-nav">
-    {% if current_user.is_authenticated() %}
+    {% if current_user.is_authenticated %}
         {{ macros.buildLink('log_auth.signout', 'signOut') }}
         {% if not current_user.confirmed %}
             {{ macros.buildLink('log_auth.resend_token', 'resendToken') }}
@@ -29,7 +29,9 @@
                     {% endif %}
                 </ul>
             </li>
-            {{ macros.buildLink('proj.prim_view', 'dataView') }}
+            {{ macros.buildLink('proj.data_sets', 'dataSets') }}
+            {{ macros.buildLink('proj.logs_view', 'logsView') }}
+            {{ macros.buildLink('log_recs.logs', 'codeLogs') }}
         {% endif %}
     {% else %}
         <!-- The following will only show when the nav menu is collapsed -->

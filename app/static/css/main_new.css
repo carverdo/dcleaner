@@ -93,6 +93,15 @@ in the navbar and in the dropdowns */
 /* ===============================
    MAKE THE TABLE SCROLL AND WRAP
 ================================== */
+table {
+   border: 1px solid black;
+}
+thead {color: green;}
+td, th {
+    vertical-align: top;
+    text-align: left;
+}
+th.expander { text-align: center;}
 .table-responsive {
     width: 100%;
     margin-bottom: 15px;
@@ -115,8 +124,6 @@ in the navbar and in the dropdowns */
 .table-responsive > .table > thead > tr > td,
 .table-responsive > .table > tbody > tr > td,
 .table-responsive > .table > tfoot > tr > td {white-space: nowrap;}
-
-th {text-align: center;}
 
 .prof_row_style {
     color: white;
@@ -308,10 +315,13 @@ div .imgFit {
     color: white;
     border: none;
 }
-table {
-   border: 1px solid black;
+.forceRun {
+    background-color: cornflowerblue;
+    color: white;
+    border: none;
 }
-td {
-    vertical-align: top;
-    text-align: center;
+.forceRun:hover {
+    background-color: white;
+    color: cornflowerblue;
 }
+.forceRun:active {background-color: pink;}

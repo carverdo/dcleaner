@@ -45,7 +45,9 @@ class GenLogger(object):
             },
             "formatters": {
                 "myFormatter": {
-                    "format": "%(asctime)s.%(msecs).12d - %(name)s - %(filename)s - %(levelname)s - %(message)s",
+                    "format": ("%(asctime)s.%(msecs).12d - %(name)s - "
+                               "%(filename)s, #%(lineno)d - %(levelname)s "
+                               "- %(message)s"),
                     "datefmt": "%Y-%b-%d %H:%M:%S"
                 }
             }

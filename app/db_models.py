@@ -107,9 +107,11 @@ class Member(UserMixin, CRUDMixin, db.Model):
     def is_active(self):
         """Extra protection: we can determine/toggle"""
         return self.active
+    """
     def is_anonymous(self):
-        """False: not allowed"""
+        ### False: not allowed
         return False
+    """
     def get_id(self):
         return unicode(self.id)
     # ===========================

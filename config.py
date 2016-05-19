@@ -10,7 +10,7 @@ __project__ = 'dcleaner'
 import os
 from config_templates import TemplateParameters
 from config_vars import PK, DBNAME
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+# from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 
 # ====================
@@ -25,6 +25,7 @@ class Config(TemplateParameters):
     # For form protection
     WTF_CSRF_ENABLED = True
     ## WTF_CSRF_SECRET_KEY = SECRET_KEY
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEVEL_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
         format(PK[0], PK[1], DBNAME)
     PROD_DATABASE_NAME = 'postgresql+psycopg2://postgres:{0}@localhost:{1}/{2}'.\
@@ -40,6 +41,7 @@ class DevelConfig(Config):
     Settings for development database.
     """
     DEBUG = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL', Config.DEVEL_DATABASE_NAME)
 

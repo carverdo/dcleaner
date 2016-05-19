@@ -11,7 +11,7 @@ from config_vars import MAX_COL_WIDTHS, MIN_PASS_LEN
 from ..db_models import Member, Visit
 from pass_stren import PasswordCalc
 pc = PasswordCalc()
-from ..templates. flash_msg import *
+from ..templates.flash_msg import *
 
 
 # ==========================

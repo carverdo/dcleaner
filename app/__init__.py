@@ -1,17 +1,10 @@
 """
-Updated to allow for the config database choices.
-Creation of our main tools, app and db.
-Imports views for run.
-
-# I've set up using blueprints (but not yet sure how much use they are).
-They allow "routes to be defined in the global scope" after the app is created.
-
-In practice this means we can create many "main" directories each with its
-own forms and views as neither forms nor views has any knowledge of 'app'.
-That linkage is registered/happens below.
+This runs pretty much automatically, but some tailoring is required here to
+ensure it matches the requirements of our project.
 """
 __author__ = 'donal'
 __project__ = 'dcleaner'
+
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
@@ -25,13 +18,13 @@ from logs.LogGenerator import GenLogger
 # ================
 # csrf = CsrfProtect()
 db = SQLAlchemy()
+lg = GenLogger(LOGOUT)
 login_manager = LoginManager()
 login_manager.login_view = 'log_auth.signin'
 login_manager.session_protection = 'strong'
 toolbar = DebugToolbarExtension()
 # Moment = Moment()  # local/client time (suspect this is slow)
 # cache = Cache()
-lg = GenLogger(LOGOUT)
 
 
 def create_app(config_name):
@@ -41,8 +34,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    if app.config['DEBUG']:
-        toolbar.init_app(app)
+    if app.config['DEBUG']: toolbar.init_app(app)
     # moment = Moment.init_app(app)
     # cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 

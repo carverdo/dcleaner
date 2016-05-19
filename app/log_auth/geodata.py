@@ -13,7 +13,7 @@ from json import loads
 from urllib2 import urlopen
 from flask import request
 from flask.ext.login import current_user
-from config_vars import GEO_URL, VALID_IP
+from config_vars import VALID_IP
 
 
 # ========================
@@ -38,14 +38,18 @@ def get_clientdata():
 # ========================
 # UNUSED / NOW ALL DONE CLIENT-SIDE
 # ========================
+"""
+GEO_URL_0 = "http://freegeoip.net/json/{}"
+GEO_URL ='http://www.geoplugin.net/json.gp?ip={}'
+
 def get_geodata(switched_on=False, keymod_fn=None, geo_url=GEO_URL):
-    """
+    #
     Search for geolocation information;
     Generally switched off (for speed).
     NOTE: because of proxies etc. this isn't ultimately used;
     We use locn_script as client-driven source of the data.
     More accurate.
-    """
+    #
     data = get_clientdata()
     if switched_on:
         url = geo_url.format(data['ip_address'])
@@ -65,14 +69,14 @@ def get_geodata(switched_on=False, keymod_fn=None, geo_url=GEO_URL):
 # HELPER FUNCTIONS
 # ========================
 def _key_modifier(data):
-    """Change geo labels"""
+    # Change geo labels
     for k in data.keys(): data[k.replace('geoplugin_', '')] = data.pop(k)
     data['zip_code'] = data.pop('areaCode')
     return data
 
 
 def _gen_shortdata(data):
-    """Truncate the data provided"""
+    # Truncate the data provided
     if data:
         short_data = {k: data[k] for k in ['city', 'zip_code',
                                            'latitude', 'longitude']}
@@ -86,3 +90,4 @@ if __name__ == '__main__':
     # get_geodata('91.85.158.49')
     # ip = request.environ.get('REMOTE_ADDR', request.remote_addr)
     cc = get_geodata(True, _key_modifier)
+"""

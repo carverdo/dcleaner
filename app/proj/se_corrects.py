@@ -31,22 +31,28 @@ class FromStrTo(object):
     """
     def __init__(self, raw=None, method=None):
         self.cutoff = datetime.today()
-        self.sec = None
+        self.raw, self.sec = None, None
         if isinstance(raw, str) or isinstance(raw, unicode):
             self.raw = raw.strip()
-        if hasattr(self, 'raw') and method: getattr(self, method)()
+        if self.raw and method: getattr(self, method)()
 
     def run_parse(self, method, raw=None):
         self.__init__(raw, method)
 
     def to_number(self):
+        print self.raw.replace('.', '').isdigit()
         if self.raw.replace('.', '').isdigit():
             try: self.sec = float(self.raw)
             except: pass
 
     def to_xldate(self):
-        try: self.sec = parser.parse(self.raw).strftime('%Y-%m-%d')
-        except: self._run_parser_with_modified_string()
+        try:
+            tmp = parser.parse(self.raw)
+            if tmp.hour==0 and tmp.minute==0: oput = '%Y-%m-%d'
+            else: oput = '%Y-%m-%d %H:%M'
+            self.sec = tmp.strftime(oput)
+        except:
+            self._run_parser_with_modified_string()
 
     def _run_parser_with_modified_string(self):
         if re.match(DATE_PATT, self.raw):  # dates
@@ -57,7 +63,9 @@ class FromStrTo(object):
         try:  # ie not all patterns will work
             refo = parser.parse(refo)
             if refo < self.cutoff:
-                self.sec = refo.strftime('%Y-%m-%d')
+                if refo.hour == 0 and refo.minute == 0: oput = '%Y-%m-%d'
+                else: oput = '%Y-%m-%d %H:%M'
+                self.sec = refo.strftime(oput)
         except: pass
 
     def to_boolean(self):
@@ -125,7 +133,7 @@ modays = [
 # EIGHTS
 # ============
 eights = [
-    '01112014',  # should work (ascending)
+    '01112014',  # should work (ascending) but doesn't
     '20141101',  # descending
     '13042914',  # just a long way away off
     '32012014',  # bad day, mo, yr

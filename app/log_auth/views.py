@@ -36,7 +36,7 @@ def set_template(template, form, endpoint, panel_args, kwargs={}):
 
 
 def redirect_already_authenticateds(current_user):
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         flash(f120)
         return resolve_confirm_status(current_user)
     else: return None
@@ -84,7 +84,7 @@ def resolve_confirm_status(current_user, token=None):
 def login_confirmed(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if current_user.is_anonymous() or not current_user.confirmed:
+        if current_user.is_anonymous or not current_user.confirmed:
             return redirect(url_for('log_auth.signin'))
         return f(*args, **kwargs)
     return decorated_function
@@ -93,7 +93,7 @@ def login_confirmed(f):
 def admin_required(f):
     @wraps(f)
     def decorated_fn(*args, **kwargs):
-        if current_user.is_anonymous() or not current_user.confirmed \
+        if current_user.is_anonymous or not current_user.confirmed \
                 or not current_user.adminr:
             flash(f150)
             return redirect(url_for('log_auth.signin'))

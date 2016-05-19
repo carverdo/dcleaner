@@ -8,21 +8,11 @@
     <!-- <p align="right"> DOUBLE CURLY moment(ct, local=True).format('Do MMM YYYY, h:mm:ss a') DOUBLE CURLY</p>  -->
     <p align="right"> {{ct}} </p>
     <br><br><br>
-    <div class="jumbotron" title="Demo Tooltips Activated."
-         id="big-logo" onmouseover="tipAct(this.id);">
-        <h1>second <small>Blueprint.</small></h1>
-    </div>
+    <div class="jumbotron" title="Demo Tooltips Activated" id="big-logo">
+        <h1>second <small>Blueprint.</small></h1></div>
     <p id="bosh"></p>
 </div>
-
-<!-- ACTIVATE ANY OF THOSE TOOLTIPS -->
-<!-- formatting not as good if move to a separate script -->
-<script type="text/javascript">
-    function tipAct(id) {
-        x = document.getElementById(id);
-        $(x).tooltipster();
-    }
-</script>
+<script src="static/js/snips/ttiper.js"></script>
 <!-- grab location data -->
 <script src="static/js/snips/locn.js"></script>
 {% endblock %}

@@ -5,6 +5,11 @@
     <div id="labers"></div>
     <!-- <input type="file" class="myButton" id="stampLoader" name="result"> -->
     <p id="stamped"></p>
+    <div class="floating-box">
+        <input type="text" id="l_limit" placeholder="Lower Limit (if any)"/>
+        <input type="text" id="u_limit" placeholder="Upper Limit (if any)"/>
+        <input type="text" id="bad_val" placeholder="Bad Value (if any)"/>
+    </div>
     <br>
     {% for key, data in data_dict.items() %}
         <div class="floating-box">
@@ -14,11 +19,9 @@
                 <th>{{data['tab']}}</th>
                 {% for header in data['headers'] %}
                     <th class="expander">
-                        <div class="tooltip" title={{header[1]}}>{{header[0]}}</div>
+                        <div class="headerMouse" id="{{header[1]}}">{{header[0]}}</div>
                         <div class="headerStats"></div>
                     </th>
-                    <!-- <th><div class="flip">{{header[0]}}</div>
-                        <div>{{header[1]}}</div></th> -->
                 {% endfor %}
             </tr>
         </thead>
@@ -31,6 +34,12 @@
                 {% endfor %}
             </tr>
         {% endfor %}
+        <tr class="forceCont">
+            <td><button>ForceCol</button></td>
+            {% for ct in data['data'].values()[0] %}
+                <td><button class="forceRun" value="f">f</button></td>
+            {% endfor %}
+        </tr>
         </tbody>
         </table>
         </div>
@@ -53,5 +62,5 @@
     <p id="usr_data">{{usr_data}}</p>
     <div><p id="meta">{{summary['meta']}}</p></div>
     <p id="usr_data">{{curr_logins}}</p>
-    <script src="static/js/snips/bigFile.js"></script>
+    <script src="../static/js/snips/bigFile.js"></script>
 {% endblock %}
