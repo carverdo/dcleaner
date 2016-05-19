@@ -1,5 +1,5 @@
 # Getting Started
-Project allows for the authenTicated user to upload to the s3 directory a file
+Project allows for the authenticated user to upload to the s3 directory a file
 that needs to be cleaned.
 There may be numerous files in the s3 directory, so dataSets allows user to
 provide the name of the dataset to focus on.
