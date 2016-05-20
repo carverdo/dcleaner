@@ -15,12 +15,12 @@ from ..log_auth.views import login_confirmed
 from config_project import VERSION, PROJECT_NAME
 from . import proj, DataHandler2
 # helper functions -
-from view_defs import parse_cells, ppack_em_up, pack_em_up, \
+from view_defs import quick_label, parse_cells, ppack_em_up, pack_em_up, \
     name_stamp, curr_logins, find_last_log, log_reduce
 from app.updown.views import user_driven_connect
 from app.templates.flash_msg import *
 from app.log_auth.views import set_template
-
+from app import lg
 
 # ========================
 # SIMPLE STUFF
@@ -115,7 +115,7 @@ def _bosh():
         sh = user_driven_connect()
         dh = DataHandler2(sh.keys, file_name=dset)  # , header_rows=2, label_row=1)
         dh.package_for_html()
-        prior_logs = log_reduce(sh, dset)
+        prior_logs, prior_snips = log_reduce(sh, dset)
         ffail_packs, nonfail_packs, gapper = [], [], []
         for tab_name, tab_dict in data_dict.items():
             # read new worksheet
@@ -130,25 +130,21 @@ def _bosh():
             # build our nonfail_ and fail_packs
             for col_idx, row_labs in tmp_refs.iteritems():
                 col_mapped = rem_cols[col_idx]
+                datapack, label_base, label_base2 = quick_label(
+                    tab_name, col_idx, col_mapped)
                 fail_pack, nonfailer, label_stats = parse_cells(
-                    dh, tab_name, col_idx, rem_rows, row_labs, threshes)
-
+                    dh, tab_name, col_idx, rem_rows, row_labs, threshes,
+                    prior_snips, label_base2)
                 tab_dict_col = tab_dict.get(str(col_idx), None)
                 if tab_dict_col:
                     nonfail_pack, gaps = nonfailer
                     ffail_packs.append(ppack_em_up(
-                        tab_name, col_idx, col_mapped,
-                        tab_dict_col,
-                        fail_pack, prior_logs,
-                        dh.header_rows, dh.allowable_types
-                    ))
+                        tab_dict_col, fail_pack, label_base,
+                        dh.allowable_types, datapack))
+
                     nonfail_packs.append(pack_em_up(
-                        tab_name, col_idx, col_mapped,
-                        tab_dict_col,
-                        nonfail_pack, prior_logs,
-                        label_stats,  # not in previous def
-                        dh.header_rows, dh.allowable_types
-                    ))
+                        tab_dict_col, nonfail_pack, label_stats, label_base,
+                        dh.allowable_types, datapack))
                     gapper.append(gaps)
     else:
         ffail_packs = [{'tab_name': 'na',

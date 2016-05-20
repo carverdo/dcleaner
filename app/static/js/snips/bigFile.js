@@ -324,8 +324,8 @@ function paintHeader(datapack, t_key, col_idx) {
     // just for presentation in main table (fills out data in header)
     if (datapack.tab_name == t_key && datapack.col_idx == col_idx) {
         // hr holds the data summary label for the col
-        var hr = datapack.header, txt = "";
-        $.each(hr, function(key, value){txt += key + " " + value + "<br>";});
+        var hr = datapack.headers, txt = "";
+        $.each(hr, function(key, value){txt += key + " " + value + "<br>"});
         $(tab.find(".headerStats")[col_idx]).html(txt);
     }
 }

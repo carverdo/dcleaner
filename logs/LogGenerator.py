@@ -8,7 +8,7 @@ We could make the class much more flexible, but its not really necessary;
 we aren't really going to change the settings that often.
 """
 __author__ = 'donal'
-__project__ = 'Skeleton_Flask_v11'
+__project__ = 'dcleaner'
 import logging
 import logging.config
 import os
@@ -24,7 +24,10 @@ class GenLogger(object):
     def __init__(self, output_log):
         self.output_log = '{0}/{1}'.format(
             os.path.dirname(__file__), output_log)
+        # main & console
         logging.config.dictConfig(self.create_settings())
+        logging.getLogger('').addHandler(self.add_console())
+        # join it up
         self.logger = logging.getLogger(__project__)
 
     def create_settings(self):
@@ -53,6 +56,18 @@ class GenLogger(object):
             }
         }
         return logsettings
+
+    def add_console(self):
+        """
+        Writes INFO messages or higher to the sys.stderr (simpler format)
+        :return: console
+        """
+        console = logging.StreamHandler()
+        console.setLevel(logging.INFO)
+        formatter = logging.Formatter(
+            '%(asctime)s : %(filename)-12s #%(lineno)d : %(message)s')
+        console.setFormatter(formatter)
+        return console
 
 
 if __name__ == '__main__':
