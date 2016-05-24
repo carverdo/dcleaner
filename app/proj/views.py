@@ -33,7 +33,6 @@ def home2():
 
 
 @proj.route('/getting_started')
-@login_confirmed
 def getting_started():
     return render_template('./proj/getting_started.html')
 
